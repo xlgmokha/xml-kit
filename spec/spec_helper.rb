@@ -1,3 +1,7 @@
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+end
 require "bundler/setup"
 require "xml/kit"
 require "ffaker"
