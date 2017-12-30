@@ -2,16 +2,14 @@ module Xml
   module Kit
     module Crypto
       class RsaCipher
-        ALGORITHMS = {
-          'http://www.w3.org/2001/04/xmlenc#rsa-1_5' => true,
-        }
+        ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
 
         def initialize(algorithm, key)
           @key = key
         end
 
         def self.matches?(algorithm)
-          ALGORITHMS[algorithm]
+          ALGORITHM == algorithm
         end
 
         def encrypt(plain_text)

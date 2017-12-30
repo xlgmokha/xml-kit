@@ -10,7 +10,7 @@ module Xml
         raw_xml,
         public_key,
         symmetric_algorithm: ::Xml::Kit::Crypto::SymmetricCipher::DEFAULT_ALGORITHM,
-        asymmetric_algorithm: "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
+        asymmetric_algorithm: ::Xml::Kit::Crypto::RsaCipher::ALGORITHM
       )
         @symmetric_algorithm = symmetric_algorithm
         @symmetric_cipher_value = Base64.encode64(symmetric_cipher.encrypt(raw_xml))
