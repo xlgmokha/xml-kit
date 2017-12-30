@@ -13,8 +13,18 @@ module Xml
           ALGORITHMS[algorithm]
         end
 
+        def encrypt(plain_text)
+          @key.public_encrypt(plain_text, padding)
+        end
+
         def decrypt(cipher_text)
-          @key.private_decrypt(cipher_text, OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
+          @key.private_decrypt(cipher_text, padding)
+        end
+
+        private
+
+        def padding
+          OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING
         end
       end
     end
