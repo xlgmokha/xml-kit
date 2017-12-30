@@ -1,15 +1,18 @@
 module Xml
   module Kit
     module Crypto
-      class SimpleCipher
+      class SymmetricCipher
+        DEFAULT_ALGORITHM="#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc"
         ALGORITHMS = {
-          "#{Namespaces::XMLENC}tripledes-cbc" => "DES-EDE3-CBC",
-          "#{Namespaces::XMLENC}aes128-cbc" => "AES-128-CBC",
-          "#{Namespaces::XMLENC}aes192-cbc" => "AES-192-CBC",
-          "#{Namespaces::XMLENC}aes256-cbc" => "AES-256-CBC",
+          "#{::Xml::Kit::Namespaces::XMLENC}tripledes-cbc" => "DES-EDE3-CBC",
+          "#{::Xml::Kit::Namespaces::XMLENC}aes128-cbc" => "AES-128-CBC",
+          "#{::Xml::Kit::Namespaces::XMLENC}aes192-cbc" => "AES-192-CBC",
+          "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc" => "AES-256-CBC",
         }
 
-        def initialize(algorithm, key)
+        attr_reader :key
+
+        def initialize(algorithm, key = nil)
           @algorithm = algorithm
           @key = key || cipher.random_key
         end

@@ -1,4 +1,4 @@
-RSpec.describe ::Xml::Kit::Crypto::SimpleCipher do
+RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
   [
     "tripledes-cbc",
     "aes128-cbc",
