@@ -8,6 +8,8 @@ RSpec.describe Xml::Kit::Document do
       @id = ::Xml::Kit::Id.generate
       @signing_key_pair = ::Xml::Kit::KeyPair.generate(use: :signing)
       @embed_signature = true
+      @encrypt = true
+      @encryption_certificate = ::Xml::Kit::KeyPair.generate(use: :encryption).certificate
     end
 
     def template_path
