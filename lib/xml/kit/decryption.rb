@@ -13,7 +13,21 @@ module Xml
       #
       # @param data [Hash] the XML document converted to a [Hash] using Hash.from_xml.
       def decrypt(data)
-        encrypted_data = data['EncryptedData']
+        decrypt_hash(data)
+      end
+
+      # Decrypts an EncryptedData section of an XML document.
+      #
+      # @param raw_xml [String] the XML document as a string.
+      def decrypt_xml(raw_xml)
+        decrypt(Hash.from_xml(raw_xml))
+      end
+
+      # Decrypts an EncryptedData section of an XML document.
+      #
+      # @param data [Hash] the XML document converted to a [Hash] using Hash.from_xml.
+      def decrypt_hash(hash)
+        encrypted_data = hash['EncryptedData']
         symmetric_key = symmetric_key_from(encrypted_data)
         cipher_text = Base64.decode64(encrypted_data["CipherData"]["CipherValue"])
         to_plaintext(cipher_text, symmetric_key, encrypted_data["EncryptionMethod"]['Algorithm'])

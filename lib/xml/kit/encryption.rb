@@ -12,6 +12,10 @@ module Xml
         @iv = cipher.random_iv
         @encrypted = cipher.update(raw_xml) + cipher.final
       end
+
+      def to_xml(xml: ::Builder::XmlMarkup.new)
+        ::Xml::Kit::Template.new(self).to_xml(xml: xml)
+      end
     end
   end
 end

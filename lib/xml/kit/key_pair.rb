@@ -16,6 +16,10 @@ module Xml
         @use == use
       end
 
+      def public_key
+        certificate.public_key
+      end
+
       # Returns a generated self signed certificate with private key.
       #
       # @param use [Symbol] Can be either `:signing` or `:encryption`.

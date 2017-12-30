@@ -24,12 +24,10 @@ module Xml
         if encrypt?
           temp = ::Builder::XmlMarkup.new
           yield temp
-          signed_xml = signatures.complete(temp.target!)
-          xml_encryption = ::Xml::Kit::Encryption.new(
-            signed_xml,
+          ::Xml::Kit::Encryption.new(
+            signatures.complete(temp.target!),
             encryption_certificate.public_key
-          )
-          render(xml_encryption, xml: xml)
+          ).to_xml(xml: xml)
         else
           yield xml
         end
