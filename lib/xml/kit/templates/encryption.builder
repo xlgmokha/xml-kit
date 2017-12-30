@@ -2,13 +2,13 @@ xml.EncryptedData xmlns: ::Xml::Kit::Namespaces::XMLENC do
   xml.EncryptionMethod Algorithm: symmetric_algorithm
   xml.KeyInfo xmlns: ::Xml::Kit::Namespaces::XMLDSIG do
     xml.EncryptedKey xmlns: ::Xml::Kit::Namespaces::XMLENC do
-      xml.EncryptionMethod Algorithm: "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
+      xml.EncryptionMethod Algorithm: asymmetric_algorithm
       xml.CipherData do
-        xml.CipherValue Base64.encode64(public_key.public_encrypt(key))
+        xml.CipherValue asymmetric_cipher_value
       end
     end
   end
   xml.CipherData do
-    xml.CipherValue Base64.encode64(iv + encrypted)
+    xml.CipherValue symmetric_cipher_value
   end
 end

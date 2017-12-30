@@ -2,19 +2,20 @@ module Xml
   module Kit
     class Encryption
       DEFAULT_ALGORITHM="AES-256-CBC"
-      attr_reader :public_key
+      attr_reader :asymmetric_algorithm
+      attr_reader :asymmetric_cipher_value
       attr_reader :symmetric_algorithm
-      attr_reader :key, :iv, :encrypted
+      attr_reader :symmetric_cipher_value
 
-      def initialize(raw_xml, public_key, algorithm = DEFAULT_ALGORITHM)
-        @public_key = public_key
-
-        cipher = OpenSSL::Cipher.new(algorithm)
+      def initialize(raw_xml, public_key, symmetric_algorithm = DEFAULT_ALGORITHM)
+        @symmetric_algorithm = ::Xml::Kit::Crypto::SimpleCipher::ALGORITHMS.key(symmetric_algorithm)
+        cipher = OpenSSL::Cipher.new(symmetric_algorithm)
         cipher.encrypt
-        @symmetric_algorithm = ::Xml::Kit::Crypto::SimpleCipher::ALGORITHMS.key(algorithm)
-        @key = cipher.random_key
-        @iv = cipher.random_iv
-        @encrypted = cipher.update(raw_xml) + cipher.final
+        key = cipher.random_key
+        @symmetric_cipher_value = Base64.encode64(cipher.random_iv + cipher.update(raw_xml) + cipher.final)
+
+        @asymmetric_algorithm = "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
+        @asymmetric_cipher_value = Base64.encode64(public_key.public_encrypt(key))
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)
