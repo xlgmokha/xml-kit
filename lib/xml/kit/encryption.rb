@@ -1,13 +1,17 @@
 module Xml
   module Kit
     class Encryption
+      DEFAULT_ALGORITHM="AES-256-CBC"
       attr_reader :public_key
+      attr_reader :algorithm
       attr_reader :key, :iv, :encrypted
 
-      def initialize(raw_xml, public_key)
+      def initialize(raw_xml, public_key, algorithm = DEFAULT_ALGORITHM)
         @public_key = public_key
-        cipher = OpenSSL::Cipher.new('AES-256-CBC')
+
+        cipher = OpenSSL::Cipher.new(algorithm)
         cipher.encrypt
+        @algorithm = ::Xml::Kit::Crypto::SimpleCipher::ALGORITHMS.key(algorithm)
         @key = cipher.random_key
         @iv = cipher.random_iv
         @encrypted = cipher.update(raw_xml) + cipher.final

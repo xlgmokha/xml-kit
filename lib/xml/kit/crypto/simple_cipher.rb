@@ -3,10 +3,10 @@ module Xml
     module Crypto
       class SimpleCipher
         ALGORITHMS = {
-          'http://www.w3.org/2001/04/xmlenc#tripledes-cbc' => 'DES-EDE3-CBC',
-          'http://www.w3.org/2001/04/xmlenc#aes128-cbc' => 'AES-128-CBC',
-          'http://www.w3.org/2001/04/xmlenc#aes192-cbc' => 'AES-192-CBC',
-          'http://www.w3.org/2001/04/xmlenc#aes256-cbc' => 'AES-256-CBC',
+          "#{Namespaces::XMLENC}tripledes-cbc" => "DES-EDE3-CBC",
+          "#{Namespaces::XMLENC}aes128-cbc" => "AES-128-CBC",
+          "#{Namespaces::XMLENC}aes192-cbc" => "AES-192-CBC",
+          "#{Namespaces::XMLENC}aes256-cbc" => "AES-256-CBC",
         }
 
         def initialize(algorithm, private_key)
