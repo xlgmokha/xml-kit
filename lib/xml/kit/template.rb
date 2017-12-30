@@ -21,7 +21,7 @@ module Xml
 
         root_path = File.expand_path(File.dirname(__FILE__))
         template_name = "#{target.class.name.split("::").last.underscore}.builder"
-        File.join(root_path, "builders/templates/", template_name)
+        File.join(root_path, "templates/", template_name)
       end
 
       def template

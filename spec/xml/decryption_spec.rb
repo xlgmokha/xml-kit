@@ -3,7 +3,7 @@ RSpec.describe Xml::Kit::Decryption do
     let(:secret) { FFaker::Movie.title }
     let(:password) { FFaker::Movie.title }
 
-    it 'decrypts the data' do
+    it 'decrypts AES-128-CBC data' do
       certificate_pem, private_key_pem = generate_key_pair(password)
 
       public_key = OpenSSL::X509::Certificate.new(certificate_pem).public_key
