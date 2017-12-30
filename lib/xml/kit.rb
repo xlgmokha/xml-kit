@@ -1,5 +1,6 @@
 require "active_model"
 require "active_support/core_ext/numeric/time"
+require "active_support/deprecation"
 require "base64"
 require "builder"
 require "logger"
@@ -34,6 +35,11 @@ module Xml
 
       def logger=(logger)
         @logger = logger
+      end
+
+      def deprecate(message)
+        @deprecation ||= ActiveSupport::Deprecation.new('1.0.0', 'xml-kit')
+        @deprecation.deprecation_warning(message)
       end
     end
   end

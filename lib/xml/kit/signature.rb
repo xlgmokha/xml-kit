@@ -27,6 +27,10 @@ module Xml
         @reference_id = reference_id
         @signature_method = SIGNATURE_METHODS[signature_method]
       end
+
+      def to_xml(xml: ::Builder::XmlMarkup.new)
+        ::Xml::Kit::Template.new(self).to_xml(xml: xml)
+      end
     end
   end
 end

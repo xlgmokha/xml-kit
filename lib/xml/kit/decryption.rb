@@ -13,6 +13,7 @@ module Xml
       #
       # @param data [Hash] the XML document converted to a [Hash] using Hash.from_xml.
       def decrypt(data)
+        ::Xml::Kit.deprecate("decrypt is deprecated. Use decrypt_xml or decrypt_hash instead.")
         decrypt_hash(data)
       end
 
@@ -20,7 +21,7 @@ module Xml
       #
       # @param raw_xml [String] the XML document as a string.
       def decrypt_xml(raw_xml)
-        decrypt(Hash.from_xml(raw_xml))
+        decrypt_hash(Hash.from_xml(raw_xml))
       end
 
       # Decrypts an EncryptedData section of an XML document.

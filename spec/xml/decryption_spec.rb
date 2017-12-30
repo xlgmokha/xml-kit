@@ -1,5 +1,5 @@
 RSpec.describe Xml::Kit::Decryption do
-  describe "#decrypt" do
+  describe "#decrypt_hash" do
     let(:secret) { FFaker::Movie.title }
     let(:password) { FFaker::Movie.title }
 
@@ -40,11 +40,11 @@ RSpec.describe Xml::Kit::Decryption do
         }
       }
       subject = described_class.new(private_keys: [private_key])
-      decrypted = subject.decrypt(data)
+      decrypted = subject.decrypt_hash(data)
       expect(decrypted.strip).to eql(secret)
     end
 
-    it 'attemps to decrypt with each encryption keypair' do
+    it 'attempts to decrypt with each encryption keypair' do
       certificate_pem, private_key_pem = generate_key_pair(password)
       public_key = OpenSSL::X509::Certificate.new(certificate_pem).public_key
       private_key = OpenSSL::PKey::RSA.new(private_key_pem, password)
@@ -84,7 +84,7 @@ RSpec.describe Xml::Kit::Decryption do
       other_private_key = OpenSSL::PKey::RSA.new(other_private_key_pem, password)
 
       subject = described_class.new(private_keys: [other_private_key, private_key])
-      decrypted = subject.decrypt(data)
+      decrypted = subject.decrypt_hash(data)
       expect(decrypted.strip).to eql(secret)
     end
 
@@ -127,7 +127,7 @@ RSpec.describe Xml::Kit::Decryption do
       new_private_key = OpenSSL::PKey::RSA.new(new_private_key_pem, password)
       subject = described_class.new(private_keys: [new_private_key])
       expect do
-        subject.decrypt(data)
+        subject.decrypt_hash(data)
       end.to raise_error(OpenSSL::PKey::RSAError)
     end
   end
