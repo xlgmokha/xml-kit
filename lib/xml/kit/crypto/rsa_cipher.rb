@@ -14,6 +14,10 @@ module Xml
           ALGORITHMS[algorithm]
         end
 
+        def encrypt(plain_text)
+          @key.public_encrypt(plain_text)
+        end
+
         def decrypt(cipher_text)
           @key.private_decrypt(cipher_text)
         end
