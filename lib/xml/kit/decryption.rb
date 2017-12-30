@@ -52,7 +52,7 @@ module Xml
       end
 
       def to_plaintext(cipher_text, symmetric_key, algorithm)
-        Crypto.decryptor_for(algorithm, symmetric_key).decrypt(cipher_text)
+        Crypto.cipher_for(algorithm, symmetric_key).decrypt(cipher_text)
       end
     end
   end
