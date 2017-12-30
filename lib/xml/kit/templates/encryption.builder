@@ -1,5 +1,5 @@
 xml.EncryptedData xmlns: ::Xml::Kit::Namespaces::XMLENC do
-  xml.EncryptionMethod Algorithm: algorithm
+  xml.EncryptionMethod Algorithm: symmetric_algorithm
   xml.KeyInfo xmlns: ::Xml::Kit::Namespaces::XMLDSIG do
     xml.EncryptedKey xmlns: ::Xml::Kit::Namespaces::XMLENC do
       xml.EncryptionMethod Algorithm: "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
