@@ -1,10 +1,10 @@
 module Xml
   module Kit
     class KeyPair # :nodoc:
-      attr_reader :certificate, :private_key, :use
+      attr_reader :certificate
+      attr_reader :private_key
 
       def initialize(certificate, private_key, passphrase, use)
-        @use = use
         @certificate = ::Xml::Kit::Certificate.new(certificate, use: use)
         @private_key = OpenSSL::PKey::RSA.new(private_key, passphrase)
       end
@@ -13,11 +13,11 @@ module Xml
       #
       # @param use [Symbol] Can be either `:signing` or `:encryption`.
       def for?(use)
-        @use == use
+        certificate.for?(use)
       end
 
       def public_key
-        certificate.public_key
+        private_key.public_key
       end
 
       # Returns a generated self signed certificate with private key.
