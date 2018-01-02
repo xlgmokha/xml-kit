@@ -2,7 +2,7 @@ module Xml
   module Kit
     # This generates a fingerprint for an X509 Certificate.
     #
-    #   certificate, _ = Xml::Kit::SelfSignedCertificate.new("password").create
+    #   certificate, _ = Xml::Kit::SelfSignedCertificate.new.create
     #
     #   puts Xml::Kit::Fingerprint.new(certificate).to_s
     #   # B7:AB:DC:BD:4D:23:58:65:FD:1A:99:0C:5F:89:EA:87:AD:F1:D7:83:34:7A:E9:E4:88:12:DD:46:1F:38:05:93
