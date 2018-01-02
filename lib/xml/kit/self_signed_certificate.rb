@@ -3,8 +3,7 @@ module Xml
     class SelfSignedCertificate
       SUBJECT="/C=CA/ST=Alberta/L=Calgary/O=XmlKit/OU=XmlKit/CN=XmlKit"
 
-      def create(algorithm: 'AES-256-CBC', passphrase: nil)
-        key_pair = OpenSSL::PKey::RSA.new(2048)
+      def create(algorithm: 'AES-256-CBC', passphrase: nil, key_pair: OpenSSL::PKey::RSA.new(2048))
         certificate = certificate_for(key_pair.public_key)
         certificate.sign(key_pair, OpenSSL::Digest::SHA256.new)
         [ certificate.to_pem, export(key_pair, algorithm, passphrase) ]
