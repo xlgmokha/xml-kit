@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{A simple toolkit for working with XML.}
   spec.description   = %q{A simple toolkit for working with XML.}
-  spec.homepage      = "http://www.mokhan.ca"
+  spec.homepage      = "https://github.com/saml-kit/xml-kit"
   spec.license       = "MIT"
   spec.required_ruby_version = '>= 2.2.0'
 
