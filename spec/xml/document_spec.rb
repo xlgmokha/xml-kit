@@ -48,5 +48,29 @@ RSpec.describe Xml::Kit::Document do
       expect(subject).to_not be_valid
       expect(subject.errors[:signature]).to be_present
     end
+
+    context "when the certificate is expired" do
+      let(:expired_certificate) do
+        certificate = OpenSSL::X509::Certificate.new
+        certificate.public_key = private_key.public_key
+        certificate.not_before = 1.day.ago
+        certificate.not_after = 1.second.ago
+        certificate
+      end
+      let(:private_key) { OpenSSL::PKey::RSA.new(2048) }
+      let(:digest_algorithm) { OpenSSL::Digest::SHA256.new }
+
+      before :each do
+        expired_certificate.sign(private_key, digest_algorithm)
+      end
+
+      it 'is invalid' do
+        item = Item.new
+        item.sign_with(::Xml::Kit::KeyPair.new(expired_certificate.to_pem, private_key.to_s, nil, :signing))
+        subject = described_class.new(item.to_xml)
+        expect(subject).to be_invalid
+        expect(subject.errors[:certificate]).to be_present
+      end
+    end
   end
 end
