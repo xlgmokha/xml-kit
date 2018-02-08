@@ -46,6 +46,7 @@ module Xml
       #
       # @param key_pair [Xml::Kit::KeyPair] the key pair to use for signing.
       def sign_with(key_pair)
+        self.signing_key_pair = key_pair
         signatures.sign_with(key_pair)
       end
 

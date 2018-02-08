@@ -92,6 +92,7 @@ module Xml
 
       def self.to_x509(value)
         value = Base64.decode64(strip(value)) if base64?(value)
+        return value if value.is_a?(OpenSSL::X509::Certificate)
         OpenSSL::X509::Certificate.new(value)
       end
 
