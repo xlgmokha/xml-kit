@@ -25,6 +25,15 @@ RSpec.describe Xml::Kit::Certificate do
       expect(subject).to be_encryption
       expect(subject).to_not be_signing
     end
+
+    it 'returns true when it is for both' do
+      subject = described_class.new(certificate)
+      expect(subject.for?(:encryption)).to be_truthy
+      expect(subject.for?(:signing)).to be_truthy
+
+      expect(subject).to be_encryption
+      expect(subject).to be_signing
+    end
   end
 
   describe "equality" do

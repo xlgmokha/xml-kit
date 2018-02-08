@@ -4,12 +4,12 @@ module Xml
     class Certificate
       BEGIN_CERT=/-----BEGIN CERTIFICATE-----/
       END_CERT=/-----END CERTIFICATE-----/
-      # The use can be `:signing` or `:encryption`
+      # The use can be `:signing` or `:encryption`. Use `nil` for both.
       attr_reader :use
 
-      def initialize(value, use:)
+      def initialize(value, use: nil)
         @value = value
-        @use = use.downcase.to_sym
+        @use = use.nil? ? use : use.downcase.to_sym
       end
 
       # @return [Xml::Kit::Fingerprint] the certificate fingerprint.
@@ -22,6 +22,7 @@ module Xml
       # @param use [Symbol] `:signing` or `:encryption`.
       # @return [Boolean] true or false.
       def for?(use)
+        return true if self.use.nil?
         self.use == use.to_sym
       end
 
@@ -83,8 +84,7 @@ module Xml
 
       def self.to_x509(value)
         OpenSSL::X509::Certificate.new(Base64.decode64(value))
-      rescue OpenSSL::X509::CertificateError => error
-        ::Xml::Kit.logger.warn(error)
+      rescue OpenSSL::X509::CertificateError
         OpenSSL::X509::Certificate.new(value)
       end
 
