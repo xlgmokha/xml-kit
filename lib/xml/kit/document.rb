@@ -59,16 +59,23 @@ module Xml
 
         x509_certificates.each do |certificate|
           inactive = now < certificate.not_before
-          errors.add(:certificate, "Not valid before #{certificate.not_before}") if inactive
+          if inactive
+            error_message = "Not valid before #{certificate.not_before}"
+            errors.add(:certificate, error_message)
+          end
 
           expired = now > certificate.not_after
-          errors.add(:certificate, "Not valid after #{certificate.not_after}") if expired
+          if expired
+            error_message = "Not valid after #{certificate.not_after}"
+            errors.add(:certificate, error_message)
+          end
         end
       end
 
       def x509_certificates
-        xpath = "//ds:KeyInfo/ds:X509Data/ds:X509Certificate"
-        find_all(xpath).map { |item| Certificate.to_x509(item.text) }
+        find_all("//ds:KeyInfo/ds:X509Data/ds:X509Certificate").map do |item|
+          Certificate.to_x509(item.text)
+        end
       end
     end
   end

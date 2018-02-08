@@ -59,14 +59,15 @@ RSpec.describe Xml::Kit::Document do
       end
       let(:private_key) { OpenSSL::PKey::RSA.new(2048) }
       let(:digest_algorithm) { OpenSSL::Digest::SHA256.new }
+      let(:item) { Item.new }
 
       before :each do
         expired_certificate.sign(private_key, digest_algorithm)
       end
 
       it 'is invalid' do
-        item = Item.new
-        item.sign_with(::Xml::Kit::KeyPair.new(expired_certificate.to_pem, private_key.to_s, nil, :signing))
+        certificate = ::Xml::Kit::Certificate.new(expired_certificate)
+        item.sign_with(certificate.to_key_pair(private_key))
         subject = described_class.new(item.to_xml)
         expect(subject).to be_invalid
         expect(subject.errors[:certificate]).to be_present

@@ -2,10 +2,14 @@ module Xml
   module Kit
     # {include:file:spec/xml/certificate_spec.rb}
     class Certificate
+      BASE64_FORMAT = %r(\A([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?\Z)
       BEGIN_CERT=/-----BEGIN CERTIFICATE-----/
       END_CERT=/-----END CERTIFICATE-----/
       # The use can be `:signing` or `:encryption`. Use `nil` for both.
       attr_reader :use
+
+      # The raw certificate value. This can be a Base64 encoded PEM or just a PEM format.
+      attr_reader :value
 
       def initialize(value, use: nil)
         @value = value
@@ -44,7 +48,7 @@ module Xml
       #
       # return [OpenSSL::X509::Certificate] the OpenSSL equivalent.
       def x509
-        self.class.to_x509(value)
+        @x509 ||= self.class.to_x509(value)
       end
 
       # Returns the public key.
@@ -79,18 +83,31 @@ module Xml
       end
 
       def stripped
-        value.to_s.gsub(BEGIN_CERT, '').gsub(END_CERT, '').gsub(/\n/, '')
+        self.class.strip(x509.to_pem)
+      end
+
+      def to_key_pair(private_key, passphrase: nil, use: nil)
+        KeyPair.new(x509.to_pem, private_key.to_s, passphrase, use)
       end
 
       def self.to_x509(value)
-        OpenSSL::X509::Certificate.new(Base64.decode64(value))
-      rescue OpenSSL::X509::CertificateError
+        value = Base64.decode64(strip(value)) if base64?(value)
         OpenSSL::X509::Certificate.new(value)
       end
 
-      private
+      def self.base64?(value)
+        return unless value.is_a?(String)
 
-      attr_reader :value
+        sanitized_value = strip(value)
+        !!sanitized_value.match(BASE64_FORMAT)
+      end
+
+      def self.strip(value)
+        value.
+          gsub(BEGIN_CERT, '').
+          gsub(END_CERT, '').
+          gsub(/[\r\n]|\\r|\\n|\s/, "")
+      end
     end
   end
 end
