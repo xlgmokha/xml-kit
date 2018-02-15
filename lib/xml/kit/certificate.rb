@@ -94,8 +94,8 @@ module Xml
         x509.not_after <= time
       end
 
-      def active?(time)
-        x509.not_before <= time && x509.not_after > time
+      def active?(time = Time.now)
+        x509.not_before <= time && !expired?(time)
       end
 
       class << self
