@@ -74,4 +74,51 @@ RSpec.describe Xml::Kit::Certificate do
       expect(actual.to_s).to eql(expected.to_s)
     end
   end
+
+  describe "#expired?" do
+    let(:certificate) { OpenSSL::X509::Certificate.new }
+
+    it 'returns false, when the certificate has not expired yet' do
+      certificate.not_before = 1.minute.ago
+      certificate.not_after = 10.minutes.from_now
+
+      subject = described_class.new(certificate, use: :signing)
+      expect(subject.expired?(Time.now)).to be_falsey
+    end
+
+    it 'returns true, when the current time is after the time of expiration' do
+      certificate.not_before = 10.minutes.ago
+      certificate.not_after = 1.minute.ago
+
+      subject = described_class.new(certificate, use: :signing)
+      expect(subject.expired?(Time.now)).to be_truthy
+    end
+  end
+
+  describe "#active?" do
+    let(:certificate) { OpenSSL::X509::Certificate.new }
+    subject { described_class.new(certificate, use: :signing) }
+
+    context "when the current time is within the active window" do
+      before :each do
+        certificate.not_before = 1.minute.ago
+        certificate.not_after = 10.minutes.from_now
+      end
+
+      it 'is active' do
+        expect(subject.active?(Time.now)).to be_truthy
+      end
+    end
+
+    context "when the current time is before the active window" do
+      before :each do
+        certificate.not_before = 1.minute.from_now
+        certificate.not_after = 10.minutes.from_now
+      end
+
+      it 'is not active' do
+        expect(subject.active?(Time.now)).to be_falsey
+      end
+    end
+  end
 end

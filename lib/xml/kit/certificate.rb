@@ -90,24 +90,35 @@ module Xml
         KeyPair.new(x509.to_pem, private_key.to_s, passphrase, use)
       end
 
-      def self.to_x509(value)
-        value = Base64.decode64(strip(value)) if base64?(value)
-        return value if value.is_a?(OpenSSL::X509::Certificate)
-        OpenSSL::X509::Certificate.new(value)
+      def expired?(time = Time.now)
+        x509.not_after <= time
       end
 
-      def self.base64?(value)
-        return unless value.is_a?(String)
-
-        sanitized_value = strip(value)
-        !!sanitized_value.match(BASE64_FORMAT)
+      def active?(time)
+        x509.not_before <= time && x509.not_after > time
       end
 
-      def self.strip(value)
-        value.
-          gsub(BEGIN_CERT, '').
-          gsub(END_CERT, '').
-          gsub(/[\r\n]|\\r|\\n|\s/, "")
+      class << self
+        def to_x509(value)
+          return value if value.is_a?(OpenSSL::X509::Certificate)
+
+          value = Base64.decode64(strip(value)) if base64?(value)
+          OpenSSL::X509::Certificate.new(value)
+        end
+
+        def base64?(value)
+          return unless value.is_a?(String)
+
+          sanitized_value = strip(value)
+          !!sanitized_value.match(BASE64_FORMAT)
+        end
+
+        def strip(value)
+          value.
+            gsub(BEGIN_CERT, '').
+            gsub(END_CERT, '').
+            gsub(/[\r\n]|\\r|\\n|\s/, "")
+        end
       end
     end
   end
