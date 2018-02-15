@@ -33,7 +33,7 @@ module Xml
         return raw_xml if key_pair.nil?
 
         private_key = key_pair.private_key
-        Xmldsig::SignedDocument.new(raw_xml).sign(private_key)
+        Xmldsig::SignedDocument.new(raw_xml).sign(private_key, false)
       end
 
       # @!visibility private
