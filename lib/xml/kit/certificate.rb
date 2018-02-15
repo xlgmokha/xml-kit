@@ -98,6 +98,14 @@ module Xml
         x509.not_before <= time && !expired?(time)
       end
 
+      def not_after
+        x509.not_after
+      end
+
+      def not_before
+        x509.not_before
+      end
+
       class << self
         def to_x509(value)
           return value if value.is_a?(OpenSSL::X509::Certificate)

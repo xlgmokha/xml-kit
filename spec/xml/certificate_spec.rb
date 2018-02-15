@@ -121,4 +121,22 @@ RSpec.describe Xml::Kit::Certificate do
       end
     end
   end
+
+  describe "#not_after, #not_before" do
+    subject { described_class.new(certificate, use: :signing) }
+    let(:certificate) { OpenSSL::X509::Certificate.new }
+
+    before :each do
+      certificate.not_before = 1.minute.from_now
+      certificate.not_after = 10.minutes.from_now
+    end
+
+    it 'delegates not_after to the x509 certificate' do
+      expect(subject.not_after).to eql(certificate.not_after)
+    end
+
+    it 'delegates not_before to the x509 certificate' do
+      expect(subject.not_before).to eql(certificate.not_before)
+    end
+  end
 end
