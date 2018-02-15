@@ -38,7 +38,6 @@ module Xml
       #
       # @param node [Nokogiri::XML::Element.] the XML node to decrypt.
       def decrypt_node(node)
-        puts node.class.inspect
         return node unless !node.nil? && "EncryptedData" == node.name
 
         parent = node.parent
