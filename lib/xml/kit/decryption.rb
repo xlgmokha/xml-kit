@@ -26,7 +26,7 @@ module Xml
 
       # Decrypts an EncryptedData section of an XML document.
       #
-      # @param data [Hash] the XML document converted to a [Hash] using Hash.from_xml.
+      # @param hash [Hash] the XML document converted to a [Hash] using Hash.from_xml.
       def decrypt_hash(hash)
         encrypted_data = hash['EncryptedData']
         symmetric_key = symmetric_key_from(encrypted_data)
@@ -34,7 +34,11 @@ module Xml
         to_plaintext(cipher_text, symmetric_key, encrypted_data["EncryptionMethod"]['Algorithm'])
       end
 
+      # Decrypts an EncryptedData Nokogiri::XML::Element.
+      #
+      # @param node [Nokogiri::XML::Element.] the XML node to decrypt.
       def decrypt_node(node)
+        puts node.class.inspect
         return node unless !node.nil? && "EncryptedData" == node.name
 
         parent = node.parent
