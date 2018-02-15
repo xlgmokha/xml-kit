@@ -1,23 +1,4 @@
 RSpec.describe Xml::Kit::Document do
-  class Item
-    include ::Xml::Kit::Templatable
-
-    attr_reader :id, :signing_key_pair
-
-    def initialize
-      @id = ::Xml::Kit::Id.generate
-      @signing_key_pair = ::Xml::Kit::KeyPair.generate(use: :signing)
-      @embed_signature = true
-      @encrypt = true
-      @encryption_certificate = ::Xml::Kit::KeyPair.generate(use: :encryption).certificate
-    end
-
-    def template_path
-      current_path = File.expand_path(File.dirname(__FILE__))
-      File.join(current_path, "../fixtures/item.builder")
-    end
-  end
-
   describe "#valid_signature?" do
     let(:login_url) { "https://#{FFaker::Internet.domain_name}/login" }
     let(:logout_url) { "https://#{FFaker::Internet.domain_name}/logout" }

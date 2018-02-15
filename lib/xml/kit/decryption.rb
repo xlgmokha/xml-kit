@@ -34,6 +34,15 @@ module Xml
         to_plaintext(cipher_text, symmetric_key, encrypted_data["EncryptionMethod"]['Algorithm'])
       end
 
+      def decrypt_node(node)
+        return node unless !node.nil? && "EncryptedData" == node.name
+
+        parent = node.parent
+        grand_parent = parent.parent
+        parent.swap(decrypt_xml(node.to_s))
+        grand_parent
+      end
+
       private
 
       def symmetric_key_from(encrypted_data)
@@ -44,8 +53,7 @@ module Xml
           begin
             attempts -= 1
             return to_plaintext(cipher_text, private_key, encrypted_key["EncryptionMethod"]['Algorithm'])
-          rescue OpenSSL::PKey::RSAError => error
-            ::Xml::Kit.logger.error(error)
+          rescue OpenSSL::PKey::RSAError
             raise if attempts.zero?
           end
         end

@@ -131,4 +131,26 @@ RSpec.describe Xml::Kit::Decryption do
       end.to raise_error(OpenSSL::PKey::RSAError)
     end
   end
+
+  describe "#decrypt_document" do
+    let(:item) { Item.new }
+    let(:document) { Nokogiri::XML(item.to_xml) }
+    let(:subject) { described_class.new(private_keys: [item.encryption_key_pair.private_key]) }
+
+    it 'decrypts a nokogiri document' do
+      node = document.at_xpath('/Item/Encrypted/xmlenc:EncryptedData', 'xmlenc' => "http://www.w3.org/2001/04/xmlenc#")
+      result = subject.decrypt_node(node)
+      expect(result.to_s).to include("EncryptMe")
+    end
+
+    it 'returns the node when it does not contain an EncryptedData' do
+      document = Nokogiri::XML("<hello><world></world></hello>")
+      node = document.at_xpath("//hello/world")
+      expect(subject.decrypt_node(node)).to eql(node)
+    end
+
+    it 'returns nil when the node is nil' do
+      expect(subject.decrypt_node(nil)).to be_nil
+    end
+  end
 end
