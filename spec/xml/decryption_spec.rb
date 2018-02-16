@@ -140,7 +140,7 @@ RSpec.describe Xml::Kit::Decryption do
     it 'decrypts a nokogiri document' do
       node = document.at_xpath('/Item/Encrypted/xmlenc:EncryptedData', 'xmlenc' => "http://www.w3.org/2001/04/xmlenc#")
       result = subject.decrypt_node(node)
-      expect(result.to_s).to include("EncryptMe")
+      expect(result.name).to eql("EncryptMe")
     end
 
     it 'returns the node when it does not contain an EncryptedData' do

@@ -40,10 +40,7 @@ module Xml
       def decrypt_node(node)
         return node unless !node.nil? && "EncryptedData" == node.name
 
-        parent = node.parent
-        grand_parent = parent.parent
-        parent.swap(decrypt_xml(node.to_s))
-        grand_parent
+        node.parent.replace(decrypt_xml(node.to_s))[0]
       end
 
       private

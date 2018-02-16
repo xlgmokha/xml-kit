@@ -13,10 +13,10 @@ module Xml
         asymmetric_algorithm: ::Xml::Kit::Crypto::RsaCipher::ALGORITHM
       )
         @symmetric_algorithm = symmetric_algorithm
-        @symmetric_cipher_value = Base64.encode64(symmetric_cipher.encrypt(raw_xml))
+        @symmetric_cipher_value = Base64.encode64(symmetric_cipher.encrypt(raw_xml)).gsub(/\n/, '')
 
         @asymmetric_algorithm = asymmetric_algorithm
-        @asymmetric_cipher_value = Base64.encode64(public_key.public_encrypt(symmetric_cipher.key))
+        @asymmetric_cipher_value = Base64.encode64(public_key.public_encrypt(symmetric_cipher.key)).gsub(/\n/, '')
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)
