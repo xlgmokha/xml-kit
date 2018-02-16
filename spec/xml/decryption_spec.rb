@@ -157,7 +157,7 @@ RSpec.describe Xml::Kit::Decryption do
 
       expect do
         subject.decrypt_node(encrypted_node)
-      end.to raise_error(/Cannot decrypt document with the provided private keys/)
+      end.to raise_error(Xml::Kit::DecryptionError)
     end
   end
 end
