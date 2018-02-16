@@ -136,11 +136,10 @@ RSpec.describe Xml::Kit::Decryption do
     let(:item) { Item.new }
     let(:document) { Nokogiri::XML(item.to_xml) }
     let(:subject) { described_class.new(private_keys: [item.encryption_key_pair.private_key]) }
+    let(:encrypted_node) { document.at_xpath('/Item/Encrypted/xmlenc:EncryptedData', 'xmlenc' => "http://www.w3.org/2001/04/xmlenc#") }
 
     it 'decrypts a nokogiri document' do
-      node = document.at_xpath('/Item/Encrypted/xmlenc:EncryptedData', 'xmlenc' => "http://www.w3.org/2001/04/xmlenc#")
-      result = subject.decrypt_node(node)
-      expect(result.name).to eql("EncryptMe")
+      expect(subject.decrypt_node(encrypted_node).name).to eql("EncryptMe")
     end
 
     it 'returns the node when it does not contain an EncryptedData' do
@@ -151,6 +150,14 @@ RSpec.describe Xml::Kit::Decryption do
 
     it 'returns nil when the node is nil' do
       expect(subject.decrypt_node(nil)).to be_nil
+    end
+
+    it 'raises an error when the document cannot be decrypted' do
+      subject = described_class.new(private_keys: [])
+
+      expect do
+        subject.decrypt_node(encrypted_node)
+      end.to raise_error(/Cannot decrypt document with the provided private keys/)
     end
   end
 end
