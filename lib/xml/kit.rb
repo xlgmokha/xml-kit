@@ -6,6 +6,7 @@ require "builder"
 require "logger"
 require "nokogiri"
 require "openssl"
+require "pathname"
 require "tilt"
 require "xmldsig"
 

@@ -1,6 +1,8 @@
 module Xml
   module Kit
     class Template
+      TEMPLATES_DIR=Pathname.new(File.join(__dir__, "templates/" ))
+
       attr_reader :target
 
       def initialize(target)
@@ -18,14 +20,15 @@ module Xml
 
       def template_path
         return target.template_path if target.respond_to?(:template_path)
+        TEMPLATES_DIR.join(template_name)
+      end
 
-        root_path = File.expand_path(File.dirname(__FILE__))
-        template_name = "#{target.class.name.split("::").last.underscore}.builder"
-        File.join(root_path, "templates/", template_name)
+      def template_name
+        "#{target.class.name.split("::").last.underscore}.builder"
       end
 
       def template
-        Tilt.new(template_path)
+        @template ||= Tilt.new(template_path)
       end
     end
   end
