@@ -28,7 +28,7 @@ module Xml
       end
 
       def template
-        @template ||= Tilt.new(template_path)
+        @template ||= Tilt.new(template_path.to_s)
       end
     end
   end
