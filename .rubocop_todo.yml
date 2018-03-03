@@ -10,11 +10,6 @@
 Metrics/AbcSize:
   Max: 18
 
-# Offense count: 2
-# Configuration parameters: CountComments.
-Metrics/MethodLength:
-  Max: 14
-
 # Offense count: 1
 Style/DoubleNegation:
   Exclude:

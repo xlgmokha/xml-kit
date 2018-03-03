@@ -58,17 +58,9 @@ module Xml
         return if find_by('//ds:Signature').nil?
 
         x509_certificates.each do |certificate|
-          inactive = now < certificate.not_before
-          if inactive
-            error_message = "Not valid before #{certificate.not_before}"
-            errors.add(:certificate, error_message)
-          end
+          errors.add(:certificate, "Not valid before #{certificate.not_before}") if now < certificate.not_before
 
-          expired = now > certificate.not_after
-          if expired
-            error_message = "Not valid after #{certificate.not_after}"
-            errors.add(:certificate, error_message)
-          end
+          errors.add(:certificate, "Not valid after #{certificate.not_after}") if now > certificate.not_after
         end
       end
 
