@@ -41,7 +41,7 @@ module Xml
 
       def validate_signatures
         invalid_signatures.flat_map(&:errors).uniq.each do |error|
-          errors.add(error, "is invalid")
+          errors.add(error, 'is invalid')
         end
       end
 
@@ -73,7 +73,7 @@ module Xml
       end
 
       def x509_certificates
-        find_all("//ds:KeyInfo/ds:X509Data/ds:X509Certificate").map do |item|
+        find_all('//ds:KeyInfo/ds:X509Data/ds:X509Certificate').map do |item|
           Certificate.to_x509(item.text)
         end
       end

@@ -13,7 +13,7 @@ module Xml
       #
       # @param data [Hash] the XML document converted to a [Hash] using Hash.from_xml.
       def decrypt(data)
-        ::Xml::Kit.deprecate("decrypt is deprecated. Use decrypt_xml or decrypt_hash instead.")
+        ::Xml::Kit.deprecate('decrypt is deprecated. Use decrypt_xml or decrypt_hash instead.')
         decrypt_hash(data)
       end
 
@@ -30,15 +30,15 @@ module Xml
       def decrypt_hash(hash)
         encrypted_data = hash['EncryptedData']
         symmetric_key = symmetric_key_from(encrypted_data)
-        cipher_text = Base64.decode64(encrypted_data["CipherData"]["CipherValue"])
-        to_plaintext(cipher_text, symmetric_key, encrypted_data["EncryptionMethod"]['Algorithm'])
+        cipher_text = Base64.decode64(encrypted_data['CipherData']['CipherValue'])
+        to_plaintext(cipher_text, symmetric_key, encrypted_data['EncryptionMethod']['Algorithm'])
       end
 
       # Decrypts an EncryptedData Nokogiri::XML::Element.
       #
       # @param node [Nokogiri::XML::Element.] the XML node to decrypt.
       def decrypt_node(node)
-        return node unless !node.nil? && "EncryptedData" == node.name
+        return node unless !node.nil? && node.name == 'EncryptedData'
 
         node.parent.replace(decrypt_xml(node.to_s))[0]
       end
@@ -52,12 +52,12 @@ module Xml
         private_keys.each do |private_key|
           begin
             attempts -= 1
-            return to_plaintext(cipher_text, private_key, encrypted_key["EncryptionMethod"]['Algorithm'])
+            return to_plaintext(cipher_text, private_key, encrypted_key['EncryptionMethod']['Algorithm'])
           rescue OpenSSL::PKey::RSAError
             raise if attempts.zero?
           end
         end
-        raise DecryptionError.new(private_keys)
+        raise DecryptionError, private_keys
       end
 
       def to_plaintext(cipher_text, symmetric_key, algorithm)

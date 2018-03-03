@@ -1,5 +1,5 @@
 RSpec.describe Xml::Kit::Decryption do
-  describe "#decrypt_hash" do
+  describe '#decrypt_hash' do
     let(:secret) { FFaker::Movie.title }
     let(:password) { FFaker::Movie.title }
 
@@ -16,26 +16,26 @@ RSpec.describe Xml::Kit::Decryption do
       encrypted = cipher.update(secret) + cipher.final
 
       data = {
-        "EncryptedData"=> {
-          "xmlns:xenc"=>"http://www.w3.org/2001/04/xmlenc#",
-          "xmlns:dsig"=>"http://www.w3.org/2000/09/xmldsig#",
-          "Type"=>"http://www.w3.org/2001/04/xmlenc#Element",
-          "EncryptionMethod"=> {
-            "Algorithm"=>"http://www.w3.org/2001/04/xmlenc#aes128-cbc"
+        'EncryptedData' => {
+          'xmlns:xenc' => 'http://www.w3.org/2001/04/xmlenc#',
+          'xmlns:dsig' => 'http://www.w3.org/2000/09/xmldsig#',
+          'Type' => 'http://www.w3.org/2001/04/xmlenc#Element',
+          'EncryptionMethod' => {
+            'Algorithm' => 'http://www.w3.org/2001/04/xmlenc#aes128-cbc'
           },
-          "KeyInfo"=> {
-            "xmlns:dsig"=>"http://www.w3.org/2000/09/xmldsig#",
-            "EncryptedKey"=> {
-              "EncryptionMethod"=>{
-                "Algorithm"=>"http://www.w3.org/2001/04/xmlenc#rsa-1_5"
+          'KeyInfo' => {
+            'xmlns:dsig' => 'http://www.w3.org/2000/09/xmldsig#',
+            'EncryptedKey' => {
+              'EncryptionMethod' => {
+                'Algorithm' => 'http://www.w3.org/2001/04/xmlenc#rsa-1_5'
               },
-              "CipherData"=>{
-                "CipherValue"=> Base64.encode64(public_key.public_encrypt(key))
+              'CipherData' => {
+                'CipherValue' => Base64.encode64(public_key.public_encrypt(key))
               }
             }
           },
-          "CipherData"=>{
-            "CipherValue"=> Base64.encode64(iv + encrypted)
+          'CipherData' => {
+            'CipherValue' => Base64.encode64(iv + encrypted)
           }
         }
       }
@@ -56,26 +56,26 @@ RSpec.describe Xml::Kit::Decryption do
       encrypted = cipher.update(secret) + cipher.final
 
       data = {
-        "EncryptedData"=> {
-          "xmlns:xenc"=>"http://www.w3.org/2001/04/xmlenc#",
-          "xmlns:dsig"=>"http://www.w3.org/2000/09/xmldsig#",
-          "Type"=>"http://www.w3.org/2001/04/xmlenc#Element",
-          "EncryptionMethod"=> {
-            "Algorithm"=>"http://www.w3.org/2001/04/xmlenc#aes128-cbc"
+        'EncryptedData' => {
+          'xmlns:xenc' => 'http://www.w3.org/2001/04/xmlenc#',
+          'xmlns:dsig' => 'http://www.w3.org/2000/09/xmldsig#',
+          'Type' => 'http://www.w3.org/2001/04/xmlenc#Element',
+          'EncryptionMethod' => {
+            'Algorithm' => 'http://www.w3.org/2001/04/xmlenc#aes128-cbc'
           },
-          "KeyInfo"=> {
-            "xmlns:dsig"=>"http://www.w3.org/2000/09/xmldsig#",
-            "EncryptedKey"=> {
-              "EncryptionMethod"=>{
-                "Algorithm"=>"http://www.w3.org/2001/04/xmlenc#rsa-1_5"
+          'KeyInfo' => {
+            'xmlns:dsig' => 'http://www.w3.org/2000/09/xmldsig#',
+            'EncryptedKey' => {
+              'EncryptionMethod' => {
+                'Algorithm' => 'http://www.w3.org/2001/04/xmlenc#rsa-1_5'
               },
-              "CipherData"=>{
-                "CipherValue"=> Base64.encode64(public_key.public_encrypt(key))
+              'CipherData' => {
+                'CipherValue' => Base64.encode64(public_key.public_encrypt(key))
               }
             }
           },
-          "CipherData"=>{
-            "CipherValue"=> Base64.encode64(iv + encrypted)
+          'CipherData' => {
+            'CipherValue' => Base64.encode64(iv + encrypted)
           }
         }
       }
@@ -89,7 +89,7 @@ RSpec.describe Xml::Kit::Decryption do
     end
 
     it 'raise an error when it cannot decrypt the data' do
-      certificate_pem, _ = generate_key_pair(password)
+      certificate_pem, = generate_key_pair(password)
       public_key = OpenSSL::X509::Certificate.new(certificate_pem).public_key
 
       cipher = OpenSSL::Cipher.new('AES-128-CBC')
@@ -99,26 +99,26 @@ RSpec.describe Xml::Kit::Decryption do
       encrypted = cipher.update(secret) + cipher.final
 
       data = {
-        "EncryptedData"=> {
-          "xmlns:xenc"=>"http://www.w3.org/2001/04/xmlenc#",
-          "xmlns:dsig"=>"http://www.w3.org/2000/09/xmldsig#",
-          "Type"=>"http://www.w3.org/2001/04/xmlenc#Element",
-          "EncryptionMethod"=> {
-            "Algorithm"=>"http://www.w3.org/2001/04/xmlenc#aes128-cbc"
+        'EncryptedData' => {
+          'xmlns:xenc' => 'http://www.w3.org/2001/04/xmlenc#',
+          'xmlns:dsig' => 'http://www.w3.org/2000/09/xmldsig#',
+          'Type' => 'http://www.w3.org/2001/04/xmlenc#Element',
+          'EncryptionMethod' => {
+            'Algorithm' => 'http://www.w3.org/2001/04/xmlenc#aes128-cbc'
           },
-          "KeyInfo"=> {
-            "xmlns:dsig"=>"http://www.w3.org/2000/09/xmldsig#",
-            "EncryptedKey"=> {
-              "EncryptionMethod"=>{
-                "Algorithm"=>"http://www.w3.org/2001/04/xmlenc#rsa-1_5"
+          'KeyInfo' => {
+            'xmlns:dsig' => 'http://www.w3.org/2000/09/xmldsig#',
+            'EncryptedKey' => {
+              'EncryptionMethod' => {
+                'Algorithm' => 'http://www.w3.org/2001/04/xmlenc#rsa-1_5'
               },
-              "CipherData"=>{
-                "CipherValue"=> Base64.encode64(public_key.public_encrypt(key))
+              'CipherData' => {
+                'CipherValue' => Base64.encode64(public_key.public_encrypt(key))
               }
             }
           },
-          "CipherData"=>{
-            "CipherValue"=> Base64.encode64(iv + encrypted)
+          'CipherData' => {
+            'CipherValue' => Base64.encode64(iv + encrypted)
           }
         }
       }
@@ -132,19 +132,19 @@ RSpec.describe Xml::Kit::Decryption do
     end
   end
 
-  describe "#decrypt_document" do
+  describe '#decrypt_document' do
     let(:item) { Item.new }
     let(:document) { Nokogiri::XML(item.to_xml) }
     let(:subject) { described_class.new(private_keys: [item.encryption_key_pair.private_key]) }
-    let(:encrypted_node) { document.at_xpath('/Item/Encrypted/xmlenc:EncryptedData', 'xmlenc' => "http://www.w3.org/2001/04/xmlenc#") }
+    let(:encrypted_node) { document.at_xpath('/Item/Encrypted/xmlenc:EncryptedData', 'xmlenc' => 'http://www.w3.org/2001/04/xmlenc#') }
 
     it 'decrypts a nokogiri document' do
-      expect(subject.decrypt_node(encrypted_node).name).to eql("EncryptMe")
+      expect(subject.decrypt_node(encrypted_node).name).to eql('EncryptMe')
     end
 
     it 'returns the node when it does not contain an EncryptedData' do
-      document = Nokogiri::XML("<hello><world></world></hello>")
-      node = document.at_xpath("//hello/world")
+      document = Nokogiri::XML('<hello><world></world></hello>')
+      node = document.at_xpath('//hello/world')
       expect(subject.decrypt_node(node)).to eql(node)
     end
 

@@ -5,7 +5,7 @@ module Xml
 
       def initialize(private_keys)
         @private_keys = private_keys
-        super("Cannot decrypt document with the provided private keys")
+        super('Cannot decrypt document with the provided private keys')
       end
     end
   end

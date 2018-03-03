@@ -1,5 +1,5 @@
 RSpec.describe Xml::Kit::Document do
-  describe "#valid_signature?" do
+  describe '#valid_signature?' do
     let(:login_url) { "https://#{FFaker::Internet.domain_name}/login" }
     let(:logout_url) { "https://#{FFaker::Internet.domain_name}/logout" }
     let(:signed_xml) { Item.new.to_xml }
@@ -9,16 +9,16 @@ RSpec.describe Xml::Kit::Document do
     end
 
     it 'returns false, when the SHA1 digest is not valid' do
-      subject = described_class.new(signed_xml.gsub("Item", "uhoh"))
-      expect(subject).to_not be_valid
+      subject = described_class.new(signed_xml.gsub('Item', 'uhoh'))
+      expect(subject).not_to be_valid
       expect(subject.errors[:digest_value]).to be_present
     end
 
-    it 'it is invalid when digest is incorrect' do
+    it 'is invalid when digest is incorrect' do
       old_digest = Hash.from_xml(signed_xml)['Item']['Signature']['SignedInfo']['Reference']['DigestValue']
 
       subject = described_class.new(signed_xml.gsub(old_digest, 'sabotage'))
-      expect(subject).to_not be_valid
+      expect(subject).not_to be_valid
       expect(subject.errors[:digest_value]).to be_present
     end
 
@@ -26,11 +26,11 @@ RSpec.describe Xml::Kit::Document do
       old_signature = Hash.from_xml(signed_xml)['Item']['Signature']['SignatureValue']
       signed_xml.gsub!(old_signature, 'sabotage')
       subject = described_class.new(signed_xml)
-      expect(subject).to_not be_valid
+      expect(subject).not_to be_valid
       expect(subject.errors[:signature]).to be_present
     end
 
-    context "when the certificate is expired" do
+    context 'when the certificate is expired' do
       let(:expired_certificate) do
         certificate = OpenSSL::X509::Certificate.new
         certificate.public_key = private_key.public_key
@@ -42,7 +42,7 @@ RSpec.describe Xml::Kit::Document do
       let(:digest_algorithm) { OpenSSL::Digest::SHA256.new }
       let(:item) { Item.new }
 
-      before :each do
+      before do
         expired_certificate.sign(private_key, digest_algorithm)
       end
 

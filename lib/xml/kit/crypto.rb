@@ -6,7 +6,7 @@ require 'xml/kit/crypto/unknown_cipher'
 module Xml
   module Kit
     module Crypto
-      CIPHERS = [ SymmetricCipher, RsaCipher, OaepCipher, UnknownCipher ]
+      CIPHERS = [SymmetricCipher, RsaCipher, OaepCipher, UnknownCipher].freeze
 
       # @!visibility private
       def self.cipher_for(algorithm, key)

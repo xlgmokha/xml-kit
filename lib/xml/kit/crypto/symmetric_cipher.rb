@@ -2,13 +2,13 @@ module Xml
   module Kit
     module Crypto
       class SymmetricCipher
-        DEFAULT_ALGORITHM="#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc"
+        DEFAULT_ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc".freeze
         ALGORITHMS = {
-          "#{::Xml::Kit::Namespaces::XMLENC}tripledes-cbc" => "DES-EDE3-CBC",
-          "#{::Xml::Kit::Namespaces::XMLENC}aes128-cbc" => "AES-128-CBC",
-          "#{::Xml::Kit::Namespaces::XMLENC}aes192-cbc" => "AES-192-CBC",
-          "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc" => "AES-256-CBC",
-        }
+          "#{::Xml::Kit::Namespaces::XMLENC}tripledes-cbc" => 'DES-EDE3-CBC',
+          "#{::Xml::Kit::Namespaces::XMLENC}aes128-cbc" => 'AES-128-CBC',
+          "#{::Xml::Kit::Namespaces::XMLENC}aes192-cbc" => 'AES-192-CBC',
+          "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc" => 'AES-256-CBC',
+        }.freeze
 
         attr_reader :key
 
@@ -29,9 +29,9 @@ module Xml
 
         def decrypt(cipher_text)
           cipher.decrypt
-          iv = cipher_text[0..cipher.iv_len-1]
+          iv = cipher_text[0..cipher.iv_len - 1]
           data = cipher_text[cipher.iv_len..-1]
-          #cipher.padding = 0
+          # cipher.padding = 0
           cipher.key = @key
           cipher.iv = iv
           cipher.update(data) + cipher.final

@@ -4,7 +4,7 @@ RSpec.describe ::Xml::Kit::Templatable do
   end
   subject { Item.new }
 
-  describe "#encryption_for" do
+  describe '#encryption_for' do
     it 'returns an encrypted xml' do
       subject.encrypt = true
       subject.encryption_certificate = ::Xml::Kit::KeyPair.generate(use: :encryption).certificate
@@ -13,7 +13,7 @@ RSpec.describe ::Xml::Kit::Templatable do
         xml.HelloWorld Time.now.iso8601
       end
 
-      expect(result).to include("EncryptedData")
+      expect(result).to include('EncryptedData')
       xml_hash = Hash.from_xml(result)
       expect(xml_hash['EncryptedData']).to be_present
       expect(xml_hash['EncryptedData']['EncryptionMethod']).to be_present
@@ -27,8 +27,8 @@ RSpec.describe ::Xml::Kit::Templatable do
         xml.HelloWorld Time.now.iso8601
       end
 
-      expect(result).to include("HelloWorld")
-      expect(result).to_not include("EncryptedData")
+      expect(result).to include('HelloWorld')
+      expect(result).not_to include('EncryptedData')
       xml_hash = Hash.from_xml(result)
       expect(xml_hash['HelloWorld']).to be_present
     end
@@ -41,8 +41,8 @@ RSpec.describe ::Xml::Kit::Templatable do
         xml.HelloWorld Time.now.iso8601
       end
 
-      expect(result).to include("HelloWorld")
-      expect(result).to_not include("EncryptedData")
+      expect(result).to include('HelloWorld')
+      expect(result).not_to include('EncryptedData')
       xml_hash = Hash.from_xml(result)
       expect(xml_hash['HelloWorld']).to be_present
     end

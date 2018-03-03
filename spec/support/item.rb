@@ -13,7 +13,7 @@ class Item
   end
 
   def template_path
-    current_path = File.expand_path(File.dirname(__FILE__))
-    File.join(current_path, "../fixtures/item.builder")
+    current_path = __dir__
+    File.join(current_path, '../fixtures/item.builder')
   end
 end

@@ -3,8 +3,8 @@ module Xml
     # {include:file:spec/xml/certificate_spec.rb}
     class Certificate
       BASE64_FORMAT = %r(\A([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?\Z)
-      BEGIN_CERT=/-----BEGIN CERTIFICATE-----/
-      END_CERT=/-----END CERTIFICATE-----/
+      BEGIN_CERT = /-----BEGIN CERTIFICATE-----/
+      END_CERT = /-----END CERTIFICATE-----/
       # The use can be `:signing` or `:encryption`. Use `nil` for both.
       attr_reader :use
 
@@ -59,7 +59,7 @@ module Xml
       end
 
       def ==(other)
-        self.fingerprint == other.fingerprint
+        fingerprint == other.fingerprint
       end
 
       def eql?(other)
@@ -127,10 +127,10 @@ module Xml
         end
 
         def strip(value)
-          value.
-            gsub(BEGIN_CERT, '').
-            gsub(END_CERT, '').
-            gsub(/[\r\n]|\\r|\\n|\s/, "")
+          value
+            .gsub(BEGIN_CERT, '')
+            .gsub(END_CERT, '')
+            .gsub(/[\r\n]|\\r|\\n|\s/, '')
         end
       end
     end

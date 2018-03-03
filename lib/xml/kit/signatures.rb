@@ -41,7 +41,7 @@ module Xml
         signatures = new(
           key_pair: key_pair,
           signature_method: signature_method,
-          digest_method: digest_method,
+          digest_method: digest_method
         )
         yield xml, XmlSignatureTemplate.new(xml, signatures)
         signatures.complete(xml.target!)

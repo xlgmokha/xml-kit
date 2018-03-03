@@ -1,7 +1,7 @@
 module Xml
   module Kit
     class Template
-      TEMPLATES_DIR=Pathname.new(File.join(__dir__, "templates/" ))
+      TEMPLATES_DIR = Pathname.new(File.join(__dir__, 'templates/'))
 
       attr_reader :target
 
@@ -24,7 +24,7 @@ module Xml
       end
 
       def template_name
-        "#{target.class.name.split("::").last.underscore}.builder"
+        "#{target.class.name.split('::').last.underscore}.builder"
       end
 
       def template

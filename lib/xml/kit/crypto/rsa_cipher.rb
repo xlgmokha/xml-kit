@@ -2,9 +2,9 @@ module Xml
   module Kit
     module Crypto
       class RsaCipher
-        ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
+        ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5".freeze
 
-        def initialize(algorithm, key)
+        def initialize(_algorithm, key)
           @key = key
         end
 

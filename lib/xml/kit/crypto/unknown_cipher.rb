@@ -2,10 +2,9 @@ module Xml
   module Kit
     module Crypto
       class UnknownCipher
-        def initialize(algorithm, key)
-        end
+        def initialize(algorithm, key); end
 
-        def self.matches?(algorithm)
+        def self.matches?(_algorithm)
           true
         end
 

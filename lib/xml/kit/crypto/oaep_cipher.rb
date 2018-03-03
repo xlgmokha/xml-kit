@@ -4,8 +4,8 @@ module Xml
       class OaepCipher
         ALGORITHMS = {
           'http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p' => true,
-        }
-        def initialize(algorithm, key)
+        }.freeze
+        def initialize(_algorithm, key)
           @key = key
         end
 

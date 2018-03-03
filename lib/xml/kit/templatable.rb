@@ -62,7 +62,7 @@ module Xml
         @signatures ||= ::Xml::Kit::Signatures.new(
           key_pair: signing_key_pair,
           digest_method: digest_method,
-          signature_method: signature_method,
+          signature_method: signature_method
         )
       end
 

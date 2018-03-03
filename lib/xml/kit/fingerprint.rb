@@ -25,7 +25,7 @@ module Xml
       end
 
       def ==(other)
-        self.to_s == other.to_s
+        to_s == other.to_s
       end
 
       def eql?(other)
@@ -43,7 +43,7 @@ module Xml
       private
 
       def pretty_fingerprint(fingerprint)
-        fingerprint.upcase.scan(/../).join(":")
+        fingerprint.upcase.scan(/../).join(':')
       end
     end
   end

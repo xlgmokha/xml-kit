@@ -1,4 +1,4 @@
-xml.Signature "xmlns" => ::Xml::Kit::Namespaces::XMLDSIG do
+xml.Signature 'xmlns' => ::Xml::Kit::Namespaces::XMLDSIG do
   xml.SignedInfo do
     xml.CanonicalizationMethod Algorithm: ::Xml::Kit::Namespaces::CANONICALIZATION
     xml.SignatureMethod Algorithm: signature_method
@@ -8,10 +8,10 @@ xml.Signature "xmlns" => ::Xml::Kit::Namespaces::XMLDSIG do
         xml.Transform Algorithm: ::Xml::Kit::Namespaces::CANONICALIZATION
       end
       xml.DigestMethod Algorithm: digest_method
-      xml.DigestValue ""
+      xml.DigestValue ''
     end
   end
-  xml.SignatureValue ""
+  xml.SignatureValue ''
   xml.KeyInfo do
     xml.X509Data do
       xml.X509Certificate certificate.stripped

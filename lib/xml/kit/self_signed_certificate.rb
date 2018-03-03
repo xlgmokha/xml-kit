@@ -1,12 +1,12 @@
 module Xml
   module Kit
     class SelfSignedCertificate
-      SUBJECT="/C=CA/ST=AB/L=Calgary/O=XmlKit/OU=XmlKit/CN=XmlKit"
+      SUBJECT = '/C=CA/ST=AB/L=Calgary/O=XmlKit/OU=XmlKit/CN=XmlKit'.freeze
 
       def create(algorithm: 'AES-256-CBC', passphrase: nil, key_pair: OpenSSL::PKey::RSA.new(2048))
         certificate = certificate_for(key_pair.public_key)
         certificate.sign(key_pair, OpenSSL::Digest::SHA256.new)
-        [ certificate.to_pem, export(key_pair, algorithm, passphrase) ]
+        [certificate.to_pem, export(key_pair, algorithm, passphrase)]
       end
 
       private
