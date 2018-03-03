@@ -49,4 +49,20 @@ RSpec.describe ::Xml::Kit::Templatable do
       expect(xml_hash['HelloWorld']).to be_present
     end
   end
+
+  describe "#encrypt_with" do
+    it 'returns an encrypted xml' do
+      key_pair = ::Xml::Kit::KeyPair.generate(use: :encryption)
+      subject.encrypt_with(key_pair.certificate)
+
+      result = subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+        xml.HelloWorld Time.now.iso8601
+      end
+
+      expect(result).to include('EncryptedData')
+      xml_hash = Hash.from_xml(result)
+      expect(xml_hash['EncryptedData']).to be_present
+      expect(xml_hash['EncryptedData']['EncryptionMethod']).to be_present
+    end
+  end
 end

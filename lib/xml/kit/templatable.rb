@@ -53,6 +53,14 @@ module Xml
         signatures.sign_with(key_pair)
       end
 
+      # Allows you to specify which public key to use for generating an XML encrypted element.
+      #
+      # @param certificate [Xml::Kit::Certificate] the certificate containing the public key to use for encryption.
+      def encrypt_with(certificate)
+        self.encrypt = true
+        self.encryption_certificate = certificate
+      end
+
       private
 
       def sign?
