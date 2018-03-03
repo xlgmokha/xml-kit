@@ -139,4 +139,21 @@ RSpec.describe Xml::Kit::Certificate do
       expect(subject.not_before).to eql(certificate.not_before)
     end
   end
+
+  describe "#to_xml" do
+    it 'generates the correct xml' do
+      result = Hash.from_xml(subject.to_xml)
+      expect(result['KeyDescriptor']).to be_present
+      expect(result['KeyDescriptor']['use']).to eql('signing')
+      expect(result['KeyDescriptor']['KeyInfo']['xmlns']).to eql(Xml::Kit::Namespaces::XMLDSIG)
+      expect(result['KeyDescriptor']['KeyInfo']['X509Data']['X509Certificate']).to eql(subject.stripped)
+    end
+
+    it 'omits the `use` when the cert can be used for both signing and encryption' do
+      subject = described_class.new(certificate, use: nil)
+      result = Hash.from_xml(subject.to_xml)
+      expect(result['KeyDescriptor']).to be_present
+      expect(result['KeyDescriptor']['use']).to be_nil
+    end
+  end
 end

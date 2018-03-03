@@ -106,6 +106,11 @@ module Xml
         x509.not_before
       end
 
+      def to_xml(pretty: false, xml: ::Builder::XmlMarkup.new)
+        xml = ::Xml::Kit::Template.new(self).to_xml(xml: xml)
+        pretty ? Nokogiri::XML(xml).to_xml(indent: 2) : xml
+      end
+
       class << self
         def to_x509(value)
           return value if value.is_a?(OpenSSL::X509::Certificate)
