@@ -1,0 +1,92 @@
+require:
+  - rubocop/cop/internal_affairs
+  - rubocop-rspec
+
+AllCops:
+  Exclude:
+    - 'coverage/**/*'
+    - 'pkg/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+  TargetRubyVersion: 2.2
+
+Layout/ClassStructure:
+  Enabled: true
+  Categories:
+    module_inclusion:
+      - include
+      - prepend
+      - extend
+  ExpectedOrder:
+      - module_inclusion
+      - constants
+      - public_class_methods
+      - initializer
+      - instance_methods
+      - protected_methods
+      - private_methods
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Layout/IndentArray:
+  EnforcedStyle: consistent
+
+Layout/IndentHeredoc:
+  EnforcedStyle: active_support
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Lint/InterpolationCheck:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - '**/**/*.builder'
+    - '**/*.rake'
+    - '*.gemspec'
+    - 'Rakefile'
+    - 'spec/**/*.rb'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/LineLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/xml-kit.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/EachWithObject:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: 'single_quotes'
+
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 80
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 7
+
+RSpec/SubjectStub:
+  Enabled: false
