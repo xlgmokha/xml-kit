@@ -30,8 +30,10 @@ module Xml
       def decrypt_hash(hash)
         encrypted_data = hash['EncryptedData']
         symmetric_key = symmetric_key_from(encrypted_data)
-        cipher_text = Base64.decode64(encrypted_data['CipherData']['CipherValue'])
-        to_plaintext(cipher_text, symmetric_key, encrypted_data['EncryptionMethod']['Algorithm'])
+        cipher_value = encrypted_data['CipherData']['CipherValue']
+        cipher_text = Base64.decode64(cipher_value)
+        algorithm = encrypted_data['EncryptionMethod']['Algorithm']
+        to_plaintext(cipher_text, symmetric_key, algorithm)
       end
 
       # Decrypts an EncryptedData Nokogiri::XML::Element.
@@ -47,12 +49,14 @@ module Xml
 
       def symmetric_key_from(encrypted_data)
         encrypted_key = encrypted_data['KeyInfo']['EncryptedKey']
-        cipher_text = Base64.decode64(encrypted_key['CipherData']['CipherValue'])
+        cipher_value = encrypted_key['CipherData']['CipherValue']
+        cipher_text = Base64.decode64(cipher_value)
         attempts = private_keys.count
         private_keys.each do |private_key|
           begin
             attempts -= 1
-            return to_plaintext(cipher_text, private_key, encrypted_key['EncryptionMethod']['Algorithm'])
+            algorithm = encrypted_key['EncryptionMethod']['Algorithm']
+            return to_plaintext(cipher_text, private_key, algorithm)
           rescue OpenSSL::PKey::RSAError
             raise if attempts.zero?
           end
