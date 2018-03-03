@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Xml
   module Kit
     # This class is used primary for generating ID.

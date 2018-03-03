@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Xml
   module Kit
     # This generates a fingerprint for an X509 Certificate.

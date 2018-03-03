@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Xml::Kit::Document do
   describe '#valid_signature?' do
     let(:login_url) { "https://#{FFaker::Internet.domain_name}/login" }

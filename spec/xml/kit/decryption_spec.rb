@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Xml::Kit::Decryption do
   describe '#decrypt_hash' do
     let(:secret) { FFaker::Movie.title }

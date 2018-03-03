@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Xml::Kit::Fingerprint do
   describe '#sha' do
     it 'returns the SHA256' do

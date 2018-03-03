@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe ::Xml::Kit::Crypto::OaepCipher do
   let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :encryption) }
   let(:private_key) { key_pair.private_key }

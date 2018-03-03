@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe ::Xml::Kit::Templatable do
   class Item
     include ::Xml::Kit::Templatable

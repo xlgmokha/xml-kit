@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Xml::Kit::Encryption do
   describe '#to_xml' do
     [

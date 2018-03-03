@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe ::Xml::Kit::Signatures do
   let(:reference_id) { Xml::Kit::Id.generate }
 

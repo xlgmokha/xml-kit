@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'xml/kit/crypto/oaep_cipher'
 require 'xml/kit/crypto/rsa_cipher'
 require 'xml/kit/crypto/symmetric_cipher'

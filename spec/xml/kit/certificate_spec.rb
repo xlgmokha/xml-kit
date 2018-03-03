@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Xml::Kit::Certificate do
   subject { described_class.new(certificate, use: :signing) }
 

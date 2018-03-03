@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.Signature 'xmlns' => ::Xml::Kit::Namespaces::XMLDSIG do
   xml.SignedInfo do
     xml.CanonicalizationMethod Algorithm: ::Xml::Kit::Namespaces::CANONICALIZATION

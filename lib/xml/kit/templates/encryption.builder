@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.EncryptedData xmlns: ::Xml::Kit::Namespaces::XMLENC do
   xml.EncryptionMethod Algorithm: symmetric_algorithm
   xml.KeyInfo xmlns: ::Xml::Kit::Namespaces::XMLDSIG do
