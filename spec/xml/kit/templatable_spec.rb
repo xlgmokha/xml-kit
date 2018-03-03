@@ -50,7 +50,7 @@ RSpec.describe ::Xml::Kit::Templatable do
     end
   end
 
-  describe "#encrypt_with" do
+  describe '#encrypt_with' do
     it 'returns an encrypted xml' do
       key_pair = ::Xml::Kit::KeyPair.generate(use: :encryption)
       subject.encrypt_with(key_pair.certificate)
