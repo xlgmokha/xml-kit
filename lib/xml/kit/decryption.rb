@@ -47,16 +47,12 @@ module Xml
 
       private
 
-      def symmetric_key_from(encrypted_data)
-        encrypted_key = encrypted_data['KeyInfo']['EncryptedKey']
-        cipher_value = encrypted_key['CipherData']['CipherValue']
-        cipher_text = Base64.decode64(cipher_value)
-        attempts = private_keys.count
+      def symmetric_key_from(encrypted_data, attempts = private_keys.count)
+        cipher_text = Base64.decode64(encrypted_data['KeyInfo']['EncryptedKey']['CipherData']['CipherValue'])
         private_keys.each do |private_key|
           begin
             attempts -= 1
-            algorithm = encrypted_key['EncryptionMethod']['Algorithm']
-            return to_plaintext(cipher_text, private_key, algorithm)
+            return to_plaintext(cipher_text, private_key, encrypted_data['KeyInfo']['EncryptedKey']['EncryptionMethod']['Algorithm'])
           rescue OpenSSL::PKey::RSAError
             raise if attempts.zero?
           end
