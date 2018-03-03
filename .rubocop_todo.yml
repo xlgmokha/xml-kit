@@ -15,21 +15,6 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Max: 14
 
-# Offense count: 10
-# Configuration parameters: CustomTransform, IgnoreMethods.
-RSpec/FilePath:
-  Exclude:
-    - 'spec/xml/certificate_spec.rb'
-    - 'spec/xml/crypto/oaep_cipher_spec.rb'
-    - 'spec/xml/crypto/rsa_cipher_spec.rb'
-    - 'spec/xml/crypto/symmetric_cipher_spec.rb'
-    - 'spec/xml/decryption_spec.rb'
-    - 'spec/xml/document_spec.rb'
-    - 'spec/xml/encryption_spec.rb'
-    - 'spec/xml/fingerprint_spec.rb'
-    - 'spec/xml/signatures_spec.rb'
-    - 'spec/xml/templatable_spec.rb'
-
 # Offense count: 1
 Style/DoubleNegation:
   Exclude:
