@@ -9,7 +9,7 @@ RSpec.describe Xml::Kit::KeyPair do
     certificate
   end
   let(:key) { OpenSSL::PKey::RSA.new(2048) }
-  let(:passphrase) { "secret" }
+  let(:passphrase) { 'secret' }
 
   it 'ignores empty passphrases' do
     expect do

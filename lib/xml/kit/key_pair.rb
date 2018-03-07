@@ -9,11 +9,12 @@ module Xml
 
       def initialize(certificate, private_key, passphrase, use)
         @certificate = ::Xml::Kit::Certificate.new(certificate, use: use)
-        if passphrase.present?
-          @private_key = OpenSSL::PKey::RSA.new(private_key, passphrase)
-        else
-          @private_key = OpenSSL::PKey::RSA.new(private_key)
-        end
+        @private_key =
+          if passphrase.present?
+            OpenSSL::PKey::RSA.new(private_key, passphrase)
+          else
+            OpenSSL::PKey::RSA.new(private_key)
+          end
         @public_key = @private_key.public_key
       end
 
