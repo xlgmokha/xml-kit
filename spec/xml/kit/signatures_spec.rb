@@ -2,14 +2,10 @@
 
 RSpec.describe ::Xml::Kit::Signatures do
   let(:reference_id) { Xml::Kit::Id.generate }
+  let(:options) { { 'xmlns:samlp' => 'urn:oasis:names:tc:SAML:2.0:protocol', 'xmlns:saml' => 'urn:oasis:names:tc:SAML:2.0:assertion', ID: reference_id } }
+  let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :signing) }
 
   it 'generates a signature' do
-    options = {
-      'xmlns:samlp' => 'urn:oasis:names:tc:SAML:2.0:protocol',
-      'xmlns:saml' => 'urn:oasis:names:tc:SAML:2.0:assertion',
-      ID: reference_id,
-    }
-    key_pair = ::Xml::Kit::KeyPair.generate(use: :signing)
     signed_xml = described_class.sign(key_pair: key_pair) do |xml, signature|
       xml.tag!('samlp:AuthnRequest', options) do
         signature.template(reference_id)
@@ -46,5 +42,21 @@ RSpec.describe ::Xml::Kit::Signatures do
     result = Hash.from_xml(signed_xml)
     expect(result['AuthnRequest']).to be_present
     expect(result['AuthnRequest']['Signature']).to be_nil
+  end
+
+  it 'produces a valid signature' do
+    result = described_class.sign(key_pair: key_pair) do |xml, signature|
+      xml.tag!('saml:Assertion', options) do
+        signature.template(reference_id)
+        xml.tag! 'saml:Subject' do
+          xml.NameID Format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'
+        end
+      end
+    end
+
+    node = Nokogiri::XML(result).at_xpath('//ds:Signature', { ds: ::Xml::Kit::Namespaces::XMLDSIG })
+    dsignature = Xmldsig::Signature.new(node, 'ID=$uri or @Id')
+    expect(dsignature.valid?(key_pair.certificate.x509)).to be_truthy
+    expect(dsignature.errors).to be_empty
   end
 end
