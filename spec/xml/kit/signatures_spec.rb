@@ -54,9 +54,9 @@ RSpec.describe ::Xml::Kit::Signatures do
       end
     end
 
-    node = Nokogiri::XML(result).at_xpath('//ds:Signature', { ds: ::Xml::Kit::Namespaces::XMLDSIG })
+    node = Nokogiri::XML(result).at_xpath('//ds:Signature', ds: ::Xml::Kit::Namespaces::XMLDSIG)
     dsignature = Xmldsig::Signature.new(node, 'ID=$uri or @Id')
-    expect(dsignature.valid?(key_pair.certificate.x509)).to be_truthy
+    expect(dsignature).to be_valid(key_pair.certificate.x509)
     expect(dsignature.errors).to be_empty
   end
 end
