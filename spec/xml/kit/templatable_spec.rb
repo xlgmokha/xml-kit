@@ -65,4 +65,19 @@ RSpec.describe ::Xml::Kit::Templatable do
       expect(xml_hash['EncryptedData']['EncryptionMethod']).to be_present
     end
   end
+
+  describe "#to_xml" do
+    context "when generating a signed document" do
+      let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :signing) }
+
+      it 'produces a valid signature' do
+        subject.sign_with(key_pair)
+        result = subject.to_xml
+        node = Nokogiri::XML(result).at_xpath('//ds:Signature', { ds: ::Xml::Kit::Namespaces::XMLDSIG })
+        dsignature = Xmldsig::Signature.new(node, 'ID=$uri or @Id')
+        expect(dsignature.valid?(key_pair.certificate.x509)).to be_truthy
+        expect(dsignature.errors).to be_empty
+      end
+    end
+  end
 end
