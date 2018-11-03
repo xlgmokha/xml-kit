@@ -102,15 +102,22 @@ RSpec.describe Xml::Kit::Certificate do
     subject { described_class.new(certificate, use: :signing) }
 
     let(:certificate) { OpenSSL::X509::Certificate.new }
+    let(:private_key) { OpenSSL::PKey::RSA.new(2048) }
 
     context 'when the current time is within the active window' do
       before do
+        certificate.public_key = private_key.public_key
         certificate.not_before = 1.minute.ago
         certificate.not_after = 10.minutes.from_now
+        certificate.sign(private_key, OpenSSL::Digest::SHA256.new)
       end
 
-      it 'is active' do
-        expect(subject).to be_active(Time.now)
+      specify { expect(subject).to be_active(Time.now) }
+
+      context "when reading an x509 pem" do
+        subject { described_class.new(certificate.to_pem, use: :signing) }
+
+        specify { expect(subject).to be_active(Time.now) }
       end
     end
 
@@ -120,9 +127,7 @@ RSpec.describe Xml::Kit::Certificate do
         certificate.not_after = 10.minutes.from_now
       end
 
-      it 'is not active' do
-        expect(subject).not_to be_active(Time.now)
-      end
+      specify { expect(subject).not_to be_active(Time.now) }
     end
   end
 
