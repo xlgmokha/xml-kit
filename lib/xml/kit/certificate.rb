@@ -4,9 +4,9 @@ module Xml
   module Kit
     # {include:file:spec/xml/certificate_spec.rb}
     class Certificate
-      BASE64_FORMAT = %r(\A([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?\Z)
-      BEGIN_CERT = /-----BEGIN CERTIFICATE-----/
-      END_CERT = /-----END CERTIFICATE-----/
+      BASE64_FORMAT = %r(\A([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?\Z).freeze
+      BEGIN_CERT = /-----BEGIN CERTIFICATE-----/.freeze
+      END_CERT = /-----END CERTIFICATE-----/.freeze
       # The use can be `:signing` or `:encryption`. Use `nil` for both.
       attr_reader :use
 
@@ -29,6 +29,7 @@ module Xml
       # @return [Boolean] true or false.
       def for?(use)
         return true if self.use.nil?
+
         self.use == use.to_sym
       end
 

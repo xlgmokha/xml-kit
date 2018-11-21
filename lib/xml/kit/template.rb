@@ -22,6 +22,7 @@ module Xml
 
       def template_path
         return target.template_path if target.respond_to?(:template_path)
+
         TEMPLATES_DIR.join(template_name)
       end
 
