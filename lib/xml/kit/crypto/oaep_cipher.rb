@@ -4,7 +4,7 @@ module Xml
   module Kit
     module Crypto
       class OaepCipher
-        ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}rsa-oaep-mgf1p"
+        ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}rsa-oaep-mgf1p".freeze
         ALGORITHMS = {
           ALGORITHM => true
         }.freeze

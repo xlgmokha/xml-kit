@@ -114,7 +114,7 @@ RSpec.describe Xml::Kit::Certificate do
 
       specify { expect(subject).to be_active(Time.now) }
 
-      context "when reading an x509 pem" do
+      context 'when reading an x509 pem' do
         subject { described_class.new(certificate.to_pem, use: :signing) }
 
         specify { expect(subject).to be_active(Time.now) }
@@ -131,7 +131,7 @@ RSpec.describe Xml::Kit::Certificate do
 
       specify { expect(subject).not_to be_active(Time.now) }
 
-      context "when reading an x509 pem" do
+      context 'when reading an x509 pem' do
         subject { described_class.new(certificate.to_pem, use: :signing) }
 
         specify { expect(subject).not_to be_active(Time.now) }
@@ -148,7 +148,7 @@ RSpec.describe Xml::Kit::Certificate do
 
       specify { expect(subject).not_to be_active(Time.now) }
 
-      context "when reading an x509 pem" do
+      context 'when reading an x509 pem' do
         subject { described_class.new(certificate.to_pem, use: :signing) }
 
         specify { expect(subject).not_to be_active(Time.now) }
