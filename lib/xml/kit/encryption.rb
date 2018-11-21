@@ -18,7 +18,8 @@ module Xml
         @symmetric_cipher_value = Base64.encode64(symmetric_cipher.encrypt(raw_xml)).delete("\n")
 
         @asymmetric_algorithm = asymmetric_algorithm
-        @asymmetric_cipher_value = Base64.encode64(public_key.public_encrypt(symmetric_cipher.key)).delete("\n")
+        cipher = Crypto.cipher_for(asymmetric_algorithm, public_key)
+        @asymmetric_cipher_value = Base64.encode64(cipher.encrypt(symmetric_cipher.key)).delete("\n")
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)

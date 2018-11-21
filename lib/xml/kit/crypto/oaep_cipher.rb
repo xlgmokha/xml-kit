@@ -4,8 +4,9 @@ module Xml
   module Kit
     module Crypto
       class OaepCipher
+        ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}rsa-oaep-mgf1p"
         ALGORITHMS = {
-          'http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p' => true,
+          ALGORITHM => true
         }.freeze
         def initialize(_algorithm, key)
           @key = key
