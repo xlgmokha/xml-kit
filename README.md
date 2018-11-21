@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/xml-kit.svg)](https://rubygems.org/gems/xml-kit)
 [![Code Climate](https://codeclimate.com/github/saml-kit/xml-kit.svg)](https://codeclimate.com/github/saml-kit/xml-kit)
-[![Build Status](https://travis-ci.org/saml-kit/xml-kit.svg)](https://travis-ci.org/saml-kit/xml-kit)
+[![Build Status](https://travis-ci.org/saml-kit/xml-kit.svg?branch=master)](https://travis-ci.org/saml-kit/xml-kit)
 [![Security](https://hakiri.io/github/saml-kit/xml-kit/master.svg)](https://hakiri.io/github/saml-kit/xml-kit/master)
 
 Xml::Kit is a toolkit for working with XML. It supports adding [XML
