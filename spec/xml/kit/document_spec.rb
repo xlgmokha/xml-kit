@@ -2,34 +2,43 @@
 
 RSpec.describe Xml::Kit::Document do
   describe '#valid_signature?' do
-    let(:login_url) { "https://#{FFaker::Internet.domain_name}/login" }
-    let(:logout_url) { "https://#{FFaker::Internet.domain_name}/logout" }
     let(:signed_xml) { Item.new.to_xml }
 
-    it 'returns true, when the digest and signature is valid' do
-      expect(described_class.new(signed_xml)).to be_valid
+    context 'when the signature is valid' do
+      subject { described_class.new(signed_xml) }
+
+      specify { expect(subject).to be_valid }
     end
 
-    it 'returns false, when the SHA1 digest is not valid' do
-      subject = described_class.new(signed_xml.gsub('Item', 'uhoh'))
-      expect(subject).not_to be_valid
-      expect(subject.errors[:digest_value]).to be_present
+    context 'when the SHA1 digest is not valid' do
+      subject { described_class.new(signed_xml.gsub('Item', 'uhoh')) }
+
+      before { subject.valid? }
+
+      specify { expect(subject).not_to be_valid }
+      specify { expect(subject.errors[:digest_value]).to be_present }
     end
 
-    it 'is invalid when digest is incorrect' do
-      old_digest = Hash.from_xml(signed_xml)['Item']['Signature']['SignedInfo']['Reference']['DigestValue']
+    context 'when the digest is incorrect' do
+      subject { described_class.new(signed_xml.gsub(old_digest, 'sabotage')) }
 
-      subject = described_class.new(signed_xml.gsub(old_digest, 'sabotage'))
-      expect(subject).not_to be_valid
-      expect(subject.errors[:digest_value]).to be_present
+      let(:old_digest) { Hash.from_xml(signed_xml)['Item']['Signature']['SignedInfo']['Reference']['DigestValue'] }
+
+      before { subject.valid? }
+
+      specify { expect(subject).not_to be_valid }
+      specify { expect(subject.errors[:digest_value]).to be_present }
     end
 
-    it 'returns false, when the signature is invalid' do
-      old_signature = Hash.from_xml(signed_xml)['Item']['Signature']['SignatureValue']
-      signed_xml.gsub!(old_signature, 'sabotage')
-      subject = described_class.new(signed_xml)
-      expect(subject).not_to be_valid
-      expect(subject.errors[:signature]).to be_present
+    context 'when the signature is invalid' do
+      subject { described_class.new(signed_xml.gsub(old_signature, 'sabotage')) }
+
+      let(:old_signature) { Hash.from_xml(signed_xml)['Item']['Signature']['SignatureValue'] }
+
+      before { subject.valid? }
+
+      specify { expect(subject).not_to be_valid }
+      specify { expect(subject.errors[:signature]).to be_present }
     end
 
     context 'when the certificate is expired' do
@@ -48,7 +57,7 @@ RSpec.describe Xml::Kit::Document do
         expired_certificate.sign(private_key, digest_algorithm)
       end
 
-      it 'is invalid' do
+      specify do
         certificate = ::Xml::Kit::Certificate.new(expired_certificate)
         item.sign_with(certificate.to_key_pair(private_key))
         subject = described_class.new(item.to_xml)

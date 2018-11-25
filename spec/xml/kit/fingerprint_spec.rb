@@ -2,19 +2,17 @@
 
 RSpec.describe Xml::Kit::Fingerprint do
   describe '#sha' do
-    it 'returns the SHA256' do
-      certificate, = generate_key_pair('password')
-      x509 = OpenSSL::X509::Certificate.new(certificate)
-      sha256 = OpenSSL::Digest::SHA256.new.hexdigest(x509.to_der).upcase.scan(/../).join(':')
+    let(:key_pair) { generate_key_pair('password') }
+    let(:certificate) { key_pair[0] }
+    let(:x509) { OpenSSL::X509::Certificate.new(certificate) }
 
+    it 'returns the SHA256' do
+      sha256 = OpenSSL::Digest::SHA256.new.hexdigest(x509.to_der).upcase.scan(/../).join(':')
       expect(described_class.new(certificate).algorithm(OpenSSL::Digest::SHA256)).to eql(sha256)
     end
 
     it 'returns the SHA1' do
-      certificate, = generate_key_pair('password')
-      x509 = OpenSSL::X509::Certificate.new(certificate)
       sha1 = OpenSSL::Digest::SHA1.new.hexdigest(x509.to_der).upcase.scan(/../).join(':')
-
       expect(described_class.new(certificate).algorithm(OpenSSL::Digest::SHA1)).to eql(sha1)
     end
   end
