@@ -46,10 +46,14 @@ module Xml
         end
 
         def decrypt_aes(cipher_text)
-          size = ALGORITHMS[algorithm].split('-')[1].to_i
-          aes = Xmlenc::Algorithms::AESCBC.new(size)
-          aes.setup(@key)
-          aes.decrypt(cipher_text)
+          cipher.decrypt
+          cipher.padding = 0
+          cipher.key = @key
+          cipher.iv = cipher_text[0...cipher.iv_len]
+          result = cipher.update(cipher_text[cipher.iv_len..-1]) << cipher.final
+
+          padding_size = result.last.unpack('c').first
+          result[0...-padding_size]
         end
 
         def cipher
