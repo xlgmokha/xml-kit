@@ -5,11 +5,12 @@ module Xml
     module Crypto
       class SymmetricCipher
         DEFAULT_ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc".freeze
+        TRIPLE_DES_ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}tripledes-cbc".freeze
         ALGORITHMS = {
-          "#{::Xml::Kit::Namespaces::XMLENC}tripledes-cbc" => 'DES-EDE3-CBC',
+          TRIPLE_DES_ALGORITHM => 'DES-EDE3-CBC',
           "#{::Xml::Kit::Namespaces::XMLENC}aes128-cbc" => 'AES-128-CBC',
           "#{::Xml::Kit::Namespaces::XMLENC}aes192-cbc" => 'AES-192-CBC',
-          "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc" => 'AES-256-CBC',
+          DEFAULT_ALGORITHM => 'AES-256-CBC',
         }.freeze
 
         attr_reader :key
@@ -31,18 +32,32 @@ module Xml
 
         def decrypt(cipher_text)
           cipher.decrypt
-          iv = cipher_text[0..cipher.iv_len - 1]
-          data = cipher_text[cipher.iv_len..-1]
-          # cipher.padding = 0
           cipher.key = @key
-          cipher.iv = iv
-          cipher.update(data) + cipher.final
+          cipher.iv = cipher_text[0...cipher.iv_len]
+
+          return decrypt_des(cipher, cipher_text) if triple_des?
+
+          decrypt_aes(cipher, cipher_text)
         end
 
         private
 
+        def decrypt_des(cipher, cipher_text)
+          cipher.update(cipher_text[cipher.iv_len..-1]) << cipher.final
+        end
+
+        def decrypt_aes(cipher, cipher_text)
+          cipher.padding = 0
+          result = cipher.update(cipher_text[cipher.iv_len..-1]) << cipher.final
+          result[0...-result.last.unpack('c').first]
+        end
+
         def cipher
           @cipher ||= OpenSSL::Cipher.new(ALGORITHMS[@algorithm])
+        end
+
+        def triple_des?
+          @algorithm == TRIPLE_DES_ALGORITHM
         end
       end
     end
