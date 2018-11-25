@@ -11,6 +11,7 @@ require 'openssl'
 require 'pathname'
 require 'tilt'
 require 'xmldsig'
+require 'xmlenc'
 
 require 'xml/kit/namespaces'
 
