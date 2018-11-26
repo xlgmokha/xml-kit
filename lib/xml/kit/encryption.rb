@@ -16,15 +16,11 @@ module Xml
       )
         @symmetric_algorithm = symmetric_algorithm
         symmetric_cipher = symmetric(symmetric_algorithm)
-        @symmetric_cipher_value = Base64.strict_encode64(
-          symmetric_cipher.encrypt(raw_xml)
-        )
+        @symmetric_cipher_value = Base64.strict_encode64(symmetric_cipher.encrypt(raw_xml))
 
         @asymmetric_algorithm = asymmetric_algorithm
         asymmetric_cipher = asymmetric(asymmetric_algorithm, public_key)
-        @asymmetric_cipher_value = Base64.strict_encode64(
-          asymmetric_cipher.encrypt(symmetric_cipher.key)
-        )
+        @asymmetric_cipher_value = Base64.strict_encode64(asymmetric_cipher.encrypt(symmetric_cipher.key))
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)

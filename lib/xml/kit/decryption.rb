@@ -7,7 +7,7 @@ module Xml
       # The list of private keys to use to attempt to decrypt the document.
       attr_reader :cipher_registry, :private_keys
 
-      def initialize(private_keys:, cipher_registry: Crypto)
+      def initialize(private_keys:, cipher_registry: ::Xml::Kit::Crypto)
         @private_keys = private_keys
         @cipher_registry = cipher_registry
       end
