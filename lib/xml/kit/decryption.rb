@@ -63,8 +63,8 @@ module Xml
         raise DecryptionError, private_keys
       end
 
-      def to_plaintext(cipher_text, symmetric_key, algorithm)
-        cipher_registry.cipher_for(algorithm, symmetric_key).decrypt(cipher_text)
+      def to_plaintext(cipher_text, private_key, algorithm)
+        cipher_registry.cipher_for(algorithm, private_key).decrypt(cipher_text)
       end
     end
   end
