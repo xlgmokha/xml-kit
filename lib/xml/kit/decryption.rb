@@ -5,10 +5,11 @@ module Xml
     # {include:file:spec/saml/xml_decryption_spec.rb}
     class Decryption
       # The list of private keys to use to attempt to decrypt the document.
-      attr_reader :private_keys
+      attr_reader :cipher_registry, :private_keys
 
-      def initialize(private_keys:)
+      def initialize(private_keys:, cipher_registry: Crypto)
         @private_keys = private_keys
+        @cipher_registry = cipher_registry
       end
 
       # Decrypts an EncryptedData section of an XML document.
@@ -63,7 +64,7 @@ module Xml
       end
 
       def to_plaintext(cipher_text, symmetric_key, algorithm)
-        Crypto.cipher_for(algorithm, symmetric_key).decrypt(cipher_text)
+        cipher_registry.cipher_for(algorithm, symmetric_key).decrypt(cipher_text)
       end
     end
   end

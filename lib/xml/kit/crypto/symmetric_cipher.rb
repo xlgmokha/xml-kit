@@ -5,19 +5,19 @@ module Xml
     module Crypto
       class SymmetricCipher
         DEFAULT_ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc".freeze
-        TRIPLE_DES_ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}tripledes-cbc".freeze
         ALGORITHMS = {
-          TRIPLE_DES_ALGORITHM => 'DES-EDE3-CBC',
+          "#{::Xml::Kit::Namespaces::XMLENC}tripledes-cbc" => 'DES-EDE3-CBC',
           "#{::Xml::Kit::Namespaces::XMLENC}aes128-cbc" => 'AES-128-CBC',
           "#{::Xml::Kit::Namespaces::XMLENC}aes192-cbc" => 'AES-192-CBC',
-          DEFAULT_ALGORITHM => 'AES-256-CBC',
+          "#{::Xml::Kit::Namespaces::XMLENC}aes256-cbc" => 'AES-256-CBC',
         }.freeze
 
-        attr_reader :algorithm, :key
+        attr_reader :algorithm, :key, :padding
 
-        def initialize(algorithm, key = nil)
+        def initialize(algorithm, key = nil, padding = nil)
           @algorithm = algorithm
           @key = key || cipher.random_key
+          @padding = padding
         end
 
         def self.matches?(algorithm)
@@ -31,37 +31,26 @@ module Xml
         end
 
         def decrypt(cipher_text)
-          return decrypt_des(cipher_text) if triple_des?
+          iv = cipher_text[0...cipher.iv_len]
+          data = cipher_text[cipher.iv_len..-1]
 
-          decrypt_aes(cipher_text)
+          default_decrypt(iv, data)
+        end
+
+        protected
+
+        def default_decrypt(initialization_vector, data)
+          cipher.decrypt
+          cipher.padding = padding unless padding.nil?
+          cipher.key = @key
+          cipher.iv = initialization_vector
+          cipher.update(data) << cipher.final
         end
 
         private
 
-        def decrypt_des(cipher_text)
-          cipher.decrypt
-          cipher.key = @key
-          cipher.iv = cipher_text[0...cipher.iv_len]
-          cipher.update(cipher_text[cipher.iv_len..-1]) << cipher.final
-        end
-
-        def decrypt_aes(cipher_text)
-          cipher.decrypt
-          cipher.padding = 0
-          cipher.key = @key
-          cipher.iv = cipher_text[0...cipher.iv_len]
-          result = cipher.update(cipher_text[cipher.iv_len..-1]) << cipher.final
-
-          padding_size = result.last.unpack('c').first
-          result[0...-padding_size]
-        end
-
         def cipher
           @cipher ||= OpenSSL::Cipher.new(ALGORITHMS[algorithm])
-        end
-
-        def triple_des?
-          algorithm == TRIPLE_DES_ALGORITHM
         end
       end
     end
