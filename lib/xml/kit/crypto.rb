@@ -14,6 +14,20 @@ module Xml
       def self.cipher_for(algorithm, key)
         CIPHERS.find { |x| x.matches?(algorithm) }.new(algorithm, key)
       end
+
+      def self.cipher_registry(&block)
+        BlockRegistry.new(&block)
+      end
+
+      class BlockRegistry
+        def initialize(&factory)
+          @factory = factory
+        end
+
+        def cipher_for(algorithm, key)
+          @factory.call(algorithm, key)
+        end
+      end
     end
   end
 end
