@@ -25,9 +25,6 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
     end
   end
 
-# Some of the ciphers do not have large keys and others have security implications if not used cor-
-# rectly.  All the block ciphers normally use PKCS#5 padding, also known as standard block padding.  If
-# padding is disabled, the input data must be a multiple of the cipher block length.
   describe "decrypting something encrypted with the OpenSSL CLI" do
     subject { described_class.new("#{::Xml::Kit::Namespaces::XMLENC}#{algorithm}", key) }
 
