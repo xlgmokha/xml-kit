@@ -8,6 +8,7 @@ require 'bundler/setup'
 require 'xml/kit'
 require 'ffaker'
 require 'active_support/core_ext/hash/conversions'
+require 'tempfile'
 
 Xml::Kit.logger.level = Logger::FATAL
 
