@@ -34,7 +34,6 @@ module Xml
           iv_len = cipher.iv_len
           iv = cipher_text[0...iv_len]
           data = cipher_text[iv_len..-1]
-
           default_decrypt(iv, data)
         end
 
