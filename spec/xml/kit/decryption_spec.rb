@@ -191,7 +191,7 @@ RSpec.describe Xml::Kit::Decryption do
       end
 
       specify do
-        expect(subject.decrypt_node(encrypted_node).to_s).to eql('<saml:nameid format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress">test@onelogin.com</saml:nameid>')
+        expect(subject.decrypt_node(encrypted_node).to_s).to eql('<saml:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress">test@onelogin.com</saml:NameID>')
       end
     end
   end
