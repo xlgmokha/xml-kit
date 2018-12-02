@@ -1,34 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
-  def execute_shell(command)
-    puts command.inspect
-    raise "command failed: #{command}" unless system(command)
-  end
-  let(:key_size) do
-    hash = Hash.new(32 / 2)
-    hash['aes128-cbc'] = 16 / 2
-    hash['aes192-cbc'] = 24 / 2
-    hash['tripledes-cbc'] = 24 / 2
-    hash
-  end
-
-  [
-    'tripledes-cbc',
-    'aes128-cbc',
-    'aes192-cbc',
-    'aes256-cbc',
-  ].each do |algorithm|
-    describe algorithm do
-      subject { described_class.new("#{::Xml::Kit::Namespaces::XMLENC}#{algorithm}", key) }
-
-      let(:key) { SecureRandom.hex(key_size[algorithm]) }
-      let(:uuid) { SecureRandom.uuid }
-
-      specify { expect(subject.decrypt(subject.encrypt(uuid))).to eql(uuid) }
-    end
-  end
-
   [
     ['tripledes-cbc', 192],
     ['aes128-cbc', 128],
@@ -41,6 +13,14 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
       let(:bytes_length) { bit_length / 8 }
       let(:key) { SecureRandom.random_bytes(bytes_length) }
       let(:iv) { SecureRandom.random_bytes(bytes_length) }
+
+      describe 'encrypting and decrypting' do
+        subject { described_class.new(xml_algorithm, key) }
+
+        let(:uuid) { SecureRandom.uuid }
+
+        specify { expect(subject.decrypt(subject.encrypt(uuid))).to eql(uuid) }
+      end
 
       describe "decrypting #{algorithm} encrypted with the OpenSSL CLI" do
         subject { described_class.new(xml_algorithm, key, 0) }
