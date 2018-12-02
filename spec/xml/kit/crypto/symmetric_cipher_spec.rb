@@ -29,31 +29,41 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
     end
   end
 
-  describe 'decrypting something encrypted with the OpenSSL CLI' do
-    subject { described_class.new("#{::Xml::Kit::Namespaces::XMLENC}aes128-cbc", key, 0) }
+  [
+    ['tripledes-cbc', 192],
+    ['aes128-cbc', 128],
+    ['aes192-cbc', 192],
+    ['aes256-cbc', 256],
+  ].each do |(algorithm, bit_length)|
+    describe "decrypting #{algorithm} encrypted with the OpenSSL CLI" do
+      subject { described_class.new(xml_algorithm, key, 0) }
 
-    let(:encrypted_file) { Tempfile.new('aes-128-cbc').path }
-    let(:original_file) { Tempfile.new('aes-128-cbc-original').path }
-    let(:key) { SecureRandom.random_bytes(bytes_length) }
-    let(:iv) { SecureRandom.random_bytes(bytes_length) }
-    let(:bytes_length) { 128 / 8 }
-    let(:secret) { SecureRandom.hex }
-    let(:data) { "#{iv}#{secret}".strip }
+      let(:xml_algorithm) { "#{::Xml::Kit::Namespaces::XMLENC}#{algorithm}" }
+      let(:openssl_algorithm) { Xml::Kit::Crypto::SymmetricCipher::ALGORITHMS[xml_algorithm] }
 
-    before do
-      IO.write(original_file, data, encoding: Encoding::ASCII_8BIT)
-      execute_shell([
-        'openssl enc -aes-128-cbc -p -A -nosalt',
-        "-in #{original_file}",
-        "-out #{encrypted_file}",
-        "-K #{key.unpack('H*')[0].upcase}",
-        "-iv #{iv.unpack('H*')[0].upcase}"
-      ].join(' '))
-    end
+      let(:encrypted_file) { Tempfile.new(algorithm).path }
+      let(:original_file) { Tempfile.new("#{algorithm}-original").path }
+      let(:key) { SecureRandom.random_bytes(bytes_length) }
+      let(:iv) { SecureRandom.random_bytes(bytes_length) }
+      let(:bytes_length) { bit_length / 8 }
+      let(:secret) { SecureRandom.hex }
+      let(:data) { "#{iv}#{secret}".strip }
 
-    specify do
-      cipher_text = IO.read(encrypted_file, encoding: Encoding::ASCII_8BIT)
-      expect(subject.decrypt(cipher_text)).to start_with(secret)
+      before do
+        IO.write(original_file, data, encoding: Encoding::ASCII_8BIT)
+        execute_shell([
+          "openssl enc -#{openssl_algorithm} -p -A -nosalt",
+          "-in #{original_file}",
+          "-out #{encrypted_file}",
+          "-K #{key.unpack('H*')[0].upcase}",
+          "-iv #{iv.unpack('H*')[0].upcase}"
+        ].join(' '))
+      end
+
+      specify do
+        cipher_text = IO.read(encrypted_file, encoding: Encoding::ASCII_8BIT)
+        expect(subject.decrypt(cipher_text)).to include(secret)
+      end
     end
   end
 
