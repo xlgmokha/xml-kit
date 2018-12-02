@@ -51,12 +51,11 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
         subject { described_class.new(xml_algorithm, key) }
 
         let(:encrypted_file) { Tempfile.new(algorithm).path }
-        let(:original_file) { __FILE__ }
         let(:decrypted_file) { Tempfile.new("#{algorithm}-decrypted").path }
-        let(:original_content) { IO.read(original_file) }
+        let(:secret) { SecureRandom.hex }
 
         before do
-          IO.write(encrypted_file, subject.encrypt(IO.read(original_file)))
+          IO.write(encrypted_file, subject.encrypt(secret))
           execute_shell([
             "openssl enc -#{openssl_algorithm} -p -d -nosalt",
             "-in #{encrypted_file}",
@@ -66,7 +65,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
           ].join(' '))
         end
 
-        specify { expect(IO.read(decrypted_file)).to end_with(original_content) }
+        specify { expect(IO.read(decrypted_file)).to end_with(secret) }
       end
     end
   end
