@@ -11,10 +11,8 @@ RSpec.describe Xml::Kit::KeyPair do
   let(:key) { OpenSSL::PKey::RSA.new(2048) }
   let(:passphrase) { 'secret' }
 
-  it 'ignores empty passphrases' do
-    expect do
-      described_class.new(certificate.to_pem, key.export, '', :signing)
-    end.not_to raise_error
+  context 'when the passphrase is empty' do
+    specify { expect { described_class.new(certificate.to_pem, key.export, '', :signing) }.not_to raise_error }
   end
 
   it 'decrypts encrypted private keys' do
