@@ -5,3 +5,6 @@ module CertificateHelper
     ::Xml::Kit::SelfSignedCertificate.new.create(passphrase: passphrase)
   end
 end
+RSpec.configure do |config|
+  config.include CertificateHelper
+end
