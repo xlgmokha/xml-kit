@@ -7,71 +7,85 @@ RSpec.describe ::Xml::Kit::Templatable do
   subject { Item.new }
 
   describe '#encryption_for' do
-    it 'returns an encrypted xml' do
-      subject.encrypt = true
-      subject.encryption_certificate = ::Xml::Kit::KeyPair.generate(use: :encryption).certificate
-
-      result = subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
-        xml.HelloWorld Time.now.iso8601
+    context 'when encrypting xml' do
+      before do
+        subject.encrypt = true
+        subject.encryption_certificate = ::Xml::Kit::KeyPair.generate(use: :encryption).certificate
       end
 
-      expect(result).to include('EncryptedData')
-      xml_hash = Hash.from_xml(result)
-      expect(xml_hash['EncryptedData']).to be_present
-      expect(xml_hash['EncryptedData']['EncryptionMethod']).to be_present
+      let(:result) do
+        subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+          xml.HelloWorld Time.now.iso8601
+        end
+      end
+      let(:xml_hash) { Hash.from_xml(result) }
+
+      specify { expect(result).to include('EncryptedData') }
+      specify { expect(xml_hash['EncryptedData']).to be_present }
+      specify { expect(xml_hash['EncryptedData']['EncryptionMethod']).to be_present }
     end
 
-    it 'does not encrypt the xml, when disabled' do
-      subject.encrypt = false
-      subject.encryption_certificate = ::Xml::Kit::KeyPair.generate(use: :encryption).certificate
-
-      result = subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
-        xml.HelloWorld Time.now.iso8601
+    context 'when disabled' do
+      before do
+        subject.encrypt = false
+        subject.encryption_certificate = ::Xml::Kit::KeyPair.generate(use: :encryption).certificate
       end
 
-      expect(result).to include('HelloWorld')
-      expect(result).not_to include('EncryptedData')
-      xml_hash = Hash.from_xml(result)
-      expect(xml_hash['HelloWorld']).to be_present
+      let(:result) do
+        subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+          xml.HelloWorld Time.now.iso8601
+        end
+      end
+
+      specify { expect(result).to include('HelloWorld') }
+      specify { expect(result).not_to include('EncryptedData') }
+      specify { expect(Hash.from_xml(result)['HelloWorld']).to be_present }
     end
 
-    it 'does not encrypt the xml, when a cert is missing' do
-      subject.encrypt = true
-      subject.encryption_certificate = nil
-
-      result = subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
-        xml.HelloWorld Time.now.iso8601
+    context 'when a cert is missing' do
+      before do
+        subject.encrypt = true
+        subject.encryption_certificate = nil
       end
 
-      expect(result).to include('HelloWorld')
-      expect(result).not_to include('EncryptedData')
-      xml_hash = Hash.from_xml(result)
-      expect(xml_hash['HelloWorld']).to be_present
+      let(:result) do
+        subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+          xml.HelloWorld Time.now.iso8601
+        end
+      end
+
+      specify { expect(result).to include('HelloWorld') }
+      specify { expect(result).not_to include('EncryptedData') }
+      specify { expect(Hash.from_xml(result)['HelloWorld']).to be_present }
     end
   end
 
   describe '#encrypt_with' do
-    it 'returns an encrypted xml' do
-      key_pair = ::Xml::Kit::KeyPair.generate(use: :encryption)
+    before do
       subject.encrypt_with(key_pair.certificate)
+    end
 
-      result = subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+    let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :encryption) }
+    let(:result) do
+      subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
         xml.HelloWorld Time.now.iso8601
       end
-
-      expect(result).to include('EncryptedData')
-      xml_hash = Hash.from_xml(result)
-      expect(xml_hash['EncryptedData']).to be_present
-      expect(xml_hash['EncryptedData']['EncryptionMethod']).to be_present
     end
+
+    specify { expect(result).to include('EncryptedData') }
+    specify { expect(Hash.from_xml(result)['EncryptedData']).to be_present }
+    specify { expect(Hash.from_xml(result)['EncryptedData']['EncryptionMethod']).to be_present }
   end
 
   describe '#to_xml' do
     context 'when generating a signed document' do
       let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :signing) }
 
-      it 'produces a valid signature' do
+      before do
         subject.sign_with(key_pair)
+      end
+
+      it 'produces a valid signature' do
         result = subject.to_xml
         node = Nokogiri::XML(result).at_xpath('//ds:Signature', ds: ::Xml::Kit::Namespaces::XMLDSIG)
         dsignature = Xmldsig::Signature.new(node, 'ID=$uri or @Id')
