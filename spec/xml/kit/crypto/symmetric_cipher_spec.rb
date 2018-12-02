@@ -2,16 +2,15 @@
 
 RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
   [
-    ['aes128-cbc', 128],
-    ['aes192-cbc', 192],
-    ['aes256-cbc', 256],
-    ['tripledes-cbc', 192],
-  ].each do |(algorithm, bit_length)|
+    'aes128-cbc',
+    'aes192-cbc',
+    'aes256-cbc',
+    'tripledes-cbc',
+  ].each do |algorithm|
     describe algorithm do
       let(:xml_algorithm) { "#{::Xml::Kit::Namespaces::XMLENC}#{algorithm}" }
       let(:openssl_algorithm) { Xml::Kit::Crypto::SymmetricCipher::ALGORITHMS[xml_algorithm].downcase }
-      let(:bytes_length) { bit_length / 8 }
-      let(:key) { SecureRandom.random_bytes(bytes_length) }
+      let(:key) { SecureRandom.random_bytes(cipher.key_len) }
       let(:iv) { SecureRandom.random_bytes(cipher.iv_len) }
       let(:cipher) { OpenSSL::Cipher.new(openssl_algorithm) }
 
