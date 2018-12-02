@@ -31,10 +31,14 @@ module Xml
         end
 
         def decrypt(cipher_text)
-          default_decrypt(
+          result = default_decrypt(
             cipher_text[0...cipher.iv_len],
             cipher_text[cipher.iv_len..-1]
           )
+          return result if padding.nil?
+
+          padding_size = result.bytes.last
+          result[0...-padding_size]
         end
 
         protected

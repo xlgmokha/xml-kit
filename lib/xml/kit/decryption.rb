@@ -32,11 +32,11 @@ module Xml
       # @param hash [Hash] the XML document converted to a [Hash] using Hash.from_xml.
       def decrypt_hash(hash)
         encrypted_data = hash['EncryptedData']
-        symmetric_key = symmetric_key_from(encrypted_data)
-        cipher_value = encrypted_data['CipherData']['CipherValue']
-        cipher_text = Base64.decode64(cipher_value)
-        algorithm = encrypted_data['EncryptionMethod']['Algorithm']
-        to_plaintext(cipher_text, symmetric_key, algorithm)
+        to_plaintext(
+          Base64.decode64(encrypted_data['CipherData']['CipherValue']),
+          symmetric_key_from(encrypted_data),
+          encrypted_data['EncryptionMethod']['Algorithm']
+        )
       end
 
       # Decrypts an EncryptedData Nokogiri::XML::Element.

@@ -43,7 +43,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
 
         specify do
           cipher_text = IO.read(encrypted_file, encoding: Encoding::ASCII_8BIT)
-          expect(subject.decrypt(cipher_text)).to include(secret)
+          expect(subject.decrypt(cipher_text)).to eql(secret)
         end
       end
 
