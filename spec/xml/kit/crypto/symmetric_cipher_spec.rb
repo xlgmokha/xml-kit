@@ -9,7 +9,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
   ].each do |(algorithm, bit_length)|
     describe algorithm do
       let(:xml_algorithm) { "#{::Xml::Kit::Namespaces::XMLENC}#{algorithm}" }
-      let(:openssl_algorithm) { Xml::Kit::Crypto::SymmetricCipher::ALGORITHMS[xml_algorithm] }
+      let(:openssl_algorithm) { Xml::Kit::Crypto::SymmetricCipher::ALGORITHMS[xml_algorithm].downcase }
       let(:bytes_length) { bit_length / 8 }
       let(:key) { SecureRandom.random_bytes(bytes_length) }
       let(:iv) { SecureRandom.random_bytes(bytes_length) }
