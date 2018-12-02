@@ -2,10 +2,10 @@
 
 RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
   [
-    ['tripledes-cbc', 192],
     ['aes128-cbc', 128],
     ['aes192-cbc', 192],
     ['aes256-cbc', 256],
+    ['tripledes-cbc', 192],
   ].each do |(algorithm, bit_length)|
     describe algorithm do
       let(:xml_algorithm) { "#{::Xml::Kit::Namespaces::XMLENC}#{algorithm}" }
@@ -33,7 +33,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
         before do
           IO.write(original_file, data, encoding: Encoding::ASCII_8BIT)
           execute_shell([
-            "openssl enc -#{openssl_algorithm} -p -A -nosalt",
+            "openssl enc -#{openssl_algorithm} -p -e -A -nosalt",
             "-in #{original_file}",
             "-out #{encrypted_file}",
             "-K #{key.unpack('H*')[0].upcase}",
@@ -47,7 +47,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
         end
       end
 
-      describe "when decrypting #{algorithm} with the OpenSSL CLI" do
+      describe 'when decrypting with the OpenSSL CLI' do
         subject { described_class.new(xml_algorithm, key) }
 
         let(:encrypted_file) { Tempfile.new(algorithm).path }
