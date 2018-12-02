@@ -12,7 +12,8 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
       let(:openssl_algorithm) { Xml::Kit::Crypto::SymmetricCipher::ALGORITHMS[xml_algorithm].downcase }
       let(:bytes_length) { bit_length / 8 }
       let(:key) { SecureRandom.random_bytes(bytes_length) }
-      let(:iv) { SecureRandom.random_bytes(bytes_length) }
+      let(:iv) { SecureRandom.random_bytes(cipher.iv_len) }
+      let(:cipher) { OpenSSL::Cipher.new(openssl_algorithm) }
 
       describe 'encrypting and decrypting' do
         subject { described_class.new(xml_algorithm, key) }

@@ -5,6 +5,7 @@ require 'English'
 RSpec.configure do |config|
   config.include(Module.new do
     def execute_shell(command)
+      puts command
       puts `#{command}`
       raise "command failed (#{$CHILD_STATUS}): #{command}" unless $CHILD_STATUS.success?
     end
