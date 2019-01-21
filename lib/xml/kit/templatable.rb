@@ -18,17 +18,19 @@ module Xml
       attr_accessor :encryption_certificate
 
       # Returns the generated XML document with an XML Digital Signature and XML Encryption.
-      def to_xml(xml: ::Builder::XmlMarkup.new)
-        signatures.complete(render(self, xml: xml))
+      def to_xml(xml: ::Builder::XmlMarkup.new, pretty: false)
+        result = signatures.complete(render(self, xml: xml))
+        pretty ? Nokogiri::XML(result).to_xml(indent: 2) : result
       end
 
-      def encryption_for(xml:)
+      def encryption_for(xml:, key_info: nil)
         if encrypt?
           temp = ::Builder::XmlMarkup.new
           yield temp
           ::Xml::Kit::Encryption.new(
             signatures.complete(temp.target!),
-            encryption_certificate.public_key
+            encryption_certificate.public_key,
+            key_info: key_info
           ).to_xml(xml: xml)
         else
           yield xml

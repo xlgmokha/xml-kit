@@ -97,11 +97,18 @@ RSpec.describe ::Xml::Kit::Templatable do
     specify { expect(subject.to_xml).to match_xsd('item') }
 
     context "with the key extracted to the header" do
+      let(:xml_hash) { Hash.from_xml(subject.to_xml) }
+
       before do
         subject.template_path = './spec/fixtures/item-extracted-key.builder'
       end
 
       specify { expect(subject.to_xml).to match_xsd('item-extracted-key') }
+      specify { expect(xml_hash["Item"]["Encrypted"]["EncryptedData"]["KeyInfo"]["RetrievalMethod"]).to be_present }
+      specify { expect(xml_hash["Item"]["Encrypted"]["EncryptedData"]["KeyInfo"]["RetrievalMethod"]["xmlns"]).to eql(::Xml::Kit::Namespaces::XMLDSIG) }
+      specify { expect(xml_hash["Item"]["Encrypted"]["EncryptedData"]["KeyInfo"]["RetrievalMethod"]["URI"]).to eql("#EK") }
+      specify { expect(xml_hash["Item"]["Encrypted"]["EncryptedData"]["KeyInfo"]["RetrievalMethod"]["Type"]).to eql("http://www.w3.org/2001/04/xmlenc#EncryptedKey") }
+      specify { expect(xml_hash["Item"]["Encrypted"]["EncryptedData"]["KeyInfo"]["EncryptedKey"]).to be_nil }
     end
   end
 end

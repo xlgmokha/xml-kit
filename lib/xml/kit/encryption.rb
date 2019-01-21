@@ -7,12 +7,14 @@ module Xml
       attr_reader :asymmetric_cipher_value
       attr_reader :symmetric_algorithm
       attr_reader :symmetric_cipher_value
+      attr_reader :key_info
 
       def initialize(
         raw_xml,
         public_key,
         symmetric_algorithm: ::Xml::Kit::Crypto::SymmetricCipher::DEFAULT_ALGORITHM,
-        asymmetric_algorithm: ::Xml::Kit::Crypto::RsaCipher::ALGORITHM
+        asymmetric_algorithm: ::Xml::Kit::Crypto::RsaCipher::ALGORITHM,
+        key_info: nil
       )
         @symmetric_algorithm = symmetric_algorithm
         symmetric_cipher = symmetric(symmetric_algorithm)
@@ -21,6 +23,7 @@ module Xml
         @asymmetric_algorithm = asymmetric_algorithm
         asymmetric_cipher = asymmetric(asymmetric_algorithm, public_key)
         @asymmetric_cipher_value = Base64.strict_encode64(asymmetric_cipher.encrypt(symmetric_cipher.key))
+        @key_info = key_info
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)
