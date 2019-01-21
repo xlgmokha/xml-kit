@@ -23,11 +23,15 @@ module Xml
         @asymmetric_algorithm = asymmetric_algorithm
         asymmetric_cipher = asymmetric(asymmetric_algorithm, public_key)
         @asymmetric_cipher_value = Base64.strict_encode64(asymmetric_cipher.encrypt(symmetric_cipher.key))
-        @key_info = key_info
+        @key_info = key_info || KeyInfo.new(algorithm: asymmetric_algorithm, cipher_value: asymmetric_cipher_value)
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)
         ::Xml::Kit::Template.new(self).to_xml(xml: xml)
+      end
+
+      def render(model, options)
+        ::Xml::Kit::Template.new(model).to_xml(options)
       end
 
       private
