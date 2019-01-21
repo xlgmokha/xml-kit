@@ -94,6 +94,14 @@ RSpec.describe ::Xml::Kit::Templatable do
       end
     end
 
-    specify { expect(subject.to_xml).to match_xsd }
+    specify { expect(subject.to_xml).to match_xsd('item') }
+
+    context "with the key extracted to the header" do
+      before do
+        subject.template_path = './spec/fixtures/item-extracted-key.builder'
+      end
+
+      specify { expect(subject.to_xml).to match_xsd('item-extracted-key') }
+    end
   end
 end

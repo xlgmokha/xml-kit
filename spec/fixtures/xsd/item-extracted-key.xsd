@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema
+  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+  xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="https://www.example.org/item#"
+  targetNamespace="https://www.example.org/item#"
+  elementFormDefault="qualified"
+  version="1.0">
+  <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+  <xsd:import namespace="http://www.w3.org/2001/04/xmlenc#" schemaLocation="xenc-schema.xsd"/>
+
+  <xsd:element name="Encrypted">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="xenc:EncryptedData"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Item">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="ds:Signature" />
+        <xsd:element ref="Encrypted"/>
+      </xsd:sequence>
+      <xsd:attribute name="ID" type="xsd:string" use="optional"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
