@@ -6,7 +6,7 @@ RSpec.describe ::Xml::Kit::Templatable do
   end
   subject { Item.new }
 
-  describe '#encryption_for' do
+  describe '#encrypt_data_for' do
     context 'when encrypting xml' do
       before do
         subject.encrypt = true
@@ -14,7 +14,7 @@ RSpec.describe ::Xml::Kit::Templatable do
       end
 
       let(:result) do
-        subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+        subject.encrypt_data_for(xml: ::Builder::XmlMarkup.new) do |xml|
           xml.HelloWorld Time.now.iso8601
         end
       end
@@ -32,7 +32,7 @@ RSpec.describe ::Xml::Kit::Templatable do
       end
 
       let(:result) do
-        subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+        subject.encrypt_data_for(xml: ::Builder::XmlMarkup.new) do |xml|
           xml.HelloWorld Time.now.iso8601
         end
       end
@@ -49,7 +49,7 @@ RSpec.describe ::Xml::Kit::Templatable do
       end
 
       let(:result) do
-        subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+        subject.encrypt_data_for(xml: ::Builder::XmlMarkup.new) do |xml|
           xml.HelloWorld Time.now.iso8601
         end
       end
@@ -67,7 +67,7 @@ RSpec.describe ::Xml::Kit::Templatable do
 
     let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :encryption) }
     let(:result) do
-      subject.encryption_for(xml: ::Builder::XmlMarkup.new) do |xml|
+      subject.encrypt_data_for(xml: ::Builder::XmlMarkup.new) do |xml|
         xml.HelloWorld Time.now.iso8601
       end
     end

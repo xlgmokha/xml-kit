@@ -33,7 +33,7 @@ xml.instruct!
 xml.Item ID: id do
   signature_for reference_id: id, xml: xml
   xml.Encrypted do
-    encryption_for xml: xml do |encrypted_xml|
+    encrypt_data_for xml: xml do |encrypted_xml|
       encrypted_xml.EncryptMe do
         encrypted_xml.Secret "secret"
       end
