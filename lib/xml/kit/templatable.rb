@@ -24,11 +24,11 @@ module Xml
       end
 
       def encryption_for(xml:, key_info: nil, &block)
-        ::Xml::Kit.deprecate('encryption_for is deprecated. Use encrypted_data_for instead.')
-        encrypted_data_for(xml: xml, key_info: key_info, &block)
+        ::Xml::Kit.deprecate('encryption_for is deprecated. Use encrypt_data_for instead.')
+        encrypt_data_for(xml: xml, key_info: key_info, &block)
       end
 
-      def encrypted_data_for(xml:, key_info: nil)
+      def encrypt_data_for(xml:, key_info: nil)
         if encrypt?
           temp = ::Builder::XmlMarkup.new
           yield temp
