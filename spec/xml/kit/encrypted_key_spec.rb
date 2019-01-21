@@ -19,5 +19,6 @@ RSpec.describe ::Xml::Kit::EncryptedKey do
     specify { expect(result['EncryptedKey']['EncryptionMethod']['Algorithm']).to be_present }
     specify { expect(result['EncryptedKey']['CipherData']['CipherValue']).to be_present }
     specify { expect(private_key.private_decrypt(Base64.decode64(result['EncryptedKey']['CipherData']['CipherValue']))).to eql(symmetric_key) }
+    specify { expect(subject.to_xml).to match_xsd('xenc-schema') }
   end
 end
