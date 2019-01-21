@@ -146,7 +146,7 @@ RSpec.describe Xml::Kit::Decryption do
 
     let(:item) { Item.new }
     let(:document) { Nokogiri::XML(item.to_xml) }
-    let(:encrypted_node) { document.at_xpath('/Item/Encrypted/xmlenc:EncryptedData', 'xmlenc' => 'http://www.w3.org/2001/04/xmlenc#') }
+    let(:encrypted_node) { document.at_xpath('/x:Item/x:Encrypted/xmlenc:EncryptedData', 'xmlenc' => 'http://www.w3.org/2001/04/xmlenc#', x: 'https://www.example.org/item#') }
 
     specify { expect(subject.decrypt_node(encrypted_node).name).to eql('EncryptMe') }
     specify { expect(subject.decrypt_node(nil)).to be_nil }

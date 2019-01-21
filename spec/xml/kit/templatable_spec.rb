@@ -93,5 +93,7 @@ RSpec.describe ::Xml::Kit::Templatable do
         expect(dsignature.errors).to be_empty
       end
     end
+
+    specify { expect(subject.to_xml).to match_xsd }
   end
 end
