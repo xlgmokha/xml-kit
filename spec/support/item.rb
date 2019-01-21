@@ -4,6 +4,7 @@ class Item
   include ::Xml::Kit::Templatable
 
   attr_reader :id, :signing_key_pair, :encryption_key_pair
+  attr_accessor :template_path
 
   def initialize
     @id = ::Xml::Kit::Id.generate
@@ -12,10 +13,6 @@ class Item
     @encrypt = true
     @encryption_key_pair = ::Xml::Kit::KeyPair.generate(use: :encryption)
     @encryption_certificate = @encryption_key_pair.certificate
-  end
-
-  def template_path
-    current_path = __dir__
-    File.join(current_path, '../fixtures/item.builder')
+    @template_path = File.join(__dir__, '../fixtures/item.builder')
   end
 end
