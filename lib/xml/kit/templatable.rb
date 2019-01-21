@@ -23,6 +23,10 @@ module Xml
         pretty ? Nokogiri::XML(result).to_xml(indent: 2) : result
       end
 
+      def encrypt_key_for(xml: , id: , public_key: , key: )
+        ::Xml::Kit::EncryptedKey.new(id: id, public_key: public_key, key: key).to_xml(xml: xml)
+      end
+
       def encryption_for(xml:, key_info: nil, &block)
         ::Xml::Kit.deprecate('encryption_for is deprecated. Use encrypt_data_for instead.')
         encrypt_data_for(xml: xml, key_info: key_info, &block)

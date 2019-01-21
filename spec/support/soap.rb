@@ -3,12 +3,11 @@
 class Soap
   include ::Xml::Kit::Templatable
 
-  attr_reader :id, :signing_key_pair, :encryption_key_pair
+  attr_reader :id, :encryption_key_pair
   attr_accessor :template_path
 
   def initialize
     @id = ::Xml::Kit::Id.generate
-    @signing_key_pair = ::Xml::Kit::KeyPair.generate(use: :signing)
     @embed_signature = false
     @encrypt = true
     @encryption_key_pair = ::Xml::Kit::KeyPair.generate(use: :encryption)
