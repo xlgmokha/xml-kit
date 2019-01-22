@@ -14,6 +14,10 @@ module Xml
       end
     end
 
+    class RetrievalMethod
+      attr_accessor :uri, :type
+    end
+
     class KeyInfo
       include Templatable
       attr_reader :algorithm, :cipher_value
@@ -26,6 +30,10 @@ module Xml
 
       def key_value
         @key_value ||= KeyValue.new
+      end
+
+      def retrieval_method
+        @retrieval_method ||= RetrievalMethod.new
       end
     end
   end

@@ -37,5 +37,19 @@ RSpec.describe Xml::Kit::KeyInfo do
       specify { expect(result['KeyInfo']['KeyValue']['RSAKeyValue']['Modulus']).to eql(modulus) }
       specify { expect(result['KeyInfo']['KeyValue']['RSAKeyValue']['Exponent']).to eql(exponent) }
     end
+
+    context "with retrieval method" do
+      let(:result) { Hash.from_xml(subject.to_xml) }
+      let(:uri) { Xml::Kit::Id.generate }
+      let(:type) { "http://www.w3.org/2001/04/xmlenc#EncryptedKey" }
+
+      before do
+        subject.retrieval_method.uri = uri
+        subject.retrieval_method.type = type
+      end
+
+      specify { expect(result['KeyInfo']['RetrievalMethod']['URI']).to eql(uri) }
+      specify { expect(result['KeyInfo']['RetrievalMethod']['Type']).to eql(type) }
+    end
   end
 end
