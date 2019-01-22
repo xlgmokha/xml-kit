@@ -22,6 +22,7 @@ module Xml
       include Templatable
       attr_reader :algorithm, :cipher_value
       attr_accessor :key_name
+      attr_accessor :x509_data
 
       def initialize(algorithm:, cipher_value:)
         @algorithm = algorithm
@@ -34,6 +35,13 @@ module Xml
 
       def retrieval_method
         @retrieval_method ||= RetrievalMethod.new
+      end
+
+      def subject_key_identifier
+        ski = x509_data.extensions.find { |x| x.oid == "subjectKeyIdentifier" }&.value
+        return if ski.nil?
+
+        Base64.strict_encode64(ski)
       end
     end
   end

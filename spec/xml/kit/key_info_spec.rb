@@ -51,5 +51,19 @@ RSpec.describe Xml::Kit::KeyInfo do
       specify { expect(result['KeyInfo']['RetrievalMethod']['URI']).to eql(uri) }
       specify { expect(result['KeyInfo']['RetrievalMethod']['Type']).to eql(type) }
     end
+
+    context "with x509 data" do
+      let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :encryption) }
+      let(:x509_certificate) { key_pair.certificate.x509 }
+      let(:subject_key_identifier) { x509_certificate.extensions.find { |x| x.oid == "subjectKeyIdentifier" }.value  }
+      let(:result) { Hash.from_xml(subject.to_xml) }
+
+      before do
+        subject.x509_data = x509_certificate
+      end
+
+      specify { expect(result['KeyInfo']['X509Data']['X509SKI']).to eql(Base64.strict_encode64(subject_key_identifier)) }
+      specify { expect(result['KeyInfo']['X509Data']['X509Certificate']).to eql(key_pair.certificate.stripped) }
+    end
   end
 end
