@@ -53,6 +53,8 @@ RSpec.describe Xml::Kit::KeyInfo do
         subject.retrieval_method.type = type
       end
 
+      specify { expect(result['KeyInfo']['RetrievalMethod']).to be_present }
+      specify { expect(result['KeyInfo']['RetrievalMethod']['xmlns']).to eql(::Xml::Kit::Namespaces::XMLDSIG) }
       specify { expect(result['KeyInfo']['RetrievalMethod']['URI']).to eql(uri) }
       specify { expect(result['KeyInfo']['RetrievalMethod']['Type']).to eql(type) }
     end
