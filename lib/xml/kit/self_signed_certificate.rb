@@ -34,7 +34,7 @@ module Xml
         extension_factory = OpenSSL::X509::ExtensionFactory.new
         extension_factory.subject_certificate = certificate
         extension_factory.issuer_certificate = certificate
-        certificate.add_extension(extension_factory.create_extension("subjectKeyIdentifier", "hash", false))
+        certificate.add_extension(extension_factory.create_extension('subjectKeyIdentifier', 'hash', false))
 
         certificate
       end

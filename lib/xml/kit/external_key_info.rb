@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 module Xml
@@ -6,7 +5,7 @@ module Xml
     class ExternalKeyInfo
       attr_reader :uri, :type
 
-      def initialize(uri:, type: "http://www.w3.org/2001/04/xmlenc#EncryptedKey")
+      def initialize(uri:, type: 'http://www.w3.org/2001/04/xmlenc#EncryptedKey')
         @uri = uri
         @type = type
       end

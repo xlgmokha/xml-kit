@@ -1,6 +1,7 @@
 RSpec.describe ::Xml::Kit::EncryptedKey do
-  describe "#to_xml" do
+  describe '#to_xml' do
     subject { described_class.new(id: id, algorithm: algorithm, public_key: public_key, key: symmetric_key, key_info: key_info) }
+
     let(:algorithm) { ::Xml::Kit::Crypto::RsaCipher::ALGORITHM }
     let(:key_info) { ::Xml::Kit::KeyInfo.new }
     let(:id) { ::Xml::Kit::Id.generate }

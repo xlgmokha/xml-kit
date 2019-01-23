@@ -3,8 +3,8 @@ require 'xml/kit/templatable'
 module Xml
   module Kit
     class EncryptedKey
-      DEFAULT_ALGORITHM = ::Xml::Kit::Crypto::RsaCipher::ALGORITHM
       include ::Xml::Kit::Templatable
+      DEFAULT_ALGORITHM = ::Xml::Kit::Crypto::RsaCipher::ALGORITHM
 
       attr_reader :id, :algorithm
       attr_reader :public_key, :key

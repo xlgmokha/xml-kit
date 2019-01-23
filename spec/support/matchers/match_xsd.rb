@@ -14,4 +14,3 @@ RSpec::Matchers.define :match_xsd do |expected|
 
   diffable
 end
-
