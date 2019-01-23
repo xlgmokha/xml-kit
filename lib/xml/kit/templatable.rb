@@ -33,17 +33,15 @@ module Xml
       end
 
       def encrypt_data_for(xml:, key_info: nil)
-        if encrypt?
-          temp = ::Builder::XmlMarkup.new
-          yield temp
-          ::Xml::Kit::Encryption.new(
-            signatures.complete(temp.target!),
-            encryption_certificate.public_key,
-            key_info: key_info
-          ).to_xml(xml: xml)
-        else
-          yield xml
-        end
+        return yield xml unless encrypt?
+
+        temp = ::Builder::XmlMarkup.new
+        yield temp
+        ::Xml::Kit::Encryption.new(
+          signatures.complete(temp.target!),
+          encryption_certificate.public_key,
+          key_info: key_info
+        ).to_xml(xml: xml)
       end
 
       def render(model, options)

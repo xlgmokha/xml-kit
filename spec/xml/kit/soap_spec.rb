@@ -1,6 +1,6 @@
-RSpec.describe 'Soap Example' do
+RSpec.describe Soap do
   describe '#to_xml' do
-    subject { Soap.new }
+    subject { described_class.new }
 
     let(:result) { Hash.from_xml(subject.to_xml) }
 

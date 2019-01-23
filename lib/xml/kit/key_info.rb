@@ -33,10 +33,10 @@ module Xml
       end
 
       def subject_key_identifier
-        ski = x509_data.extensions.find { |x| x.oid == "subjectKeyIdentifier" }&.value
+        ski = x509_data.extensions.find { |x| x.oid == 'subjectKeyIdentifier' }
         return if ski.nil?
 
-        Base64.strict_encode64(ski)
+        Base64.strict_encode64(ski.value)
       end
     end
   end

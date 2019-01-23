@@ -30,13 +30,15 @@ module Xml
         certificate.public_key = public_key
         certificate.serial = 0x0
         certificate.version = 2
+        apply_ski_extension_to(certificate)
+        certificate
+      end
 
+      def apply_ski_extension_to(certificate)
         extension_factory = OpenSSL::X509::ExtensionFactory.new
         extension_factory.subject_certificate = certificate
         extension_factory.issuer_certificate = certificate
         certificate.add_extension(extension_factory.create_extension('subjectKeyIdentifier', 'hash', false))
-
-        certificate
       end
     end
   end
