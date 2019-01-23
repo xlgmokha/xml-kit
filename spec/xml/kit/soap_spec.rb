@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Soap do
   describe '#to_xml' do
     subject { described_class.new }

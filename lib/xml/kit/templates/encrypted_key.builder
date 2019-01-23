@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.EncryptedKey Id: id, xmlns: ::Xml::Kit::Namespaces::XMLENC do
   xml.EncryptionMethod Algorithm: algorithm
   render(key_info, xml: xml) if key_info

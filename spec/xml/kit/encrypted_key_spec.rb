@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe ::Xml::Kit::EncryptedKey do
   describe '#to_xml' do
     subject { described_class.new(id: id, algorithm: algorithm, public_key: public_key, key: symmetric_key, key_info: key_info) }
