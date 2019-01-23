@@ -20,8 +20,8 @@ class Soap
   end
 
   def body_key_info
-    x = ::Xml::Kit::KeyInfo.new
-    x.retrieval_method.uri = key_id
-    x
+    ::Xml::Kit::KeyInfo.new do |x|
+      x.retrieval_method.uri = key_id
+    end
   end
 end
