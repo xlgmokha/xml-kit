@@ -3,7 +3,7 @@ xml.instruct!
 xml.Envelope xmlns: "http://schemas.xmlsoap.org/soap/envelope/" do
   xml.Header do
     xml.Security mustUnderstand: '1' do
-      encrypt_key_for(xml: xml, id: body_key_info.uri, public_key: encryption_key_pair.public_key, key: SecureRandom.hex(32))
+      encrypt_key_for(xml: xml, id: key_id, public_key: encryption_key_pair.public_key, key: SecureRandom.hex(32))
       xml.BinarySecurityToken ''
     end
   end

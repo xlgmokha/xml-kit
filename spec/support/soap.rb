@@ -20,6 +20,8 @@ class Soap
   end
 
   def body_key_info
-    ::Xml::Kit::ExternalKeyInfo.new(uri: key_id)
+    x = ::Xml::Kit::KeyInfo.new
+    x.retrieval_method.uri = key_id
+    x
   end
 end

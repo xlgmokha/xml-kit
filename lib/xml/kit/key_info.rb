@@ -16,6 +16,10 @@ module Xml
 
     class RetrievalMethod
       attr_accessor :uri, :type
+
+      def initialize
+        @type = 'http://www.w3.org/2001/04/xmlenc#EncryptedKey'
+      end
     end
 
     class KeyInfo
