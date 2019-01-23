@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require 'xml/kit/templatable'
+
 module Xml
   module Kit
     # {include:file:spec/xml/certificate_spec.rb}
     class Certificate
+      include Templatable
       BASE64_FORMAT = %r(\A([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?\Z).freeze
       BEGIN_CERT = /-----BEGIN CERTIFICATE-----/.freeze
       END_CERT = /-----END CERTIFICATE-----/.freeze
@@ -109,9 +112,13 @@ module Xml
         x509.not_before
       end
 
-      def to_xml(pretty: false, xml: ::Builder::XmlMarkup.new)
-        xml = ::Xml::Kit::Template.new(self).to_xml(xml: xml)
-        pretty ? Nokogiri::XML(xml).to_xml(indent: 2) : xml
+      def key_info
+        @key_info ||=
+          begin
+            x = KeyInfo.new
+            x.x509_data = x509
+            x
+          end
       end
 
       class << self
