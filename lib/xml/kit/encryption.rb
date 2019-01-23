@@ -20,10 +20,15 @@ module Xml
         symmetric_cipher = symmetric(symmetric_algorithm)
         @symmetric_cipher_value = Base64.strict_encode64(symmetric_cipher.encrypt(raw_xml))
 
-        @asymmetric_algorithm = asymmetric_algorithm
-        asymmetric_cipher = asymmetric(asymmetric_algorithm, public_key)
-        @asymmetric_cipher_value = Base64.strict_encode64(asymmetric_cipher.encrypt(symmetric_cipher.key))
-        @key_info = key_info || KeyInfo.new(algorithm: asymmetric_algorithm, cipher_value: asymmetric_cipher_value)
+        if key_info
+          @key_info = key_info
+        else
+          @key_info = KeyInfo.new
+          @key_info.encrypted_key = EncryptedKey.new(public_key: public_key, key: symmetric_cipher.key, algorithm: asymmetric_algorithm)
+
+          @asymmetric_algorithm = asymmetric_algorithm
+          @asymmetric_cipher_value = @key_info.encrypted_key.cipher_value
+        end
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)
@@ -40,12 +45,6 @@ module Xml
         return algorithm unless algorithm.is_a?(String)
 
         ::Xml::Kit::Crypto::SymmetricCipher.new(algorithm)
-      end
-
-      def asymmetric(algorithm, public_key)
-        return algorithm unless algorithm.is_a?(String)
-
-        ::Xml::Kit::Crypto.cipher_for(algorithm, public_key)
       end
     end
   end

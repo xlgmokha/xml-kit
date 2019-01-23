@@ -6,10 +6,5 @@ xml.KeyInfo xmlns: ::Xml::Kit::Namespaces::XMLDSIG do
     xml.X509SKI subject_key_identifier
     xml.X509Certificate ::Xml::Kit::Certificate.strip(x509_data.to_pem)
   end if x509_data
-  xml.EncryptedKey xmlns: ::Xml::Kit::Namespaces::XMLENC do
-    xml.EncryptionMethod Algorithm: algorithm
-    xml.CipherData do
-      xml.CipherValue cipher_value
-    end
-  end
+  render(encrypted_key, xml: xml) if encrypted_key
 end

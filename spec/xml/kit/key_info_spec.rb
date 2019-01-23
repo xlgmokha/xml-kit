@@ -1,16 +1,22 @@
 RSpec.describe Xml::Kit::KeyInfo do
-  subject { described_class.new(algorithm: algorithm, cipher_value: cipher_value) }
-  let(:algorithm) { 'asymmetric_cipher' }
-  let(:cipher_value) { Base64.strict_encode64('asymmetric CIPHERTEXT') }
+  subject { described_class.new }
 
   describe "#to_xml" do
     context "with encrypted key" do
-
+      let(:encrypted_key) { ::Xml::Kit::EncryptedKey.new(id: id, algorithm: algorithm, public_key: public_key, key: symmetric_key) }
+      let(:algorithm) { ::Xml::Kit::Crypto::RsaCipher::ALGORITHM }
+      let(:id) { ::Xml::Kit::Id.generate }
+      let(:private_key) { OpenSSL::PKey::RSA.new(2048) }
+      let(:public_key) { private_key.public_key }
+      let(:symmetric_key) { SecureRandom.hex(32) }
       let(:result) { Hash.from_xml(subject.to_xml) }
 
-      specify { expect(result['KeyInfo']).to be_present }
+      before do
+        subject.encrypted_key = encrypted_key
+      end
+
       specify { expect(result['KeyInfo']['EncryptedKey']['EncryptionMethod']['Algorithm']).to eql(algorithm) }
-      specify { expect(result['KeyInfo']['EncryptedKey']['CipherData']['CipherValue']).to eql(cipher_value) }
+      specify { expect(private_key.private_decrypt(Base64.decode64(result['KeyInfo']['EncryptedKey']['CipherData']['CipherValue']))).to eql(symmetric_key) }
     end
 
     context "with key name" do
@@ -18,7 +24,6 @@ RSpec.describe Xml::Kit::KeyInfo do
 
       before do
         subject.key_name = "samlkey"
-        puts subject.to_xml(pretty: true)
       end
 
       specify { expect(result['KeyInfo']['KeyName']).to eql('samlkey') }

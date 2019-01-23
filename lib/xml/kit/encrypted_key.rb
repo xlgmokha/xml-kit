@@ -10,7 +10,7 @@ module Xml
       attr_reader :public_key, :key
       attr_accessor :key_info
 
-      def initialize(id:, public_key:, key:, key_info: nil, algorithm: DEFAULT_ALGORITHM)
+      def initialize(id: Id.generate, public_key:, key:, key_info: nil, algorithm: DEFAULT_ALGORITHM)
         @id = id
         @algorithm = algorithm
         @public_key = public_key
@@ -19,7 +19,16 @@ module Xml
       end
 
       def cipher_value
-        Base64.strict_encode64(public_key.public_encrypt(key))
+        asymmetric_cipher = asymmetric(algorithm, public_key)
+        Base64.strict_encode64(asymmetric_cipher.encrypt(key))
+      end
+
+      private
+
+      def asymmetric(algorithm, public_key)
+        return algorithm unless algorithm.is_a?(String)
+
+        ::Xml::Kit::Crypto.cipher_for(algorithm, public_key)
       end
     end
   end

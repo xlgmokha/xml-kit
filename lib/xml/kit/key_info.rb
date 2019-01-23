@@ -20,14 +20,9 @@ module Xml
 
     class KeyInfo
       include Templatable
-      attr_reader :algorithm, :cipher_value
       attr_accessor :key_name
       attr_accessor :x509_data
-
-      def initialize(algorithm:, cipher_value:)
-        @algorithm = algorithm
-        @cipher_value = cipher_value
-      end
+      attr_accessor :encrypted_key
 
       def key_value
         @key_value ||= KeyValue.new
