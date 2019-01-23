@@ -41,10 +41,10 @@ module Xml
       end
 
       def create_key_info_for(public_key, symmetric_cipher, asymmetric_algorithm)
-        key_info = KeyInfo.new
-        key_info.encrypted_key = EncryptedKey.new(public_key: public_key, key: symmetric_cipher.key, algorithm: asymmetric_algorithm)
-        @asymmetric_cipher_value = key_info.encrypted_key.cipher_value
-        key_info
+        KeyInfo.new do |x|
+          x.encrypted_key = EncryptedKey.new(public_key: public_key, key: symmetric_cipher.key, algorithm: asymmetric_algorithm)
+          @asymmetric_cipher_value = x.encrypted_key.cipher_value
+        end
       end
     end
   end

@@ -28,6 +28,10 @@ module Xml
       attr_accessor :x509_data
       attr_accessor :encrypted_key
 
+      def initialize
+        yield self if block_given?
+      end
+
       def key_value
         @key_value ||= KeyValue.new
       end
