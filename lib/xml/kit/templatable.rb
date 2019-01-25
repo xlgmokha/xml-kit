@@ -41,11 +41,10 @@ module Xml
 
         temp = ::Builder::XmlMarkup.new
         yield temp
-        ::Xml::Kit::Encryption.new(
+        ::Xml::Kit::EncryptedData.new(
           signatures.complete(temp.target!),
-          encryption_certificate.public_key,
-          symmetric_algorithm: symmetric_cipher,
-          asymmetric_algorithm: asymmetric_cipher,
+          symmetric_cipher: symmetric_cipher,
+          asymmetric_cipher: asymmetric_cipher,
           key_info: key_info
         ).to_xml(xml: xml)
       end

@@ -6,6 +6,10 @@ RSpec.describe Soap do
 
     let(:result) { Hash.from_xml(subject.to_xml) }
 
+    before do
+      puts subject.to_xml(pretty: true)
+    end
+
     specify { expect(result['Envelope']).to be_present }
     specify { expect(result['Envelope']['Header']).to be_present }
     specify do
