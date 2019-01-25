@@ -23,7 +23,7 @@ module Xml
         pretty ? Nokogiri::XML(result).to_xml(indent: 2) : result
       end
 
-      def encrypt_key_for(xml:, id:, public_key:, key:)
+      def encrypt_key_for(xml:, id:)
         ::Xml::Kit::EncryptedKey.new(
           id: id,
           asymmetric_cipher: asymmetric_cipher,
