@@ -14,7 +14,7 @@ module Xml
 
         attr_reader :algorithm, :key, :padding
 
-        def initialize(algorithm, key = nil, padding = nil)
+        def initialize(algorithm = DEFAULT_ALGORITHM, key = nil, padding = nil)
           @algorithm = algorithm
           @key = key || cipher.random_key
           @padding = padding
@@ -39,6 +39,10 @@ module Xml
 
           padding_size = result.bytes.last
           result[0...-padding_size]
+        end
+
+        def to_s
+          algorithm
         end
 
         protected

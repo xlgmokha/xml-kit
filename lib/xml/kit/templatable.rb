@@ -27,12 +27,12 @@ module Xml
         ::Xml::Kit::EncryptedKey.new(id: id, public_key: public_key, key: key).to_xml(xml: xml)
       end
 
-      def encryption_for(xml:, key_info: nil, &block)
+      def encryption_for(*args, &block)
         ::Xml::Kit.deprecate('encryption_for is deprecated. Use encrypt_data_for instead.')
-        encrypt_data_for(xml: xml, key_info: key_info, &block)
+        encrypt_data_for(*args, &block)
       end
 
-      def encrypt_data_for(xml:, key_info: nil)
+      def encrypt_data_for(xml:, key_info: nil, symmetric_cipher: Crypto::SymmetricCipher.new)
         return yield xml unless encrypt?
 
         temp = ::Builder::XmlMarkup.new
@@ -40,6 +40,7 @@ module Xml
         ::Xml::Kit::Encryption.new(
           signatures.complete(temp.target!),
           encryption_certificate.public_key,
+          symmetric_algorithm: symmetric_cipher,
           key_info: key_info
         ).to_xml(xml: xml)
       end
