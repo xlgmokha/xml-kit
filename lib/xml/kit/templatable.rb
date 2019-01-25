@@ -24,7 +24,11 @@ module Xml
       end
 
       def encrypt_key_for(xml:, id:, public_key:, key:)
-        ::Xml::Kit::EncryptedKey.new(id: id, public_key: public_key, key: key).to_xml(xml: xml)
+        ::Xml::Kit::EncryptedKey.new(
+          id: id,
+          asymmetric_cipher: asymmetric_cipher,
+          symmetric_cipher: symmetric_cipher
+        ).to_xml(xml: xml)
       end
 
       def encryption_for(*args, &block)
@@ -32,7 +36,7 @@ module Xml
         encrypt_data_for(*args, &block)
       end
 
-      def encrypt_data_for(xml:, key_info: nil, symmetric_cipher: Crypto::SymmetricCipher.new)
+      def encrypt_data_for(xml:, key_info: nil)
         return yield xml unless encrypt?
 
         temp = ::Builder::XmlMarkup.new
@@ -41,8 +45,17 @@ module Xml
           signatures.complete(temp.target!),
           encryption_certificate.public_key,
           symmetric_algorithm: symmetric_cipher,
+          asymmetric_algorithm: asymmetric_cipher,
           key_info: key_info
         ).to_xml(xml: xml)
+      end
+
+      def asymmetric_cipher(algorithm: Crypto::RsaCipher::ALGORITHM)
+        @asymmetric_cipher ||= Crypto.cipher_for(algorithm, encryption_certificate.public_key)
+      end
+
+      def symmetric_cipher
+        @symmetric_cipher ||= Crypto::SymmetricCipher.new
       end
 
       def render(model, options)

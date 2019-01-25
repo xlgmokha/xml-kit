@@ -4,7 +4,12 @@ module Xml
   module Kit
     module Crypto
       class UnknownCipher
-        def initialize(algorithm, key); end
+        attr_reader :algorithm, :key
+
+        def initialize(algorithm, key)
+          @algorithm = algorithm
+          @key = key
+        end
 
         def self.matches?(_algorithm)
           true

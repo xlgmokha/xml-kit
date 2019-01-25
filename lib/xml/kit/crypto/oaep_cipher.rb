@@ -8,7 +8,10 @@ module Xml
         ALGORITHMS = {
           ALGORITHM => true
         }.freeze
-        def initialize(_algorithm, key)
+        attr_reader :algorithm, :key
+
+        def initialize(algorithm, key)
+          @algorithm = algorithm
           @key = key
         end
 

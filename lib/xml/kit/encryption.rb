@@ -41,10 +41,17 @@ module Xml
       end
 
       def create_key_info_for(public_key, symmetric_cipher, asymmetric_algorithm)
+        asymmetric_cipher = asymmetric(asymmetric_algorithm, public_key)
         KeyInfo.new do |x|
-          x.encrypted_key = EncryptedKey.new(public_key: public_key, key: symmetric_cipher.key, algorithm: asymmetric_algorithm)
+          x.encrypted_key = EncryptedKey.new(asymmetric_cipher: asymmetric_cipher, symmetric_cipher: symmetric_cipher)
           @asymmetric_cipher_value = x.encrypted_key.cipher_value
         end
+      end
+
+      def asymmetric(algorithm, public_key)
+        return algorithm unless algorithm.is_a?(String)
+
+        ::Xml::Kit::Crypto.cipher_for(algorithm, public_key)
       end
     end
   end

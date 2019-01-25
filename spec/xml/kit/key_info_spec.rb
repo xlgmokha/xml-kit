@@ -5,12 +5,12 @@ RSpec.describe Xml::Kit::KeyInfo do
 
   describe '#to_xml' do
     context 'with encrypted key' do
-      let(:encrypted_key) { ::Xml::Kit::EncryptedKey.new(id: id, algorithm: algorithm, public_key: public_key, key: symmetric_key) }
+      let(:encrypted_key) { ::Xml::Kit::EncryptedKey.new(id: id, asymmetric_cipher: asymmetric_cipher, symmetric_cipher: symmetric_cipher) }
+      let(:symmetric_cipher) { ::Xml::Kit::Crypto::SymmetricCipher.new }
+      let(:asymmetric_cipher) { ::Xml::Kit::Crypto.cipher_for(algorithm, private_key.public_key) }
       let(:algorithm) { ::Xml::Kit::Crypto::RsaCipher::ALGORITHM }
       let(:id) { ::Xml::Kit::Id.generate }
       let(:private_key) { OpenSSL::PKey::RSA.new(2048) }
-      let(:public_key) { private_key.public_key }
-      let(:symmetric_key) { SecureRandom.hex(32) }
       let(:result) { Hash.from_xml(subject.to_xml) }
 
       before do
@@ -18,7 +18,7 @@ RSpec.describe Xml::Kit::KeyInfo do
       end
 
       specify { expect(result['KeyInfo']['EncryptedKey']['EncryptionMethod']['Algorithm']).to eql(algorithm) }
-      specify { expect(private_key.private_decrypt(Base64.decode64(result['KeyInfo']['EncryptedKey']['CipherData']['CipherValue']))).to eql(symmetric_key) }
+      specify { expect(private_key.private_decrypt(Base64.decode64(result['KeyInfo']['EncryptedKey']['CipherData']['CipherValue']))).to eql(symmetric_cipher.key) }
     end
 
     context 'with key name' do

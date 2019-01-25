@@ -5,8 +5,10 @@ module Xml
     module Crypto
       class RsaCipher
         ALGORITHM = "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5".freeze
+        attr_reader :algorithm, :key
 
-        def initialize(_algorithm, key)
+        def initialize(algorithm, key)
+          @algorithm = algorithm
           @key = key
         end
 

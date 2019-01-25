@@ -37,7 +37,7 @@ RSpec.describe Xml::Kit::Encryption do
       subject { described_class.new(xml, public_key, symmetric_algorithm: symmetric_cipher, asymmetric_algorithm: asymmetric_cipher) }
 
       let(:symmetric_cipher) { instance_double(Xml::Kit::Crypto::SymmetricCipher, key: 'symmetric_key', encrypt: 'CIPHERTEXT', to_s: 'symmetric_cipher') }
-      let(:asymmetric_cipher) { instance_double(Xml::Kit::Crypto::RsaCipher, encrypt: 'asymmetric CIPHERTEXT', to_s: 'asymmetric_cipher') }
+      let(:asymmetric_cipher) { instance_double(Xml::Kit::Crypto::RsaCipher, encrypt: 'asymmetric CIPHERTEXT', to_s: 'asymmetric_cipher', algorithm: 'asymmetric_cipher') }
       let(:key_pair) { Xml::Kit::KeyPair.generate(use: :encryption) }
       let(:public_key) { key_pair.public_key }
       let(:xml) do

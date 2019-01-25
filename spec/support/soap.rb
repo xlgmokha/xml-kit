@@ -19,10 +19,6 @@ class Soap
     symmetric_cipher.key
   end
 
-  def symmetric_cipher
-    @symmetric_cipher ||= ::Xml::Kit::Crypto::SymmetricCipher.new
-  end
-
   def key_id
     'EK-E2C32E59F27A1320A215468956686717'
   end
