@@ -27,6 +27,10 @@ module Xml
         )
       end
 
+      def template_path
+        Template::TEMPLATES_DIR.join('encrypted_data.builder')
+      end
+
       private
 
       def symmetric(algorithm)
