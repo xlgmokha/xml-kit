@@ -115,9 +115,7 @@ module Xml
       end
 
       def key_info
-        @key_info ||= KeyInfo.new do |x|
-          x.x509_data = x509
-        end
+        @key_info ||= KeyInfo.new(x509: x509)
       end
 
       class << self
