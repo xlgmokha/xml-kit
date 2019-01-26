@@ -2,7 +2,7 @@
 
 module Xml
   module Kit
-    # {include:file:spec/saml/xml_spec.rb}
+    # {include:file:spec/xml/kit/document_spec.rb}
     class Document
       include ActiveModel::Validations
       NAMESPACES = { "ds": ::Xml::Kit::Namespaces::XMLDSIG }.freeze

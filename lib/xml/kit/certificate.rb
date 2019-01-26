@@ -4,7 +4,7 @@ require 'xml/kit/templatable'
 
 module Xml
   module Kit
-    # {include:file:spec/xml/certificate_spec.rb}
+    # {include:file:spec/xml/kit/certificate_spec.rb}
     class Certificate
       include Templatable
       # rubocop:disable Metrics/LineLength

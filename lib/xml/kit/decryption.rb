@@ -2,7 +2,7 @@
 
 module Xml
   module Kit
-    # {include:file:spec/saml/xml_decryption_spec.rb}
+    # {include:file:spec/xml/kit/decryption_spec.rb}
     class Decryption
       # The list of private keys to use to attempt to decrypt the document.
       attr_reader :cipher_registry, :private_keys
