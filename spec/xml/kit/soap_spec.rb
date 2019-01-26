@@ -2,16 +2,21 @@
 
 RSpec.describe Soap do
   describe '#to_xml' do
-    subject { described_class.new }
+    subject { described_class.new(key_pair.certificate) }
 
+    let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :encryption) }
     let(:result) { Hash.from_xml(subject.to_xml) }
+
+    before do
+      puts subject.to_xml(pretty: true)
+    end
 
     specify { expect(result['Envelope']).to be_present }
     specify { expect(result['Envelope']['Header']).to be_present }
     specify do
       cipher_value = result['Envelope']['Header']['Security']['EncryptedKey']['CipherData']['CipherValue']
-      symmetric_key = subject.encryption_key_pair.private_key.private_decrypt(Base64.decode64(cipher_value))
-      expect(symmetric_key).to eql(subject.symmetric_key)
+      symmetric_key = key_pair.private_key.private_decrypt(Base64.decode64(cipher_value))
+      expect(symmetric_key).to eql(subject.symmetric_cipher.key)
 
       algorithm = result['Envelope']['Body']['EncryptedData']['EncryptionMethod']['Algorithm']
       cipher_value = result['Envelope']['Body']['EncryptedData']['CipherData']['CipherValue']
