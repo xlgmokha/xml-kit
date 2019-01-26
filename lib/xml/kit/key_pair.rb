@@ -30,9 +30,16 @@ module Xml
       # @param use [Symbol] Can be either `:signing` or `:encryption`.
       # @param passphrase [String] the passphrase to use to encrypt the private key.
       # @param algorithm [String] the symmetric algorithm to use for encrypting the private key.
-      def self.generate(use:, passphrase: SecureRandom.uuid, algorithm: ::Xml::Kit::Crypto::SymmetricCipher::DEFAULT_ALGORITHM)
+      def self.generate(
+        use:,
+        passphrase: SecureRandom.uuid,
+        algorithm: ::Xml::Kit::Crypto::SymmetricCipher::DEFAULT_ALGORITHM
+      )
         algorithm = ::Xml::Kit::Crypto::SymmetricCipher::ALGORITHMS[algorithm]
-        certificate, private_key = ::Xml::Kit::SelfSignedCertificate.new.create(algorithm: algorithm, passphrase: passphrase)
+        certificate, private_key = SelfSignedCertificate.new.create(
+          algorithm: algorithm,
+          passphrase: passphrase
+        )
         new(certificate, private_key, passphrase, use)
       end
     end

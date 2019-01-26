@@ -23,7 +23,12 @@ module Xml
       attr_reader :reference_id
       attr_reader :signature_method
 
-      def initialize(reference_id, signature_method: :SH256, digest_method: :SHA256, certificate:)
+      def initialize(
+        reference_id,
+        signature_method: :SH256,
+        digest_method: :SHA256,
+        certificate:
+      )
         @certificate = certificate
         @digest_method = DIGEST_METHODS[digest_method]
         @reference_id = reference_id

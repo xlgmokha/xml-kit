@@ -47,9 +47,10 @@ module Xml
         end
       end
 
-      def invalid_signatures
-        signed_document = Xmldsig::SignedDocument.new(document, id_attr: 'ID=$uri or @Id')
-        signed_document.signatures.find_all do |signature|
+      def invalid_signatures(id_attr: 'ID=$uri or @Id')
+        Xmldsig::SignedDocument
+          .new(document, id_attr: id_attr)
+          .signatures.find_all do |signature|
           x509_certificates.all? do |certificate|
             !signature.valid?(certificate)
           end

@@ -14,8 +14,13 @@ module Xml
         key_info: nil
       )
         @symmetric_cipher = symmetric_cipher
-        @symmetric_cipher_value = Base64.strict_encode64(symmetric_cipher.encrypt(raw_xml))
-        @key_info = key_info || create_key_info_for(symmetric_cipher, asymmetric_cipher)
+        @symmetric_cipher_value = Base64.strict_encode64(
+          symmetric_cipher.encrypt(raw_xml)
+        )
+        @key_info = key_info || create_key_info_for(
+          symmetric_cipher,
+          asymmetric_cipher
+        )
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)
@@ -30,7 +35,10 @@ module Xml
 
       def create_key_info_for(symmetric_cipher, asymmetric_cipher)
         KeyInfo.new do |x|
-          x.encrypted_key = EncryptedKey.new(asymmetric_cipher: asymmetric_cipher, symmetric_cipher: symmetric_cipher)
+          x.encrypted_key = EncryptedKey.new(
+            asymmetric_cipher: asymmetric_cipher,
+            symmetric_cipher: symmetric_cipher
+          )
         end
       end
     end

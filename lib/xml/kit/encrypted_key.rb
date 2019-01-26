@@ -10,7 +10,12 @@ module Xml
       attr_reader :asymmetric_cipher, :symmetric_cipher
       attr_accessor :key_info
 
-      def initialize(id: Id.generate, asymmetric_cipher:, symmetric_cipher:, key_info: nil)
+      def initialize(
+        id: Id.generate,
+        asymmetric_cipher:,
+        symmetric_cipher:,
+        key_info: nil
+      )
         @id = id
         @asymmetric_cipher = asymmetric_cipher
         @symmetric_cipher = symmetric_cipher

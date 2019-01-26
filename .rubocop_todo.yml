@@ -14,9 +14,3 @@ Metrics/AbcSize:
 Style/DoubleNegation:
   Exclude:
     - 'lib/xml/kit/certificate.rb'
-
-# Offense count: 29
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 141

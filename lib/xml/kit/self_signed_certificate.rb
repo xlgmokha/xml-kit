@@ -5,7 +5,11 @@ module Xml
     class SelfSignedCertificate
       SUBJECT = '/C=CA/ST=AB/L=Calgary/O=XmlKit/OU=XmlKit/CN=XmlKit'.freeze
 
-      def create(algorithm: 'AES-256-CBC', passphrase: nil, key_pair: OpenSSL::PKey::RSA.new(2048))
+      def create(
+        algorithm: 'AES-256-CBC',
+        passphrase: nil,
+        key_pair: OpenSSL::PKey::RSA.new(2048)
+      )
         certificate = certificate_for(key_pair.public_key)
         certificate.sign(key_pair, OpenSSL::Digest::SHA256.new)
         [certificate.to_pem, export(key_pair, algorithm, passphrase)]
@@ -24,7 +28,8 @@ module Xml
 
       def certificate_for(public_key)
         certificate = OpenSSL::X509::Certificate.new
-        certificate.subject = certificate.issuer = OpenSSL::X509::Name.parse(SUBJECT)
+        certificate.subject =
+          certificate.issuer = OpenSSL::X509::Name.parse(SUBJECT)
         certificate.not_before = Time.now
         certificate.not_after = certificate.not_before + 30 * 24 * 60 * 60 # 30 days
         certificate.public_key = public_key
@@ -35,10 +40,12 @@ module Xml
       end
 
       def apply_ski_extension_to(certificate)
-        extension_factory = OpenSSL::X509::ExtensionFactory.new
-        extension_factory.subject_certificate = certificate
-        extension_factory.issuer_certificate = certificate
-        certificate.add_extension(extension_factory.create_extension('subjectKeyIdentifier', 'hash', false))
+        extensions = OpenSSL::X509::ExtensionFactory.new
+        extensions.subject_certificate = certificate
+        extensions.issuer_certificate = certificate
+        certificate.add_extension(
+          extensions.create_extension('subjectKeyIdentifier', 'hash', false)
+        )
       end
     end
   end

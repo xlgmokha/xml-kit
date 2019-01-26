@@ -59,8 +59,10 @@ Metrics/ModuleLength:
     - 'spec/**/*.rb'
 
 Metrics/LineLength:
+  IgnoredPatterns: ['(\A|\s)#']
   Exclude:
     - 'spec/**/*.rb'
+    - 'lib/xml/kit/templates/*.builder'
 
 Naming/FileName:
   Exclude:

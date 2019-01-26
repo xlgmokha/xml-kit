@@ -7,7 +7,9 @@ module Xml
     # {include:file:spec/xml/certificate_spec.rb}
     class Certificate
       include Templatable
+      # rubocop:disable Metrics/LineLength
       BASE64_FORMAT = %r(\A([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?\Z).freeze
+      # rubocop:enable Metrics/LineLength
       BEGIN_CERT = /-----BEGIN CERTIFICATE-----/.freeze
       END_CERT = /-----END CERTIFICATE-----/.freeze
       # The use can be `:signing` or `:encryption`. Use `nil` for both.

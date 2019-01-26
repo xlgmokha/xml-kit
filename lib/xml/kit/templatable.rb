@@ -32,7 +32,9 @@ module Xml
       end
 
       def encryption_for(*args, &block)
-        ::Xml::Kit.deprecate('encryption_for is deprecated. Use encrypt_data_for instead.')
+        ::Xml::Kit.deprecate(
+          'encryption_for is deprecated. Use encrypt_data_for instead.'
+        )
         encrypt_data_for(*args, &block)
       end
 
@@ -50,7 +52,10 @@ module Xml
       end
 
       def asymmetric_cipher(algorithm: Crypto::RsaCipher::ALGORITHM)
-        @asymmetric_cipher ||= Crypto.cipher_for(algorithm, encryption_certificate.public_key)
+        @asymmetric_cipher ||= Crypto.cipher_for(
+          algorithm,
+          encryption_certificate.public_key
+        )
       end
 
       def symmetric_cipher

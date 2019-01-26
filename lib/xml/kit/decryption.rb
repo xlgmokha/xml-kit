@@ -16,7 +16,9 @@ module Xml
       #
       # @param data [Hash] the XML document converted to a [Hash] using Hash.from_xml.
       def decrypt(data)
-        ::Xml::Kit.deprecate('decrypt is deprecated. Use decrypt_xml or decrypt_hash instead.')
+        ::Xml::Kit.deprecate(
+          'decrypt is deprecated. Use decrypt_xml or decrypt_hash instead.'
+        )
         decrypt_hash(data)
       end
 
@@ -31,11 +33,11 @@ module Xml
       #
       # @param hash [Hash] the XML document converted to a [Hash] using Hash.from_xml.
       def decrypt_hash(hash)
-        encrypted_data = hash['EncryptedData']
+        data = hash['EncryptedData']
         to_plaintext(
-          Base64.decode64(encrypted_data['CipherData']['CipherValue']),
-          symmetric_key_from(encrypted_data),
-          encrypted_data['EncryptionMethod']['Algorithm']
+          Base64.decode64(data['CipherData']['CipherValue']),
+          symmetric_key_from(data['KeyInfo']['EncryptedKey']),
+          data['EncryptionMethod']['Algorithm']
         )
       end
 
@@ -50,12 +52,12 @@ module Xml
 
       private
 
-      def symmetric_key_from(encrypted_data, attempts = private_keys.count)
-        cipher_text = Base64.decode64(encrypted_data['KeyInfo']['EncryptedKey']['CipherData']['CipherValue'])
+      def symmetric_key_from(encrypted_key, attempts = private_keys.count)
+        cipher, algorithm = cipher_and_algorithm_fron(encrypted_key)
         private_keys.each do |private_key|
           begin
             attempts -= 1
-            return to_plaintext(cipher_text, private_key, encrypted_data['KeyInfo']['EncryptedKey']['EncryptionMethod']['Algorithm'])
+            return to_plaintext(cipher, private_key, algorithm)
           rescue OpenSSL::PKey::RSAError
             raise if attempts.zero?
           end
@@ -65,6 +67,13 @@ module Xml
 
       def to_plaintext(cipher_text, private_key, algorithm)
         cipher_registry.cipher_for(algorithm, private_key).decrypt(cipher_text)
+      end
+
+      def cipher_and_algorithm_fron(encrypted_key)
+        [
+          Base64.decode64(encrypted_key['CipherData']['CipherValue']),
+          encrypted_key['EncryptionMethod']['Algorithm']
+        ]
       end
     end
   end
