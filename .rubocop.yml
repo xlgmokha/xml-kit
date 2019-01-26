@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 require:
   - rubocop/cop/internal_affairs
   - rubocop-rspec
@@ -97,3 +95,7 @@ RSpec/NestedGroups:
 
 RSpec/SubjectStub:
   Enabled: false
+
+Style/DoubleNegation:
+  Exclude:
+    - 'lib/xml/kit/certificate.rb'
