@@ -2,6 +2,7 @@
 
 module Xml
   module Kit
+    # @deprecated Use {#Xml::Kit::EncryptedData} class instead of this
     class Encryption < EncryptedData
       attr_reader :asymmetric_algorithm
       attr_reader :symmetric_algorithm

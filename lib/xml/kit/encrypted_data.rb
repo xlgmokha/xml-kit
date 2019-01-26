@@ -2,6 +2,10 @@
 
 module Xml
   module Kit
+    # An implementation of the EncryptedKey element.
+    # https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedData
+    #
+    # @since 0.3.0
     class EncryptedData
       attr_reader :key_info
       attr_reader :symmetric_cipher

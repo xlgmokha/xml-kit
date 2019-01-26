@@ -2,6 +2,10 @@
 
 module Xml
   module Kit
+    # An implementation of the Signature element.
+    # https://www.w3.org/TR/xmldsig-core1/#sec-Signature
+    #
+    # @since 0.1.0
     class Signature
       SIGNATURE_METHODS = {
         SHA1: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1',

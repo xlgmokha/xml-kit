@@ -4,6 +4,10 @@ require 'xml/kit/templatable'
 
 module Xml
   module Kit
+    # An implementation of the EncryptedKey element.
+    # https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedKey
+    #
+    # @since 0.3.0
     class EncryptedKey
       include ::Xml::Kit::Templatable
       attr_reader :id

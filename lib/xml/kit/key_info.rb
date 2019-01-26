@@ -1,28 +1,16 @@
 # frozen_string_literal: true
 
+require 'xml/kit/key_info/key_value'
+require 'xml/kit/key_info/retrieval_method'
+require 'xml/kit/key_info/rsa_key_value'
+
 module Xml
   module Kit
+    # An implementation of the KeyInfo element.
+    # https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfo
+    #
+    # @since 0.3.0
     class KeyInfo
-      class RSAKeyValue
-        attr_accessor :modulus, :exponent
-      end
-
-      class KeyValue
-        include Templatable
-
-        def rsa
-          @rsa ||= RSAKeyValue.new
-        end
-      end
-
-      class RetrievalMethod
-        attr_accessor :uri, :type
-
-        def initialize
-          @type = "#{Namespaces::XMLENC}EncryptedKey"
-        end
-      end
-
       include Templatable
       attr_accessor :key_name
       attr_accessor :x509_data
