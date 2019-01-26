@@ -53,7 +53,7 @@ module Xml
       private
 
       def symmetric_key_from(encrypted_key, attempts = private_keys.count)
-        cipher, algorithm = cipher_and_algorithm_fron(encrypted_key)
+        cipher, algorithm = cipher_and_algorithm_from(encrypted_key)
         private_keys.each do |private_key|
           begin
             attempts -= 1
@@ -69,7 +69,7 @@ module Xml
         cipher_registry.cipher_for(algorithm, private_key).decrypt(cipher_text)
       end
 
-      def cipher_and_algorithm_fron(encrypted_key)
+      def cipher_and_algorithm_from(encrypted_key)
         [
           Base64.decode64(encrypted_key['CipherData']['CipherValue']),
           encrypted_key['EncryptionMethod']['Algorithm']
