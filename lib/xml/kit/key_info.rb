@@ -2,27 +2,27 @@
 
 module Xml
   module Kit
-    class RSAKeyValue
-      attr_accessor :modulus, :exponent
-    end
-
-    class KeyValue
-      include Templatable
-
-      def rsa
-        @rsa ||= RSAKeyValue.new
-      end
-    end
-
-    class RetrievalMethod
-      attr_accessor :uri, :type
-
-      def initialize
-        @type = 'http://www.w3.org/2001/04/xmlenc#EncryptedKey'
-      end
-    end
-
     class KeyInfo
+      class RSAKeyValue
+        attr_accessor :modulus, :exponent
+      end
+
+      class KeyValue
+        include Templatable
+
+        def rsa
+          @rsa ||= RSAKeyValue.new
+        end
+      end
+
+      class RetrievalMethod
+        attr_accessor :uri, :type
+
+        def initialize
+          @type = "#{Namespaces::XMLENC}EncryptedKey"
+        end
+      end
+
       include Templatable
       attr_accessor :key_name
       attr_accessor :x509_data
