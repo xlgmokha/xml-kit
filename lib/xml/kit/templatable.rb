@@ -23,6 +23,10 @@ module Xml
         pretty ? Nokogiri::XML(result).to_xml(indent: 2) : result
       end
 
+      # Generates an EncryptedKey section. https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedKey
+      #
+      # @param xml [Builder::XmlMarkup] the xml builder instance
+      # @param id [String] the id of EncryptedKey element
       def encrypt_key_for(xml:, id:)
         ::Xml::Kit::EncryptedKey.new(
           id: id,
@@ -38,6 +42,10 @@ module Xml
         encrypt_data_for(*args, &block)
       end
 
+      # Generates an EncryptedData section. https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedData
+      #
+      # @param xml [Builder::XmlMarkup] the xml builder instance
+      # @param key_info [Xml::Kit::KeyInfo] the key info to render in the EncryptedData
       def encrypt_data_for(xml:, key_info: nil)
         return yield xml unless encrypt?
 
