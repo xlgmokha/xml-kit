@@ -50,7 +50,7 @@ module Xml
 
         def default_decrypt(initialization_vector, data)
           cipher.decrypt
-          cipher.padding = padding unless padding.nil?
+          apply_padding_to(cipher)
           cipher.key = @key
           cipher.iv = initialization_vector.pack('c*')
           cipher.update(data.pack('c*')) << cipher.final
@@ -60,6 +60,10 @@ module Xml
 
         def cipher
           @cipher ||= OpenSSL::Cipher.new(ALGORITHMS[algorithm])
+        end
+
+        def apply_padding_to(cipher)
+          cipher.padding = padding unless padding.nil?
         end
       end
     end
