@@ -31,9 +31,10 @@ module Xml
         end
 
         def decrypt(cipher_text)
+          bytes = cipher_text.bytes
           result = default_decrypt(
-            cipher_text[0...cipher.iv_len],
-            cipher_text[cipher.iv_len..-1]
+            bytes[0...cipher.iv_len],
+            bytes[cipher.iv_len..-1]
           )
           return result if padding.nil?
 
@@ -51,8 +52,8 @@ module Xml
           cipher.decrypt
           cipher.padding = padding unless padding.nil?
           cipher.key = @key
-          cipher.iv = initialization_vector
-          cipher.update(data) << cipher.final
+          cipher.iv = initialization_vector.pack('c*')
+          cipher.update(data.pack('c*')) << cipher.final
         end
 
         private

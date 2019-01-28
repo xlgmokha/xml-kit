@@ -30,7 +30,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
         let(:secret) { SecureRandom.hex }
         let(:data) { "#{iv}#{secret}".strip }
 
-        context "when encoded as ASCII" do
+        context 'when encoded as ASCII' do
           before do
             IO.write(original_file, data, encoding: Encoding::ASCII_8BIT)
             execute_shell([
@@ -48,7 +48,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
           end
         end
 
-        context "when encoded as UTF-8" do
+        context 'when encoded as UTF-8' do
           before do
             IO.write(original_file, data)
             execute_shell([
