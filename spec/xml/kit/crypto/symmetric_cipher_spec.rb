@@ -30,20 +30,40 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
         let(:secret) { SecureRandom.hex }
         let(:data) { "#{iv}#{secret}".strip }
 
-        before do
-          IO.write(original_file, data, encoding: Encoding::ASCII_8BIT)
-          execute_shell([
-            "openssl enc -#{openssl_algorithm} -p -e -A -nosalt",
-            "-in #{original_file}",
-            "-out #{encrypted_file}",
-            "-K #{key.unpack('H*')[0].upcase}",
-            "-iv #{iv.unpack('H*')[0].upcase}"
-          ].join(' '))
+        context "when encoded as ASCII" do
+          before do
+            IO.write(original_file, data, encoding: Encoding::ASCII_8BIT)
+            execute_shell([
+              "openssl enc -#{openssl_algorithm} -p -e -A -nosalt",
+              "-in #{original_file}",
+              "-out #{encrypted_file}",
+              "-K #{key.unpack('H*')[0].upcase}",
+              "-iv #{iv.unpack('H*')[0].upcase}"
+            ].join(' '))
+          end
+
+          specify do
+            cipher_text = IO.read(encrypted_file, encoding: Encoding::ASCII_8BIT)
+            expect(subject.decrypt(cipher_text)).to eql(secret)
+          end
         end
 
-        specify do
-          cipher_text = IO.read(encrypted_file, encoding: Encoding::ASCII_8BIT)
-          expect(subject.decrypt(cipher_text)).to eql(secret)
+        context "when encoded as UTF-8" do
+          before do
+            IO.write(original_file, data)
+            execute_shell([
+              "openssl enc -#{openssl_algorithm} -p -e -A -nosalt",
+              "-in #{original_file}",
+              "-out #{encrypted_file}",
+              "-K #{key.unpack('H*')[0].upcase}",
+              "-iv #{iv.unpack('H*')[0].upcase}"
+            ].join(' '))
+          end
+
+          specify do
+            cipher_text = IO.read(encrypted_file)
+            expect(subject.decrypt(cipher_text)).to eql(secret)
+          end
         end
       end
 
