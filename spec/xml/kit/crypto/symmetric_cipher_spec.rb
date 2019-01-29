@@ -28,7 +28,7 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
         let(:encrypted_file) { Tempfile.new(algorithm).path }
         let(:original_file) { Tempfile.new("#{algorithm}-original").path }
         let(:secret) { SecureRandom.hex }
-        let(:data) { "#{iv}#{secret}".strip }
+        let(:data) { (iv.bytes + secret.bytes).pack('c*') }
 
         context 'when encoded as ASCII' do
           before do
