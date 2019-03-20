@@ -33,8 +33,10 @@ RSpec.describe Xml::Kit::EncryptedData do
       ].each do |symmetric_algorithm|
         context symmetric_algorithm do
           subject do
-            described_class.new(xml, symmetric_cipher: symmetric_cipher, asymmetric_cipher: asymmetric_cipher)
+            described_class.new(xml, id: id, symmetric_cipher: symmetric_cipher, asymmetric_cipher: asymmetric_cipher)
           end
+
+          let(:id) { ::Xml::Kit::Id.generate }
 
           specify { expect(decryptor.decrypt_xml(subject.to_xml)).to eql(xml) }
         end

@@ -7,16 +7,19 @@ module Xml
     #
     # @since 0.3.0
     class EncryptedData
+      attr_reader :id
       attr_reader :key_info
       attr_reader :symmetric_cipher
       attr_reader :symmetric_cipher_value
 
       def initialize(
         raw_xml,
+        id: Id.generate,
         symmetric_cipher: Xml::Kit::Crypto::SymmetricCipher.new,
         asymmetric_cipher:,
         key_info: nil
       )
+        @id = id
         @symmetric_cipher = symmetric_cipher
         @symmetric_cipher_value = Base64.strict_encode64(
           symmetric_cipher.encrypt(raw_xml)
