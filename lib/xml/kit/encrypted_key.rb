@@ -17,7 +17,7 @@ module Xml
       def initialize(
         id: Id.generate,
         asymmetric_cipher:,
-        symmetric_cipher:,
+        symmetric_cipher: Xml::Kit::Crypto::SymmetricCipher.new,
         key_info: nil
       )
         @id = id
