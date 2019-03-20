@@ -14,9 +14,10 @@ RSpec.describe Xml::Kit::EncryptedData do
       ].each do |symmetric_algorithm|
         describe symmetric_algorithm do
           subject do
-            described_class.new(xml, symmetric_cipher: symmetric_cipher, asymmetric_cipher: asymmetric_cipher)
+            described_class.new(xml, id: id, symmetric_cipher: symmetric_cipher, asymmetric_cipher: asymmetric_cipher)
           end
 
+          let(:id) { ::Xml::Kit::Id.generate }
           let(:symmetric_cipher) { ::Xml::Kit::Crypto::SymmetricCipher.new(symmetric_algorithm) }
           let(:asymmetric_cipher) { ::Xml::Kit::Crypto.cipher_for(asymmetric_algorithm, key_pair.public_key) }
           let(:key_pair) { Xml::Kit::KeyPair.generate(use: :encryption, algorithm: symmetric_algorithm) }
