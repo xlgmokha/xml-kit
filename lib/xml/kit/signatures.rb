@@ -19,11 +19,11 @@ module Xml
       end
 
       # @!visibility private
-      def build(reference_id)
+      def build(reference_ids)
         return nil if key_pair.nil?
 
         ::Xml::Kit::Signature.new(
-          reference_id,
+          reference_ids,
           certificate: key_pair.certificate,
           signature_method: signature_method,
           digest_method: digest_method
@@ -65,8 +65,8 @@ module Xml
         end
 
         # @!visibility private
-        def template(reference_id)
-          Template.new(signatures.build(reference_id)).to_xml(xml: xml)
+        def template(reference_ids)
+          Template.new(signatures.build(reference_ids)).to_xml(xml: xml)
         end
       end
     end

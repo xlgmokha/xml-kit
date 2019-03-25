@@ -24,19 +24,26 @@ module Xml
 
       attr_reader :certificate
       attr_reader :digest_method
-      attr_reader :reference_id
+      attr_reader :reference_ids
       attr_reader :signature_method
 
       def initialize(
-        reference_id,
+        reference_ids,
         signature_method: :SH256,
         digest_method: :SHA256,
         certificate:
       )
         @certificate = certificate
         @digest_method = DIGEST_METHODS[digest_method]
-        @reference_id = reference_id
+        @reference_ids = Array(reference_ids)
         @signature_method = SIGNATURE_METHODS[signature_method]
+      end
+
+      def enveloped?
+        # As only one referenced passed, we assume it's enveloped (signature is child)
+        # With more references only enveloping (signature is parent) makes sense
+        # Better but more complicated: check if `reference_id` if a parent node
+        reference_ids.size == 1
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)

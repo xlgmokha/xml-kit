@@ -88,7 +88,7 @@ module Xml
       def signature_for(reference_id:, xml:)
         return unless sign?
 
-        signatures.build(reference_id).to_xml(xml: xml)
+        signatures.build([reference_id]).to_xml(xml: xml)
       end
 
       # Allows you to specify which key pair to use for generating an XML digital signature.
