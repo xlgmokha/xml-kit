@@ -6,7 +6,7 @@ xml.Signature 'xmlns' => ::Xml::Kit::Namespaces::XMLDSIG do
     xml.SignatureMethod Algorithm: signature_method
     xml.Reference URI: "##{reference_id}" do
       xml.Transforms do
-        xml.Transform Algorithm: "#{::Xml::Kit::Namespaces::XMLDSIG}enveloped-signature"
+        xml.Transform Algorithm: ::Xml::Kit::Namespaces::ENVELOPED_SIG
         xml.Transform Algorithm: ::Xml::Kit::Namespaces::CANONICALIZATION
       end
       xml.DigestMethod Algorithm: digest_method
