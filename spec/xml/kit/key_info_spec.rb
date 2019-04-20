@@ -7,6 +7,25 @@ RSpec.describe Xml::Kit::KeyInfo do
     specify { expect(Hash.from_xml(subject.to_xml)).not_to be_empty }
     specify { expect { subject.asymmetric_cipher }.to raise_error(/encryption_certificate is not specified/) }
 
+    context 'when using a DSA key' do
+      subject { described_class.new(x509: x509) }
+
+      let(:x509) do
+        certificate = OpenSSL::X509::Certificate.new
+        certificate.subject = certificate.issuer = OpenSSL::X509::Name.parse(Xml::Kit::SelfSignedCertificate::SUBJECT)
+        certificate.not_before = Time.now
+        certificate.not_after = certificate.not_before + 30 * 24 * 60 * 60
+        certificate.public_key = public_key
+        certificate.serial = 0x0
+        certificate.version = 2
+        certificate
+      end
+      let(:public_key) { private_key.public_key }
+      let(:private_key) { OpenSSL::PKey::DSA.new(2048) }
+
+      specify { expect { subject.asymmetric_cipher }.to raise_error(/OpenSSL::PKey::DSA is not supported/) }
+    end
+
     context 'with encrypted key' do
       let(:encrypted_key) { ::Xml::Kit::EncryptedKey.new(id: id, asymmetric_cipher: asymmetric_cipher, symmetric_cipher: symmetric_cipher) }
       let(:symmetric_cipher) { ::Xml::Kit::Crypto::SymmetricCipher.new }

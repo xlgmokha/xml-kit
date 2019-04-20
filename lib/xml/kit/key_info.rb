@@ -63,7 +63,7 @@ module Xml
         when OpenSSL::PKey::RSA
           "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
         else
-          raise 'unsupported key type'
+          raise ::Xml::Kit::Error, "#{key.try(:class)} is not supported"
         end
       end
     end
