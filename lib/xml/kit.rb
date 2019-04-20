@@ -42,9 +42,13 @@ module Xml
 
       attr_writer :logger
 
-      def deprecate(message)
+      def deprecate(name, alternative: nil)
         @deprecation ||= ActiveSupport::Deprecation.new('1.0.0', 'xml-kit')
-        @deprecation.deprecation_warning(message)
+        if alternative
+          @deprecation.deprecation_warning(name, "Use `#{alternative}` instead")
+        else
+          @deprecation.deprecation_warning(name)
+        end
       end
     end
   end
