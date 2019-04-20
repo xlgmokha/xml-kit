@@ -67,6 +67,10 @@ module Xml
       # @abstract
       # @since 0.3.0
       def asymmetric_cipher(algorithm: Crypto::RsaCipher::ALGORITHM)
+        unless encryption_certificate
+          raise Xml::Kit::Error, 'encryption_certificate is not specified.'
+        end
+
         @asymmetric_cipher ||= Crypto.cipher_for(
           algorithm,
           encryption_certificate.public_key

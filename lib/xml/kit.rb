@@ -35,6 +35,8 @@ require 'xml/kit/version'
 
 module Xml
   module Kit
+    class Error < StandardError; end
+
     class << self
       def logger
         @logger ||= Logger.new(STDOUT)

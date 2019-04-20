@@ -4,6 +4,9 @@ RSpec.describe Xml::Kit::KeyInfo do
   subject { described_class.new }
 
   describe '#to_xml' do
+    specify { expect(Hash.from_xml(subject.to_xml)).not_to be_empty }
+    specify { expect { subject.asymmetric_cipher }.to raise_error(/encryption_certificate is not specified/) }
+
     context 'with encrypted key' do
       let(:encrypted_key) { ::Xml::Kit::EncryptedKey.new(id: id, asymmetric_cipher: asymmetric_cipher, symmetric_cipher: symmetric_cipher) }
       let(:symmetric_cipher) { ::Xml::Kit::Crypto::SymmetricCipher.new }
