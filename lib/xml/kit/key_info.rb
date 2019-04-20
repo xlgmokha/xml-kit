@@ -16,7 +16,8 @@ module Xml
       attr_accessor :x509_data
       attr_accessor :encrypted_key
 
-      def initialize(x509: nil)
+      def initialize(x509: nil, encrypted_key: nil)
+        @encrypted_key = encrypted_key
         @x509_data = x509
         yield self if block_given?
       end
