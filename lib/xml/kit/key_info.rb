@@ -32,7 +32,7 @@ module Xml
           )
         end
 
-        super
+        super(algorithm: algorithm)
       end
 
       def symmetric_cipher
