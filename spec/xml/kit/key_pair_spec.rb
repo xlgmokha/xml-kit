@@ -12,7 +12,11 @@ RSpec.describe Xml::Kit::KeyPair do
   let(:passphrase) { 'secret' }
 
   context 'when the passphrase is empty' do
-    specify { expect { described_class.new(certificate.to_pem, key.export, '', :signing) }.not_to raise_error }
+    subject { described_class.new(certificate.to_pem, key.export, '', :signing) }
+
+    specify { expect { subject }.not_to raise_error }
+    specify { expect(subject.for?(:signing)).to be(true) }
+    specify { expect(subject.for?(:encryption)).to be(false) }
   end
 
   it 'decrypts encrypted private keys' do
