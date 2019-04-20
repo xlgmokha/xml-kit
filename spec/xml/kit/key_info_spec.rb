@@ -19,6 +19,8 @@ RSpec.describe Xml::Kit::KeyInfo do
 
       specify { expect(result['KeyInfo']['EncryptedKey']['EncryptionMethod']['Algorithm']).to eql(algorithm) }
       specify { expect(private_key.private_decrypt(Base64.decode64(result['KeyInfo']['EncryptedKey']['CipherData']['CipherValue']))).to eql(symmetric_cipher.key) }
+      specify { expect(subject.symmetric_cipher).to eql(symmetric_cipher) }
+      specify { expect(subject.asymmetric_cipher).to eql(asymmetric_cipher) }
     end
 
     context 'with key name' do
@@ -65,14 +67,14 @@ RSpec.describe Xml::Kit::KeyInfo do
       let(:key_pair) { ::Xml::Kit::KeyPair.generate(use: :encryption) }
       let(:x509_certificate) { key_pair.certificate.x509 }
       let(:subject_key_identifier) { x509_certificate.extensions.find { |x| x.oid == 'subjectKeyIdentifier' }.value }
-      let(:result) { Hash.from_xml(subject.to_xml) }
 
       before do
         subject.x509_data = x509_certificate
       end
 
-      specify { expect(result['KeyInfo']['X509Data']['X509SKI']).to eql(Base64.strict_encode64(subject_key_identifier)) }
-      specify { expect(result['KeyInfo']['X509Data']['X509Certificate']).to eql(key_pair.certificate.stripped) }
+      specify { expect(Hash.from_xml(subject.to_xml)['KeyInfo']['X509Data']['X509SKI']).to eql(Base64.strict_encode64(subject_key_identifier)) }
+      specify { expect(Hash.from_xml(subject.to_xml)['KeyInfo']['X509Data']['X509Certificate']).to eql(key_pair.certificate.stripped) }
+      specify { expect(subject.asymmetric_cipher.key.to_pem).to eql(x509_certificate.public_key.to_pem) }
     end
   end
 end

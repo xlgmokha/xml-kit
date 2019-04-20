@@ -21,6 +21,18 @@ module Xml
         yield self if block_given?
       end
 
+      def asymmetric_cipher(algorithm: Crypto::RsaCipher::ALGORITHM)
+        return encrypted_key.asymmetric_cipher if encrypted_key
+        return Crypto.cipher_for(derive_algorithm_from(x509_data.public_key), x509_data.public_key) if x509_data
+        super
+      end
+
+      def symmetric_cipher
+        return super if encrypted_key.nil?
+
+        encrypted_key.symmetric_cipher
+      end
+
       def key_value
         @key_value ||= KeyValue.new
       end
@@ -34,6 +46,17 @@ module Xml
         return if ski.nil?
 
         Base64.strict_encode64(ski.value)
+      end
+
+      private
+
+      def derive_algorithm_from(key)
+        case key
+        when OpenSSL::PKey::RSA
+          "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
+        else
+          raise 'unsupported key type'
+        end
       end
     end
   end
