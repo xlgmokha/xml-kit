@@ -24,7 +24,14 @@ module Xml
 
       def asymmetric_cipher(algorithm: Crypto::RsaCipher::ALGORITHM)
         return encrypted_key.asymmetric_cipher if encrypted_key
-        return Crypto.cipher_for(derive_algorithm_from(x509_data.public_key), x509_data.public_key) if x509_data
+
+        if x509_data
+          return Crypto.cipher_for(
+            derive_algorithm_from(x509_data.public_key),
+            x509_data.public_key
+          )
+        end
+
         super
       end
 

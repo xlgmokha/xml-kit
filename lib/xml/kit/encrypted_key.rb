@@ -21,8 +21,11 @@ module Xml
         key_info: nil
       )
         @id = id
-        @asymmetric_cipher = asymmetric_cipher || key_info&.asymmetric_cipher
-        @symmetric_cipher =  symmetric_cipher || key_info&.symmetric_cipher || Xml::Kit::Crypto::SymmetricCipher.new
+        @asymmetric_cipher = asymmetric_cipher ||
+          key_info.try(:asymmetric_cipher)
+        @symmetric_cipher = symmetric_cipher ||
+          key_info.try(:symmetric_cipher) ||
+          Xml::Kit::Crypto::SymmetricCipher.new
         @key_info = key_info
       end
 
