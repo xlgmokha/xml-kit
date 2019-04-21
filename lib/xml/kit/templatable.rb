@@ -34,6 +34,7 @@ module Xml
           asymmetric_cipher: asymmetric_cipher,
           symmetric_cipher: symmetric_cipher
         ).to_xml(xml: xml)
+        yield xml if block_given?
       end
 
       # @deprecated Use {#encrypt_data_for} instead of this

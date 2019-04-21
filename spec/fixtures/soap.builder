@@ -3,7 +3,16 @@ xml.instruct!
 xml.Envelope do
   xml.Header do
     xml.Security do
-      encrypt_key_for(xml: xml, id: key_id)
+      encrypt_key_for(xml: xml, id: key_id) do |xml|
+        xml.KeyInfo do
+          xml.x509Data do
+            xml.X509IssuerSerial do
+              xml.X509IssuerName "blah"
+              xml.X509IssuerNumber 1
+            end
+          end
+        end
+      end
       xml.BinarySecurityToken ''
     end
   end
