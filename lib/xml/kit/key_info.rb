@@ -16,7 +16,8 @@ module Xml
       attr_accessor :x509_data
       attr_accessor :encrypted_key
 
-      def initialize(x509: nil)
+      def initialize(x509: nil, encrypted_key: nil)
+        @encrypted_key = encrypted_key
         @x509_data = x509
         yield self if block_given?
       end
@@ -31,7 +32,7 @@ module Xml
           )
         end
 
-        super
+        super(algorithm: algorithm)
       end
 
       def symmetric_cipher
@@ -62,7 +63,7 @@ module Xml
         when OpenSSL::PKey::RSA
           "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
         else
-          raise 'unsupported key type'
+          raise ::Xml::Kit::Error, "#{key.try(:class)} is not supported"
         end
       end
     end

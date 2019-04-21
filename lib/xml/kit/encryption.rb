@@ -18,7 +18,7 @@ module Xml
       )
         @symmetric_algorithm = symmetric_algorithm
         @asymmetric_algorithm = asymmetric_algorithm
-        Xml::Kit.deprecate('Encryption is deprecated. Use EncryptedData.')
+        Xml::Kit.deprecate('Encryption', alternative: 'EncryptedData')
         super(raw_xml,
           symmetric_cipher: symmetric(symmetric_algorithm),
           asymmetric_cipher: asymmetric(asymmetric_algorithm, public_key),

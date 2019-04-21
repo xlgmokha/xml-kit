@@ -36,6 +36,9 @@ Layout/IndentArray:
 Layout/IndentHeredoc:
   EnforcedStyle: active_support
 
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*.rb'

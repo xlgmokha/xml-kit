@@ -15,19 +15,19 @@ module Xml
       def initialize(
         raw_xml,
         id: Id.generate,
-        symmetric_cipher: Xml::Kit::Crypto::SymmetricCipher.new,
-        asymmetric_cipher:,
+        symmetric_cipher: nil,
+        asymmetric_cipher: nil,
         key_info: nil
       )
         @id = id
-        @symmetric_cipher = symmetric_cipher
+        @symmetric_cipher = symmetric_cipher ||
+          key_info.try(:symmetric_cipher) ||
+          Xml::Kit::Crypto::SymmetricCipher.new
         @symmetric_cipher_value = Base64.strict_encode64(
-          symmetric_cipher.encrypt(raw_xml)
+          @symmetric_cipher.encrypt(raw_xml)
         )
-        @key_info = key_info || create_key_info_for(
-          symmetric_cipher,
-          asymmetric_cipher
-        )
+        @key_info = key_info ||
+          create_key_info_for(@symmetric_cipher, asymmetric_cipher)
       end
 
       def to_xml(xml: ::Builder::XmlMarkup.new)
