@@ -15,8 +15,8 @@ RSpec.describe Xml::Kit::KeyPair do
     subject { described_class.new(certificate.to_pem, key.export, '', :signing) }
 
     specify { expect { subject }.not_to raise_error }
-    specify { expect(subject.for?(:signing)).to be(true) }
-    specify { expect(subject.for?(:encryption)).to be(false) }
+    specify { expect(subject).to be_for(:signing) }
+    specify { expect(subject).not_to be_for(:encryption) }
   end
 
   it 'decrypts encrypted private keys' do
