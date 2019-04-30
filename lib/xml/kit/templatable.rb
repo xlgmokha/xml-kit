@@ -28,11 +28,12 @@ module Xml
       # @since 0.3.0
       # @param xml [Builder::XmlMarkup] the xml builder instance
       # @param id [String] the id of EncryptedKey element
-      def encrypt_key_for(xml:, id:)
+      def encrypt_key_for(xml:, id:, key_info: nil)
         ::Xml::Kit::EncryptedKey.new(
           id: id,
           asymmetric_cipher: asymmetric_cipher,
-          symmetric_cipher: symmetric_cipher
+          symmetric_cipher: symmetric_cipher,
+          key_info: key_info
         ).to_xml(xml: xml)
       end
 
