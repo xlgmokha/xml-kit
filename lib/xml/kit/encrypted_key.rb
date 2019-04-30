@@ -14,15 +14,16 @@ module Xml
       attr_reader :asymmetric_cipher, :symmetric_cipher
       attr_accessor :key_info
 
-      def initialize(
-        id: Id.generate,
-        asymmetric_cipher:,
-        symmetric_cipher: Xml::Kit::Crypto::SymmetricCipher.new,
-        key_info: nil
-      )
+      def initialize(id: Id.generate,
+                     asymmetric_cipher: nil,
+                     symmetric_cipher: nil,
+                     key_info: nil)
         @id = id
-        @asymmetric_cipher = asymmetric_cipher
-        @symmetric_cipher = symmetric_cipher
+        @asymmetric_cipher = asymmetric_cipher ||
+          key_info.try(:asymmetric_cipher)
+        @symmetric_cipher = symmetric_cipher ||
+          key_info.try(:symmetric_cipher) ||
+          Xml::Kit::Crypto::SymmetricCipher.new
         @key_info = key_info
       end
 

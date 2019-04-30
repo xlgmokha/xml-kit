@@ -37,8 +37,8 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
               "openssl enc -#{openssl_algorithm} -p -e -A -nosalt",
               "-in #{original_file}",
               "-out #{encrypted_file}",
-              "-K #{key.unpack('H*')[0].upcase}",
-              "-iv #{iv.unpack('H*')[0].upcase}"
+              "-K #{key.unpack1('H*').upcase}",
+              "-iv #{iv.unpack1('H*').upcase}"
             ].join(' '))
           end
 
@@ -55,8 +55,8 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
               "openssl enc -#{openssl_algorithm} -p -e -A -nosalt",
               "-in #{original_file}",
               "-out #{encrypted_file}",
-              "-K #{key.unpack('H*')[0].upcase}",
-              "-iv #{iv.unpack('H*')[0].upcase}"
+              "-K #{key.unpack1('H*').upcase}",
+              "-iv #{iv.unpack1('H*').upcase}"
             ].join(' '))
           end
 
@@ -80,8 +80,8 @@ RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
             "openssl enc -#{openssl_algorithm} -p -d -nosalt",
             "-in #{encrypted_file}",
             "-out #{decrypted_file}",
-            "-K #{key.unpack('H*')[0].upcase}",
-            "-iv #{iv.unpack('H*')[0].upcase}"
+            "-K #{key.unpack1('H*').upcase}",
+            "-iv #{iv.unpack1('H*').upcase}"
           ].join(' '))
         end
 

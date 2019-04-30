@@ -16,9 +16,29 @@ module Xml
       attr_accessor :x509_data
       attr_accessor :encrypted_key
 
-      def initialize(x509: nil)
+      def initialize(x509: nil, encrypted_key: nil)
+        @encrypted_key = encrypted_key
         @x509_data = x509
         yield self if block_given?
+      end
+
+      def asymmetric_cipher(algorithm: Crypto::RsaCipher::ALGORITHM)
+        return encrypted_key.asymmetric_cipher if encrypted_key
+
+        if x509_data
+          return Crypto.cipher_for(
+            derive_algorithm_from(x509_data.public_key),
+            x509_data.public_key
+          )
+        end
+
+        super(algorithm: algorithm)
+      end
+
+      def symmetric_cipher
+        return super if encrypted_key.nil?
+
+        encrypted_key.symmetric_cipher
       end
 
       def key_value
@@ -34,6 +54,17 @@ module Xml
         return if ski.nil?
 
         Base64.strict_encode64(ski.value)
+      end
+
+      private
+
+      def derive_algorithm_from(key)
+        case key
+        when OpenSSL::PKey::RSA
+          "#{::Xml::Kit::Namespaces::XMLENC}rsa-1_5"
+        else
+          raise ::Xml::Kit::Error, "#{key.try(:class)} is not supported"
+        end
       end
     end
   end

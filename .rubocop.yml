@@ -9,7 +9,7 @@ AllCops:
     - 'spec/fixtures/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.4
 
 Layout/ClassStructure:
   Enabled: true
@@ -30,11 +30,14 @@ Layout/ClassStructure:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   EnforcedStyle: consistent
 
 Layout/IndentHeredoc:
   EnforcedStyle: active_support
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
 
 Lint/AmbiguousBlockAssociation:
   Exclude:

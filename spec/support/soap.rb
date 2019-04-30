@@ -16,7 +16,13 @@ class Soap
     'EK-E2C32E59F27A1320A215468956686717'
   end
 
-  def key_info
+  def header_key_info
+    ::Xml::Kit::KeyInfo.new do |x|
+      x.x509_data = encryption_certificate.x509
+    end
+  end
+
+  def data_key_info
     ::Xml::Kit::KeyInfo.new do |x|
       x.retrieval_method.uri = key_id
     end
