@@ -3,7 +3,7 @@
 module Xml
   module Kit
     class SelfSignedCertificate
-      SUBJECT = '/C=CA/ST=AB/L=Calgary/O=XmlKit/OU=XmlKit/CN=XmlKit'.freeze
+      SUBJECT = '/C=CA/ST=AB/L=Calgary/O=XmlKit/OU=XmlKit/CN=XmlKit'
 
       def create(algorithm: 'AES-256-CBC',
                  passphrase: nil,

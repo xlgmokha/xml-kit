@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'A simple toolkit for working with XML.'
   spec.homepage      = 'https://github.com/saml-kit/xml-kit'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.2.0'
+  spec.required_ruby_version = '~> 2.4'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

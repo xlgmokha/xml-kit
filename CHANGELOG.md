@@ -1,4 +1,5 @@
 Version 0.3.1
+
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -7,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- nil
+- drop support for ruby 2.2
+- drop support for ruby 2.3
 
 ## [0.3.1] - 2019-04-01
 ### Changed
