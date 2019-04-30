@@ -4,7 +4,7 @@ PATH
     xml-kit (0.3.1)
       activemodel (>= 4.2.0)
       builder (~> 3.2)
-      nokogiri (>= 1.8.5)
+      nokogiri (~> 1.10)
       tilt (>= 1.4.1)
       xmldsig (~> 0.6)
 
@@ -81,6 +81,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 2.0)
   bundler-audit (~> 0.6)
   ffaker (~> 2.7)
   rake (~> 10.0)
@@ -91,4 +92,4 @@ DEPENDENCIES
   xml-kit!
 
 BUNDLED WITH
-   1.17.3
+   2.0.1
