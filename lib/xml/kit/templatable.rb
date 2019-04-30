@@ -17,6 +17,14 @@ module Xml
       # The [Xml::Kit::Certificate] that contains the public key to use for encrypting the document.
       attr_accessor :encryption_certificate
 
+      # Allows you to specify the digest method algorithm. (Default: SHA256)
+      # A list of digest methods can be found in [Xml::Kit::Signature].
+      attr_accessor :digest_method
+
+      # Allows you to specify the signature method algorithm. (Default: SHA256)
+      # A list of signature methods can be found in [Xml::Kit::Signature].
+      attr_accessor :signature_method
+
       # Returns the generated XML document with an XML Digital Signature and XML Encryption.
       def to_xml(xml: ::Builder::XmlMarkup.new, pretty: false)
         result = signatures.complete(render(self, xml: xml))
@@ -99,9 +107,11 @@ module Xml
       # Allows you to specify which key pair to use for generating an XML digital signature.
       #
       # @param key_pair [Xml::Kit::KeyPair] the key pair to use for signing.
-      def sign_with(key_pair)
+      def sign_with(key_pair, signature_method: :SHA256, digest_method: :SHA256)
         self.signing_key_pair = key_pair
         self.embed_signature = true
+        self.signature_method = signature_method
+        self.digest_method = digest_method
         signatures.sign_with(key_pair)
       end
 
@@ -123,17 +133,9 @@ module Xml
       def signatures
         @signatures ||= ::Xml::Kit::Signatures.new(
           key_pair: signing_key_pair,
-          digest_method: digest_method,
-          signature_method: signature_method
+          digest_method: digest_method || :SHA256,
+          signature_method: signature_method || :SHA256
         )
-      end
-
-      def digest_method
-        :SHA256
-      end
-
-      def signature_method
-        :SHA256
       end
 
       # @!visibility private
