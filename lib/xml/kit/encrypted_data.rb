@@ -12,13 +12,11 @@ module Xml
       attr_reader :symmetric_cipher
       attr_reader :symmetric_cipher_value
 
-      def initialize(
-        raw_xml,
-        id: Id.generate,
-        symmetric_cipher: nil,
-        asymmetric_cipher: nil,
-        key_info: nil
-      )
+      def initialize(raw_xml,
+                     id: Id.generate,
+                     symmetric_cipher: nil,
+                     asymmetric_cipher: nil,
+                     key_info: nil)
         @id = id
         @symmetric_cipher = symmetric_cipher ||
           key_info.try(:symmetric_cipher) ||

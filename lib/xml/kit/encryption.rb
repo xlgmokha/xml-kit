@@ -4,18 +4,17 @@ module Xml
   module Kit
     # @deprecated Use {#Xml::Kit::EncryptedData} class instead of this
     class Encryption < EncryptedData
+      DEFAULT_SYMMETRIC = Crypto::SymmetricCipher::DEFAULT_ALGORITHM
+      DEFAULT_ASYMMETRIC = Crypto::RsaCipher::ALGORITHM
+
       attr_reader :asymmetric_algorithm
       attr_reader :symmetric_algorithm
       attr_reader :symmetric_cipher_value
       attr_reader :key_info
 
-      def initialize(
-        raw_xml,
-        public_key,
-        symmetric_algorithm: Crypto::SymmetricCipher::DEFAULT_ALGORITHM,
-        asymmetric_algorithm: Crypto::RsaCipher::ALGORITHM,
-        key_info: nil
-      )
+      def initialize(raw_xml, public_key,
+                     symmetric_algorithm: DEFAULT_SYMMETRIC,
+                     asymmetric_algorithm: DEFAULT_ASYMMETRIC, key_info: nil)
         @symmetric_algorithm = symmetric_algorithm
         @asymmetric_algorithm = asymmetric_algorithm
         Xml::Kit.deprecate('Encryption', alternative: 'EncryptedData')

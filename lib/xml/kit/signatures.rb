@@ -39,12 +39,10 @@ module Xml
       end
 
       # @!visibility private
-      def self.sign(
-        xml: ::Builder::XmlMarkup.new,
-        key_pair:,
-        signature_method: :SHA256,
-        digest_method: :SHA256
-      )
+      def self.sign(xml: ::Builder::XmlMarkup.new,
+                    key_pair:,
+                    signature_method: :SHA256,
+                    digest_method: :SHA256)
         signatures = new(
           key_pair: key_pair,
           signature_method: signature_method,

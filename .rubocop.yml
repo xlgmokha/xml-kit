@@ -30,7 +30,7 @@ Layout/ClassStructure:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   EnforcedStyle: consistent
 
 Layout/IndentHeredoc:
