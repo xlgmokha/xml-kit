@@ -15,7 +15,7 @@ module Xml
         SHA512: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha512',
       }.freeze
       DIGEST_METHODS = {
-        SHA1: 'http://www.w3.org/2000/09/xmldsig#SHA1',
+        SHA1: 'http://www.w3.org/2000/09/xmldsig#sha1',
         SHA224: 'http://www.w3.org/2001/04/xmldsig-more#sha224',
         SHA256: 'http://www.w3.org/2001/04/xmlenc#sha256',
         SHA384: 'http://www.w3.org/2001/04/xmldsig-more#sha384',
