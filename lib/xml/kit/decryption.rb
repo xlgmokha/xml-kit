@@ -56,12 +56,10 @@ module Xml
       def symmetric_key_from(encrypted_key, attempts = private_keys.count)
         cipher, algorithm = cipher_and_algorithm_from(encrypted_key)
         private_keys.each do |private_key|
-          begin
-            attempts -= 1
-            return to_plaintext(cipher, private_key, algorithm)
-          rescue OpenSSL::PKey::RSAError
-            raise if attempts.zero?
-          end
+          attempts -= 1
+          return to_plaintext(cipher, private_key, algorithm)
+        rescue OpenSSL::PKey::RSAError
+          raise if attempts.zero?
         end
         raise DecryptionError, private_keys
       end

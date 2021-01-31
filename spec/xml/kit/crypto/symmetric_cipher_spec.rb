@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe ::Xml::Kit::Crypto::SymmetricCipher do
-  [
-    'aes128-cbc',
-    'aes192-cbc',
-    'aes256-cbc',
-    'tripledes-cbc',
+  %w[
+    aes128-cbc
+    aes192-cbc
+    aes256-cbc
+    tripledes-cbc
   ].each do |algorithm|
     describe algorithm do
       let(:xml_algorithm) { "#{::Xml::Kit::Namespaces::XMLENC}#{algorithm}" }

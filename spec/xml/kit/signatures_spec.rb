@@ -27,6 +27,7 @@ RSpec.describe ::Xml::Kit::Signatures do
     specify { expect(signature['SignedInfo']['Reference']['DigestValue']).to be_present }
     specify { expect(signature['SignatureValue']).to be_present }
     specify { expect(OpenSSL::X509::Certificate.new(Base64.decode64(signature['KeyInfo']['X509Data']['X509Certificate']))).to be_present }
+
     specify do
       expect(signature['SignedInfo']['Reference']['Transforms']['Transform']).to match_array([
         { 'Algorithm' => 'http://www.w3.org/2000/09/xmldsig#enveloped-signature' },

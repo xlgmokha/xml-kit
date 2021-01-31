@@ -9,6 +9,7 @@ RSpec.describe Soap do
 
     specify { expect(result['Envelope']).to be_present }
     specify { expect(result['Envelope']['Header']).to be_present }
+
     specify do
       cipher_value = result['Envelope']['Header']['Security']['EncryptedKey']['CipherData']['CipherValue']
       symmetric_key = key_pair.private_key.private_decrypt(Base64.decode64(cipher_value))
