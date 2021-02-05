@@ -5,4 +5,4 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-bundle exec rake spec
+bundle exec rake bundle:audit

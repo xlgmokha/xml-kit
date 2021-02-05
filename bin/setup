@@ -1,6 +1,8 @@
-#!/usr/bin/env bash
-set -euo pipefail
-IFS=$'\n\t'
-set -vx
+#!/bin/sh
+
+set -e
+[ -z "$DEBUG" ] || set -x
+
+cd "$(dirname "$0")/.."
 
 bundle install

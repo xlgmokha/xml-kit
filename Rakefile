@@ -10,4 +10,3 @@ RuboCop::RakeTask.new(:rubocop)
 Bundler::Audit::Task.new
 
 task default: :spec
-task lint: [:rubocop, 'bundle:audit']
