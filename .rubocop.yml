@@ -11,6 +11,12 @@ AllCops:
     - 'vendor/**/*'
   TargetRubyVersion: 2.7
 
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_line
+  Exclude:
+    - 'lib/**/*.builder'
+    - 'spec/**/*'
+
 Layout/ClassStructure:
   Enabled: true
   Categories:
@@ -32,9 +38,6 @@ Layout/EndOfLine:
 
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
-
-Layout/HeredocIndentation:
-  EnforcedStyle: active_support
 
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
@@ -63,7 +66,7 @@ Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
 
-Metrics/LineLength:
+Layout/LineLength:
   IgnoredPatterns: ['(\A|\s)#']
   Exclude:
     - 'spec/**/*.rb'
