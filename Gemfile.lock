@@ -81,7 +81,7 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.8.0)
-    xmldsig (0.6.6)
+    xmldsig (0.7.0)
       nokogiri (>= 1.6.8, < 2.0.0)
 
 PLATFORMS
