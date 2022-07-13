@@ -11,9 +11,9 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (7.0.3)
-      activesupport (= 7.0.3)
-    activesupport (7.0.3)
+    activemodel (7.0.3.1)
+      activesupport (= 7.0.3.1)
+    activesupport (7.0.3.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -27,10 +27,10 @@ GEM
     diff-lcs (1.5.0)
     docile (1.4.0)
     ffaker (2.21.0)
-    i18n (1.10.0)
+    i18n (1.11.0)
       concurrent-ruby (~> 1.0)
     mini_portile2 (2.8.0)
-    minitest (5.15.0)
+    minitest (5.16.2)
     nokogiri (1.13.7)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
